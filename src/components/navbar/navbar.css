@@ -1,0 +1,20 @@
+#nav-cen {
+  color: rgb(36, 35, 35);
+
+  display: inline-flex;
+  gap: 1.5rem;
+}
+.nav-link {
+  text-decoration: none;
+
+  cursor: pointer;
+  color: inherit;
+}
+
+.nav-link:hover {
+  border-bottom: 2px solid salmon;
+}
+
+#nav-cen a.active {
+  border-bottom: 2px solid salmon;
+}
