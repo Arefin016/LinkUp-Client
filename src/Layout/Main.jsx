@@ -7,7 +7,7 @@ import Navbar from "../components/navbar/Navbar";
 const Main = () => {
   return (
     <div>
-      <Navbar />
+      <Navbar /> {/* Keeping the Navbar component from hasib-nav */}
       <Banner></Banner>
       <Outlet></Outlet>
       <Footer></Footer>
