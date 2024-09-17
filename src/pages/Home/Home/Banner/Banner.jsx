@@ -94,7 +94,7 @@ const Banner = () => {
             loop={false}
             cursor
             cursorStyle='__!'
-            typeSpeed={100}
+            typeSpeed={90}
             deleteSpeed={50}
             delaySpeed={1000}
             
