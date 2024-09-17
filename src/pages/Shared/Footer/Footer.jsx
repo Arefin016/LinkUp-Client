@@ -4,8 +4,8 @@ import { faFacebook, faTwitter, faGithub, faInstagram, faLinkedin } from '@forta
 
 const Footer = () => {
   return (
-    <div>
-      <footer className="bg-[#F0F0F0] dark:bg-gray-900 lg:pt-16 md:pt-16 pt-40 ">
+    
+      <footer className="bg-[#F0F0F0] dark:bg-gray-900 mt-6 lg:pt-16 md:pt-16 pt-40 w-full">
         <div className="container p-6 mx-auto">
           <div className="lg:flex">
             <div className="w-full -mx-6 lg:w-2/5">
@@ -83,7 +83,7 @@ const Footer = () => {
           </div>
         </div>
       </footer>
-    </div>
+   
   )
 }
 
