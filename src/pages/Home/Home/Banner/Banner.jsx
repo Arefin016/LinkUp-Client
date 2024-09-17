@@ -144,7 +144,7 @@ const Banner = () => {
 <span class="absolute left-0 pl-2.5 -translate-x-12 group-hover:translate-x-0 ease-out duration-200">
 <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
 </span>
-<span class="relative w-full text-left transition-colors duration-200 ease-in-out group-hover:text-white">Meeting Now</span>
+<span class="relative w-full text-left transition-colors duration-200 ease-in-out group-hover:text-white">Join Meeting</span>
 <BorderBeam size={70} duration={5} colorFrom="#0000ff" colorTo="#0000ff" borderWidth={2} delay={4} />
 </a>
         </div>
