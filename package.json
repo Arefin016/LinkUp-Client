@@ -13,10 +13,16 @@
     "@stianlarsen/border-beam": "^1.0.9",
     "clsx": "^2.1.1",
     "framer-motion": "^11.5.4",
+    "@fortawesome/fontawesome-svg-core": "^6.6.0",
+    "@fortawesome/free-brands-svg-icons": "^6.6.0",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "animate.css": "^4.1.1",
+    "aos": "^3.0.0-beta.6",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-fast-marquee": "^1.6.5",
     "react-router-dom": "^6.26.2",
     "react-simple-typewriter": "^5.0.1",
     "sort-by": "^1.2.0",
@@ -37,6 +43,6 @@
     "globals": "^15.9.0",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.11",
-    "vite": "^5.4.1"
+    "vite": "^5.4.6"
   }
 }
