@@ -45,9 +45,7 @@ const SignUp = () => {
                   </div>
                 </div>
                 <div className="form-control border-b-2">
-                  {/* <label className="label">
-                  <span className="label-text">Name</span>
-                </label> */}
+                  
                   <input
                     type="text"
                     placeholder="Your Name"
