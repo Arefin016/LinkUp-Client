@@ -24,9 +24,9 @@ const Navbar = () => {
       <li className='nav-link'>
         <NavLink to='/m'>Menu3</NavLink>
       </li>
-      <li className='nav-link'>
+      {/* <li className='nav-link'>
         <NavLink to='/m'>Menu4</NavLink>
-      </li>
+      </li> */}
     </>
   );
   return (
