@@ -8,7 +8,7 @@ const Navbar = () => {
   const userName = "demo user";
 
   // to do : implement logout after authentication
-
+  // to do: resolve the conflict
   const handleLogout = () => {
     alert("check to do");
   };
