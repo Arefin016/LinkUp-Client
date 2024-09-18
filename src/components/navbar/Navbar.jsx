@@ -1,9 +1,10 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import "./navbar.css";
 
 const Navbar = () => {
   // To do: get login and user info from auth context
+  // const login = false;
   const login = true;
   const userName = "demo user";
 
@@ -54,7 +55,7 @@ const Navbar = () => {
             {links}
           </ul>
         </div>
-        <a className='btn btn-ghost text-xl'>daisyUI</a>
+        <a className='btn btn-ghost text-xl'>LinkUP</a>
       </div>
 
       {/* Menu links for large screens */}
@@ -89,10 +90,17 @@ const Navbar = () => {
           </div>
         ) : (
           <div className='navbar-end'>
-            <a className='btn'>Login</a>
+            <Link to='/login' className='btn btn-outline btn-sm'>
+              Login
+            </Link>
           </div>
         )}
       </div>
+      <input
+        type='checkbox'
+        value='synthwave'
+        className='toggle theme-controller mx-6'
+      />
     </div>
   );
 };
