@@ -56,9 +56,7 @@ const SignUp = () => {
                 </div>
 
                 <div className="form-control border-b-2">
-                  {/* <label className="label">
-                  <span className="label-text">Email</span>
-                </label> */}
+
                   <input
                     type="email"
                     name="email"
