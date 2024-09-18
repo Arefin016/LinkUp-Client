@@ -89,6 +89,9 @@ const AboutUs = () => {
           </div>
         </div>
       </div>
+      <div>
+        <h3>This is Shah Arefin Ahmed</h3>
+      </div>
     </div>
   )
 }
