@@ -1,10 +1,10 @@
 import React from "react"
-import { NavLink } from "react-router-dom"
+import { Link, NavLink } from "react-router-dom"
 import "./navbar.css"
 
 const Navbar = () => {
   // To do: get login and user info from auth context
-  const login = true
+  const login = false
   const userName = "demo user"
 
   // to do : implement logout after authentication
@@ -96,7 +96,9 @@ const Navbar = () => {
           </div>
         ) : (
           <div className="navbar-end">
-            <a className="btn">Login</a>
+            <Link to={"/login"}>
+              <a className="btn">Login</a>
+            </Link>
           </div>
         )}
       </div>
