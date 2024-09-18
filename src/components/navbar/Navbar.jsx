@@ -24,10 +24,6 @@ const Navbar = () => {
       <li className="nav-link">
         <NavLink to="/m">Menu3</NavLink>
       </li>
-
-      {/* <li className='nav-link'>
-        <NavLink to='/m'>Menu4</NavLink>
-      </li> */}
     </>
   )
   return (
@@ -58,7 +54,7 @@ const Navbar = () => {
             {links}
           </ul>
         </div>
-        <a className="btn btn-ghost text-xl">daisyUI</a>
+        <a className="btn btn-ghost text-xl">LinkUp</a>
       </div>
       <div className="navbar-center hidden lg:flex" id="nav-cen">
         <ul className="menu menu-horizontal px-1">
@@ -95,7 +91,7 @@ const Navbar = () => {
             </ul>
           </div>
         ) : (
-          <div className="navbar-end">
+          <div className="">
             <Link to={"/login"}>
               <a className="btn">Login</a>
             </Link>
