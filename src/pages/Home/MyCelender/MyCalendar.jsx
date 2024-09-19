@@ -5,7 +5,7 @@ import { format, parse, startOfWeek, getDay } from "date-fns";
 import { dateFnsLocalizer } from "react-big-calendar";
 import enUS from "date-fns/locale/en-US"; // ES6 import for date-fns locale
 import Modal from "react-modal"; // Import Modal
-
+import AOS from "aos"
 // Setup the date localization
 const locales = {
   "en-US": enUS,
@@ -83,7 +83,9 @@ const MyCalendar = () => {
   };
 
   return (
-    <div className="calendar-container mx-5 my-5 p-5 bg-blue-50 rounded-lg shadow-lg">
+    <div data-aos="flip-left"
+    data-aos-offset="300"
+    data-aos-easing="ease-in-sine" className="calendar-container mx-5 my-5 p-5 bg-blue-50 rounded-lg shadow-lg">
       <h2 className="text-2xl text-gray-800 font-semibold text-center mb-4">
         My Scheduling Calendar
       </h2>
