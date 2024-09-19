@@ -14,9 +14,10 @@
 }
 
 .nav-link:hover {
-  border-bottom: 2px solid salmon;
+  border-bottom: 2px solid rgb(165, 21, 7);
 }
 
 .nav-link.active {
   border-bottom: 2px solid salmon;
+  font-weight: bold;
 }
