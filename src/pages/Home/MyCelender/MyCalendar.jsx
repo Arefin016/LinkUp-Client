@@ -3,9 +3,12 @@ import { Calendar } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { format, parse, startOfWeek, getDay } from "date-fns";
 import { dateFnsLocalizer } from "react-big-calendar";
-import enUS from "date-fns/locale/en-US"; // ES6 import for date-fns locale
-import Modal from "react-modal"; // Import Modal
-import AOS from "aos"
+import enUS from "date-fns/locale/en-US";
+import Modal from "react-modal";
+import emailjs from "emailjs-com";
+import Swal from "sweetalert2";
+import AOS from "aos";
+
 // Setup the date localization
 const locales = {
   "en-US": enUS,
@@ -29,7 +32,7 @@ const events = [
   },
 ];
 
-// Modal styles (you can customize as needed)
+// Modal styles
 const modalStyles = {
   content: {
     top: "50%",
@@ -43,7 +46,7 @@ const modalStyles = {
 
 const MyCalendar = () => {
   const [myEvents, setMyEvents] = useState(events);
-  const [modalIsOpen, setModalIsOpen] = useState(false); // Modal visibility state
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [newEvent, setNewEvent] = useState({
     title: "",
     startDate: "",
@@ -55,7 +58,42 @@ const MyCalendar = () => {
   // Function to handle adding new events
   const handleSelectSlot = ({ start, end }) => {
     setSelectedSlot({ start, end });
-    setModalIsOpen(true); // Open modal on date click
+    setModalIsOpen(true);
+  };
+
+  // Function to send an email when a new event is added
+  const sendEmail = (eventDetails) => {
+    const emailParams = {
+      event_title: eventDetails.title,
+      event_start: eventDetails.startDate,
+      event_end: eventDetails.endDate,
+      event_description: eventDetails.description,
+      recipient_email: "shihabshamim767@gmail.com", // Verify this email
+      userName: 'Md. Shihab Shamim'
+    };
+
+    emailjs
+      .send(
+        "service_xqyql81", // Replace with your EmailJS Service ID
+        "template_9ugi12d", // Replace with your EmailJS Template ID
+        emailParams,
+        "vz_mcsgnNSq-e__68" // Replace with your EmailJS User ID
+      )
+      .then(
+        (result) => {
+          console.log("Email sent successfully:", result.text);
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Please Check Your Email",
+            showConfirmButton: false,
+            timer: 1500
+          });
+        },
+        (error) => {
+          console.error("Error sending email:", error);
+        }
+      );
   };
 
   // Function to handle event creation
@@ -63,11 +101,19 @@ const MyCalendar = () => {
     const { title, startDate, endDate, description } = newEvent;
 
     if (title && startDate && endDate && description) {
-      setMyEvents([
-        ...myEvents,
-        { title, start: new Date(startDate), end: new Date(endDate), description },
-      ]);
-      setModalIsOpen(false); // Close the modal after submission
+      const newEventData = {
+        title,
+        start: new Date(startDate),
+        end: new Date(endDate),
+        description,
+      };
+
+      setMyEvents([...myEvents, newEventData]);
+
+      // Send an email after the event is added
+      sendEmail(newEvent);
+
+      setModalIsOpen(false);
     } else {
       alert("Please fill out all the fields.");
     }
@@ -83,9 +129,7 @@ const MyCalendar = () => {
   };
 
   return (
-    <div data-aos="flip-left"
-    data-aos-offset="300"
-    data-aos-easing="ease-in-sine" className="calendar-container mx-5 my-5 p-5 bg-blue-50 rounded-lg shadow-lg">
+    <div className="calendar-container mx-5 my-5 p-5 bg-blue-50 rounded-lg shadow-lg">
       <h2 className="text-2xl text-gray-800 font-semibold text-center mb-4">
         My Scheduling Calendar
       </h2>
@@ -102,7 +146,11 @@ const MyCalendar = () => {
       />
 
       {/* Modal for adding new events */}
-      <Modal isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)} style={modalStyles}>
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={() => setModalIsOpen(false)}
+        style={modalStyles}
+      >
         <h2 className="text-xl font-bold mb-4">Add New Event</h2>
         <div className="space-y-4">
           <div>
@@ -153,7 +201,10 @@ const MyCalendar = () => {
             >
               Cancel
             </button>
-            <button className="px-4 py-2 bg-blue-500 text-white rounded" onClick={handleSubmit}>
+            <button
+              className="px-4 py-2 bg-blue-500 text-white rounded"
+              onClick={handleSubmit}
+            >
               Add Event
             </button>
           </div>
