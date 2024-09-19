@@ -1,5 +1,6 @@
-import { Outlet, useLocation } from "react-router-dom"
+import { Outlet } from "react-router-dom"
 import Footer from "../pages/Shared/Footer/Footer"
+import Navbar from "../components/navbar/Navbar"
 
 const Main = () => {
   const location = useLocation()
@@ -10,8 +11,7 @@ const Main = () => {
 
   return (
     <div>
-      {/* {noHeaderFooter || <NavBar></NavBar>}{" "} */}
-      {/* Keeping the Navbar component from hasib-nav */}
+      <Navbar /> {/* Keeping the Navbar component from hasib-nav */}
       <Outlet></Outlet>
       {noHeaderFooter || <Footer></Footer>}
     </div>
