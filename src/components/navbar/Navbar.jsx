@@ -1,12 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import "./navbar.css";
 
 const Navbar = () => {
+  // theme
+
+  const [theme, setTheme] = useState("light");
+  useEffect(() => {
+    localStorage.setItem("theme", theme);
+    const localTheme = localStorage.getItem("theme");
+    document.querySelector("html").setAttribute("data-theme", localTheme);
+  }, [theme]);
+  const handleTheme = (e) => {
+    if (e.target.checked) {
+      setTheme("dark");
+    } else {
+      setTheme("light");
+    }
+    console.log(theme);
+  };
   // To do: get login and user info from auth context
   // const login = false;
   const login = true;
   const userName = "demo user";
+  const photoURL =
+    "https://i.ibb.co/myTwYWh/hasib-vg-bg-32-1-fotor-202309019507-1.png";
 
   // to do: implement logout after authentication
   // to do: resolve the conflict
@@ -16,21 +34,27 @@ const Navbar = () => {
 
   const links = (
     <>
-      <li className='nav-link'>
-        <NavLink to='/'>Home</NavLink>
+      <li>
+        <NavLink className='nav-link' to='/'>
+          Home
+        </NavLink>
       </li>
-      <li className='nav-link'>
-        <NavLink to='/aboutus'>About</NavLink>
+      <li>
+        <NavLink className='nav-link' to='/aboutus'>
+          About
+        </NavLink>
       </li>
-      <li className='nav-link'>
-        <NavLink to='/m'>Menu3</NavLink>
+      <li>
+        <NavLink className='nav-link' to='/m'>
+          Menu3
+        </NavLink>
       </li>
     </>
   );
 
   return (
-    <div className='navbar bg-base-100'>
-      <div className='navbar-start'>
+    <div className='navbar bg-base-100   lg:px-36 px-4 fixed top-0 left-0 z-10 opacity-90  shadow   '>
+      <div className='navbar-start '>
         {/* Hamburger icon for small screens */}
         <div className='dropdown'>
           <div tabIndex={0} role='button' className='btn btn-ghost lg:hidden'>
@@ -55,12 +79,12 @@ const Navbar = () => {
             {links}
           </ul>
         </div>
-        <a className='btn btn-ghost text-xl'>LinkUP</a>
+        <a className='btn btn-ghost text-xl dark:text-white '>LinkUP</a>
       </div>
 
       {/* Menu links for large screens */}
       <div className='navbar-center hidden lg:flex'>
-        <ul className='menu menu-horizontal px-1'>{links}</ul>
+        <ul className=' menu-horizontal px-1 space-x-8 '>{links}</ul>
       </div>
 
       <div className='navbar-end'>
@@ -71,10 +95,7 @@ const Navbar = () => {
               role='button'
               className='btn btn-ghost btn-circle avatar'>
               <div className='w-10 rounded-full'>
-                <img
-                  alt='User avatar'
-                  src='https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp'
-                />
+                <img alt='User avatar' src={photoURL} />
               </div>
             </div>
             <ul
@@ -97,8 +118,8 @@ const Navbar = () => {
         )}
       </div>
       <input
+        onClick={handleTheme}
         type='checkbox'
-        value='synthwave'
         className='toggle theme-controller mx-6'
       />
     </div>
