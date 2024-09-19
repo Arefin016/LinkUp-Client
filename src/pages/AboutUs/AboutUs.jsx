@@ -1,6 +1,7 @@
 import AOS from "aos"
 import "aos/dist/aos.css" // You can also use <link> for styles
 import LatestCompanies from "./LatestCompanies"
+import { Link } from "react-router-dom"
 // ..
 AOS.init()
 const AboutUs = () => {
@@ -24,9 +25,11 @@ const AboutUs = () => {
           online <br /> meeting booking platform, emphasising the idea of
           linking up for scheduled <br /> meetings and appointments
         </p>
-        <button className="btn bg-[#006BFF] mt-5 md:mt-9 text-[#FFFFFF]">
-          Sign Up for free
-        </button>
+        <Link to={"/signUp"}>
+          <button className="btn bg-[#006BFF] mt-5 md:mt-9 text-[#FFFFFF]">
+            Sign Up for free
+          </button>
+        </Link>
       </div>
       {/* This is Second part of this About Section */}
       <div className="mt-20 text-center">
@@ -85,6 +88,11 @@ const AboutUs = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div>
+        <h3>This is Shah Arefin Ahmed</h3>
+        <h3>This is Shah Arefin Ahmed</h3>
+        <h3>This is Shah Arefin Ahmed</h3>
       </div>
     </div>
   )

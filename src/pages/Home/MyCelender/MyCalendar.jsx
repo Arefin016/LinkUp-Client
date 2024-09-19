@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Calendar } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -8,6 +7,7 @@ import enUS from "date-fns/locale/en-US";
 import Modal from "react-modal";
 import emailjs from "emailjs-com";
 import Swal from "sweetalert2";
+import AOS from "aos";
 
 // Setup the date localization
 const locales = {
@@ -53,27 +53,24 @@ const MyCalendar = () => {
     endDate: "",
     description: "",
   });
+  const [selectedSlot, setSelectedSlot] = useState(null);
 
   // Function to handle adding new events
   const handleSelectSlot = ({ start, end }) => {
+    setSelectedSlot({ start, end });
     setModalIsOpen(true);
   };
 
-
   // Function to send an email when a new event is added
   const sendEmail = (eventDetails) => {
-   
-    
-
     const emailParams = {
       event_title: eventDetails.title,
       event_start: eventDetails.startDate,
       event_end: eventDetails.endDate,
       event_description: eventDetails.description,
       recipient_email: "shihabshamim767@gmail.com", // Verify this email
-      userName:'Md. Shihab Shamim'
+      userName: 'Md. Shihab Shamim'
     };
-    
 
     emailjs
       .send(
@@ -88,13 +85,13 @@ const MyCalendar = () => {
           Swal.fire({
             position: "top-end",
             icon: "success",
-            title: "Please Check Your Email ",
+            title: "Please Check Your Email",
             showConfirmButton: false,
             timer: 1500
           });
         },
         (error) => {
-          console.error( error);
+          console.error("Error sending email:", error);
         }
       );
   };
