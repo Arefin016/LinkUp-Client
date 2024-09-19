@@ -114,7 +114,7 @@ const Navbar = () => {
                 Home
               </NavLink>
               <NavLink
-                to="/about"
+                to="/aboutus"
                 className="mx-4 text-sm text-gray-600 transition-colors duration-300 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400 font-right"
               >
                 About
@@ -184,12 +184,13 @@ const Navbar = () => {
                   </ul>
                 </div>
               ) : (
-                <button
-                  onClick={handleLogin}
-                  className="text-sm text-gray-600 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400 mx-2"
-                >
-                  Login
-                </button>
+                <NavLink
+                to="/login"
+                className="mx-4 text-sm text-gray-600 transition-colors duration-300 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400 font-right"
+              >
+                Login
+              </NavLink>
+                
               )}
             </div>
           </div>
