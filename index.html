@@ -7,7 +7,16 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React</title>
+    <title>LinkUp</title>
+    <script>
+      // Check and apply the theme based on localStorage or default to dark
+      if (localStorage.getItem('theme') === 'light') {
+        document.documentElement.classList.remove('dark');
+      } else {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('theme', 'dark'); // Set the default theme to dark
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
