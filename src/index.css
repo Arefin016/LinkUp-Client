@@ -6,3 +6,7 @@
 .bgLog{
     background: url("/public/trdhf.jpg");
 }
+
+.side .active{
+    color: blueviolet;
+}

@@ -1,12 +1,11 @@
 import { Outlet } from "react-router-dom"
 import Footer from "../pages/Shared/Footer/Footer"
-import NavBar from "../pages/Shared/NavBar/NavBar"
-import Banner from "../pages/Home/Home/Banner/Banner"
+import Navbar from "../components/navbar/Navbar"
 
 const Main = () => {
   return (
     <div>
-      <NavBar></NavBar>
+      <Navbar /> {/* Keeping the Navbar component from hasib-nav */}
       <Outlet></Outlet>
       <Footer></Footer>
     </div>
