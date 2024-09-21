@@ -129,7 +129,9 @@ const MyCalendar = () => {
   };
 
   return (
-    <div className="calendar-container mx-5 my-5 p-5 bg-blue-50 rounded-lg shadow-lg">
+    <div data-aos="flip-left"
+    data-aos-offset="300"
+    data-aos-easing="ease-in-sine" className="calendar-container mx-5 my-5 p-5 bg-blue-50 rounded-lg shadow-lg">
       <h2 className="text-2xl text-gray-800 font-semibold text-center mb-4">
         My Scheduling Calendar
       </h2>

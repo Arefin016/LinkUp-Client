@@ -59,11 +59,11 @@ const Navbar = () => {
       <nav className="bg-white dark:bg-gray-800 relative">
         <div className="container px-6 py-4 mx-auto md:flex md:justify-between md:items-center">
           <div className="flex items-center justify-between">
-            <NavLink to="/">
-              <h1 className="font-right font-extrabold text-4xl text-shadow-purple">
-                <span className="text-emerald-500">L</span>inkUp
-              </h1>
-            </NavLink>
+          <NavLink to="/">
+  <h1 className="font-right font-extrabold text-4xl text-shadow-purple dark:text-white">
+    <span className="text-emerald-500 ">L</span>inkUp
+  </h1>
+</NavLink>
 
             {/* Mobile menu button */}
             <div className="flex lg:hidden md:hidden">
@@ -120,13 +120,13 @@ const Navbar = () => {
                 About
               </NavLink>
               <NavLink
-                to="/review"
+                to="/#"
                 className="mx-4 text-sm text-gray-600 transition-colors duration-300 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400 font-right"
               >
                 Review
               </NavLink>
               <NavLink
-                to="/contact"
+                to="/#"
                 className="mx-4 text-sm text-gray-600 transition-colors duration-300 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400 font-right"
               >
                 Contact Us
@@ -135,7 +135,7 @@ const Navbar = () => {
 
             <div className="flex items-center">
               {/* Theme Toggle */}
-              <label className="swap swap-rotate mr-4">
+              <label className="swap swap-rotate mr-4 dark:text-white">
                 <input type="checkbox" checked={darkMode} onChange={toggleDarkMode} />
                 {/* Sun icon */}
                 <svg
