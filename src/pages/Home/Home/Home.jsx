@@ -5,8 +5,7 @@ import MyCalendar from "../MyCelender/MyCalendar";
 const Home = () => {
   return (
     <div>
-      <h2>This is Home</h2>
-      <p>Edit by hasib kazi</p>
+      
       <Banner></Banner>
       <MyCalendar></MyCalendar>
     </div>
