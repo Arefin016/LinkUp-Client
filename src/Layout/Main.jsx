@@ -5,7 +5,7 @@ import Banner from "../pages/Home/Home/Banner/Banner";
 import Navbar from "../components/navbar/Navbar";
 import { Outlet } from "react-router-dom";
 import Footer from "../pages/Shared/Footer/Footer";
-import Navbar from "../pages/Shared/Navbar";
+// import Navbar from "../pages/Shared/Navbar";
 
 const Main = () => {
   return (
