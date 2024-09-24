@@ -32,15 +32,24 @@ const events = [
   },
 ];
 
-// Modal styles
+// Updated modal styles for responsiveness and centering
 const modalStyles = {
   content: {
     top: "50%",
     left: "50%",
     right: "auto",
     bottom: "auto",
+    width: "90%", // Make it responsive
+    maxWidth: "600px", // Max width for large screens
+    height: "auto",
+    maxHeight: "90vh", // Prevent overflow
     marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
+    transform: "translate(-50%, -50%)", // Center the modal
+    padding: "20px", // Add padding for better design
+    overflowY: "auto", // Scroll if content exceeds
+  },
+  overlay: {
+    backgroundColor: "rgba(0, 0, 0, 0.75)", // Dim background
   },
 };
 
@@ -69,7 +78,7 @@ const MyCalendar = () => {
       event_end: eventDetails.endDate,
       event_description: eventDetails.description,
       recipient_email: "shihabshamim767@gmail.com", // Verify this email
-      userName: 'Md. Shihab Shamim'
+      userName: 'Md. Shihab Shamim',
     };
 
     emailjs
@@ -87,7 +96,7 @@ const MyCalendar = () => {
             icon: "success",
             title: "Please Check Your Email",
             showConfirmButton: false,
-            timer: 1500
+            timer: 1500,
           });
         },
         (error) => {
@@ -129,23 +138,31 @@ const MyCalendar = () => {
   };
 
   return (
-    <div data-aos="flip-left"
-    data-aos-offset="300"
-    data-aos-easing="ease-in-sine" className="calendar-container mx-5 my-5 p-5 bg-blue-50 rounded-lg shadow-lg">
-      <h2 className="text-2xl text-gray-800 font-semibold text-center mb-4">
-        My Scheduling Calendar
-      </h2>
-      <Calendar
-        localizer={localizer}
-        events={myEvents}
-        startAccessor="start"
-        endAccessor="end"
-        selectable
-        onSelectSlot={handleSelectSlot}
-        style={{ height: 500 }}
-        views={["month", "week", "day", "agenda"]}
-        defaultView="month"
-      />
+    <>  
+  
+     <div
+      data-aos="flip-left"
+      data-aos-offset="300"
+      data-aos-easing="ease-in-sine"
+      className="calendar-container mx-5 my-5 p-5 bg-blue-50 rounded-lg shadow-lg  justify-center"
+    >
+      <h2 className="text-6xl font-abril font-extrabold text-center my-4 text-gray-800 dark:text-white">
+    My Scheduling Calendar
+  </h2>
+      <div className="lg:mx-auto lg:max-w-4xl">
+        <Calendar
+          localizer={localizer}
+          events={myEvents}
+          startAccessor="start"
+          endAccessor="end"
+          selectable
+          onSelectSlot={handleSelectSlot}
+          style={{ height: 400 }} // Smaller height for rows
+          views={["month", "week", "day", "agenda"]}
+          defaultView="month"
+          className="text-xs md:text-sm" // Smaller font size for responsiveness
+        />
+      </div>
 
       {/* Modal for adding new events */}
       <Modal
@@ -213,6 +230,8 @@ const MyCalendar = () => {
         </div>
       </Modal>
     </div>
+    </>
+   
   );
 };
 
