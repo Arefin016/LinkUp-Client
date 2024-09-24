@@ -1,16 +1,20 @@
-import { createBrowserRouter } from "react-router-dom";
-import Main from "../Layout/Main";
-import AboutUs from "../pages/AboutUs/AboutUs";
-import SignIn from "../pages/SignIn/SignIn";
-import SignUp from "../pages/SignUp/SignUp";
-import History from "../pages/Home/MyCelender/History";
+import { createBrowserRouter } from "react-router-dom"
+import AboutUs from "../pages/AboutUs/AboutUs"
+import SignIn from "../pages/SignIn/SignIn"
+import SignUp from "../pages/SignUp/SignUp"
+import Home from "../pages/Home/Home/Home"
+import Main from "../Layout/Main"
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <Main />,
+    element: <Main></Main>,
     children: [
-           {
+      {
+        path: "/",
+        element: <Home></Home>,
+      },
+      {
         path: "/aboutus",
         element: <AboutUs />,
       },
@@ -23,9 +27,9 @@ export const router = createBrowserRouter([
         element: <SignUp />,
       },
       {
-        path:"/history",
+        path: "/history",
         element: <History></History>,
-      }
+      },
     ],
   },
-]);
+])

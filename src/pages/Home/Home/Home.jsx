@@ -1,4 +1,4 @@
-import Banner from "./Banner/Banner"
+import Banner from "../Banner/Banner"
 import MyCalendar from "../MyCelender/MyCalendar"
 
 const Home = () => {
