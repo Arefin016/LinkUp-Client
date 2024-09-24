@@ -28,11 +28,11 @@ const Banner = () => {
         <SwiperSlide>
           <div className=" relative bg-cover">
             <img
-              className="max-h-[700px] w-full min-h-[500px]"
+              className="max-h-[700px] w-full min-h-[500px] overflow-hidden"
               src="https://i.ibb.co.com/Wxzq8p2/glenn-carstens-peters-npx-XWg-Q33-ZQ-unsplash-1.jpg"
               alt=""
             />
-            <div className="absolute top-12  flex justify-center items-center w-[80%] mx-auto">
+            <div className="absolute top-12  flex justify-center items-center w-full mx-auto">
               <h2 className="text-3xl md:text-5xl italic font-semibold flex justify-center items-center text-[#4141ad]">
                 Arrange
                 <Typewriter

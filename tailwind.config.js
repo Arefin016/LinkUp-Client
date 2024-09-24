@@ -5,5 +5,9 @@ export default {
   plugins: [require("daisyui")],
   daisyui: {
     themes: ["light", "dark"],
+    
+  },
+  fontFamily: {
+    'abril': ['"Abril Fatface"', 'cursive'], // Define custom font
   },
 };

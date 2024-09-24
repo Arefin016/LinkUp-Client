@@ -1,5 +1,5 @@
 import Banner from "./Banner/Banner";
-import AboutUs from "../../AboutUs/AboutUs";
+
 import MyCalendar from "../MyCelender/MyCalendar";
 
 const Home = () => {

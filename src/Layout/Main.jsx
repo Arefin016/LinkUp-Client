@@ -36,7 +36,7 @@ const Main = () => {
       {/* Render the main content (children routes) */}
       <Outlet />
 
-      {/* Show Footer only when not on login/signup pages */}
+   
       {!noHeaderFooter && <Footer />}
     </div>
   );
