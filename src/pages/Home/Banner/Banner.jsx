@@ -9,7 +9,7 @@ import { BorderBeam } from "@stianlarsen/border-beam"
 
 const Banner = () => {
   return (
-    <div className="mt-24">
+    <div className="mt-16">
       <Swiper
         slidesPerView={1}
         autoplay={{
