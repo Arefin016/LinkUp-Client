@@ -11,7 +11,9 @@ const Footer = () => {
             <div className="w-full -mx-6 lg:w-2/5">
               <div className="px-6">
                 <a href="#">
-                  <h1 className="font-extrabold text-4xl">LinkUP</h1>
+                <h1 className="font-right font-extrabold text-4xl text-shadow-purple dark:text-white">
+    <span className="text-emerald-500 ">L</span>inkUp
+  </h1>
                 </a>
                 <p className="max-w-sm mt-2 text-gray-500 dark:text-gray-400">
                   Book meetings effortlessly with LinkUp's streamlined scheduling. Perfect for professionals, teams, and individuals.

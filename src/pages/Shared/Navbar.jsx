@@ -60,8 +60,8 @@ const Navbar = () => {
         <div className='container px-6 py-4 mx-auto md:flex md:justify-between md:items-center'>
           <div className='flex items-center justify-between'>
             <NavLink to='/'>
-              <h1 className='font-right font-extrabold text-4xl text-shadow-purple'>
-                <span className='text-emerald-500'>L</span>inkUp
+              <h1 className='font-right font-extrabold text-4xl text-shadow-purple dark:text-white'>
+                <span className='text-emerald-500 '>L</span>inkUp
               </h1>
             </NavLink>
 
