@@ -4,6 +4,7 @@ import SignUp from "../../../public/SignIn.json"
 import { useContext } from "react"
 import { AuthContext } from "../../providers/AuthProvider"
 import Swal from "sweetalert2"
+import SocialLogin from "../../components/SocialLogin/SocialLogin"
 
 const SignIn = () => {
   const { signIn } = useContext(AuthContext)
@@ -80,6 +81,7 @@ const SignIn = () => {
               SIGN UP
             </Link>
           </p>
+          <SocialLogin></SocialLogin>
         </div>
       </div>
     </div>
