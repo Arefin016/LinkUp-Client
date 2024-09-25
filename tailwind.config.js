@@ -1,13 +1,15 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
-
+  theme: {
+    extend: {},
+  },
   plugins: [require("daisyui")],
+  darkMode: "class",
   daisyui: {
     themes: ["light", "dark"],
-    
   },
   fontFamily: {
-    'abril': ['"Abril Fatface"', 'cursive'], // Define custom font
+    abril: ['"Abril Fatface"', "cursive"],
   },
 };
