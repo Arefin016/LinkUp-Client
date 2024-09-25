@@ -6,8 +6,12 @@ import { useForm } from "react-hook-form"
 import { useContext } from "react"
 import { AuthContext } from "../../providers/AuthProvider"
 import Swal from "sweetalert2"
+import SocialLogin from "../../components/SocialLogin/SocialLogin"
+import useAxiosPublic from "../../hooks/useAxiosPublic"
 
 const SignUp = () => {
+  const axiosPublic = useAxiosPublic()
+
   const {
     register,
     handleSubmit,
@@ -25,16 +29,25 @@ const SignUp = () => {
       console.log(loggedUser)
       updateUserProfile(data.name, data.photoURL)
         .then(() => {
-          console.log("User Profile Info Updated")
-          reset()
-          Swal.fire({
-            position: "top",
-            icon: "success",
-            title: "User Created Successfully",
-            showConfirmButton: false,
-            timer: 1500,
+          // crete user entry in the database
+          const userInfo = {
+            name: data.name,
+            email: data.email,
+          }
+          axiosPublic.post("/users", userInfo).then((res) => {
+            if (res.data.insertedId) {
+              console.log("user added to the database")
+              reset()
+              Swal.fire({
+                position: "top",
+                icon: "success",
+                title: "User Created Successfully",
+                showConfirmButton: false,
+                timer: 1500,
+              })
+              navigate("/")
+            }
           })
-          navigate("/")
         })
         .catch((error) => console.log(error))
     })
@@ -151,6 +164,7 @@ const SignUp = () => {
               LOGIN
             </Link>
           </p>
+          <SocialLogin></SocialLogin>
         </div>
       </div>
     </div>
