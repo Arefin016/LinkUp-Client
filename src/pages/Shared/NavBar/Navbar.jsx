@@ -63,7 +63,7 @@ const Navbar = () => {
   )
 
   return (
-    <div className="navbar bg-black max-w-screen-xl mx-auto px-4 fixed top-0 left-0 z-10 bg-opacity-30 shadow">
+    <div className="navbar bg-black  justify-center px-4 fixed top-0 left-0 z-10 bg-opacity-30 shadow">
       <div className="navbar-start ">
         {/* Hamburger icon for small screens */}
         <div className="dropdown">
