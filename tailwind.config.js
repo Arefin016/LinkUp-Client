@@ -9,4 +9,7 @@ export default {
   daisyui: {
     themes: ["light", "dark"],
   },
+  fontFamily: {
+    abril: ['"Abril Fatface"', "cursive"],
+  },
 };

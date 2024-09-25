@@ -3,33 +3,43 @@ import { Link, NavLink } from "react-router-dom";
 import "./navbar.css";
 
 const Navbar = () => {
-  // theme
-
-  const [theme, setTheme] = useState("light");
+  // Initialize theme: check localStorage first, fallback to browser's preference if not set
+  const [theme, setTheme] = useState(() => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) {
+      return savedTheme;
+    } else {
+      const prefersDark = window.matchMedia(
+        "(prefers-color-scheme: dark)"
+      ).matches;
+      return prefersDark ? "dark" : "light";
+    }
+  });
 
   useEffect(() => {
     localStorage.setItem("theme", theme);
-    const localTheme = localStorage.getItem("theme");
-    document.querySelector("html").setAttribute("data-theme", localTheme);
+
+    document.querySelector("html").setAttribute("data-theme", theme);
+
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
   }, [theme]);
+
   const handleTheme = (e) => {
     if (e.target.checked) {
       setTheme("dark");
     } else {
       setTheme("light");
     }
-    console.log(theme);
   };
-  // To do: get login and user info from auth context
-  // const login = false;
-  // const login = true;
-  const [login, setLogin] = useState(true);
-  const userName = "demo user";
-  const photoURL =
-    "https://i.ibb.co/myTwYWh/hasib-vg-bg-32-1-fotor-202309019507-1.png";
 
-  // to do: implement logout after authentication
-  // to do: resolve the conflict
+  const [login, setLogin] = useState(true);
+  const userName = "new user";
+  const photoURL = "https://i.ibb.co/5nqdd5h/profile-pic-linkup.jpg";
+
   const handleLogout = () => {
     setLogin(false);
   };
@@ -58,9 +68,8 @@ const Navbar = () => {
   );
 
   return (
-    <div className='navbar bg-base-100 dark:bg-gray-800 dark:text-white  lg:px-36 px-4 fixed top-0 left-0 z-10 opacity-90  shadow  '>
+    <div className='navbar bg-white  dark:text-white lg:px-36 px-4 fixed top-0 left-0 z-10 opacity-90 shadow max-w-screen-xl mx-auto '>
       <div className='navbar-start '>
-        {/* Hamburger icon for small screens */}
         <div className='dropdown'>
           <div tabIndex={0} role='button' className='btn btn-ghost lg:hidden'>
             <svg
@@ -80,7 +89,6 @@ const Navbar = () => {
           <ul
             tabIndex={0}
             className='menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow'>
-            {/* Menu links for small screens */}
             {links}
           </ul>
         </div>
@@ -92,9 +100,8 @@ const Navbar = () => {
         </Link>
       </div>
 
-      {/* Menu links for large screens */}
       <div className='navbar-center hidden lg:flex'>
-        <ul className=' menu-horizontal px-1 space-x-8 '>{links}</ul>
+        <ul className='menu-horizontal px-1 space-x-8  '>{links}</ul>
       </div>
 
       <div className='navbar-end'>
@@ -127,10 +134,12 @@ const Navbar = () => {
           </div>
         )}
       </div>
+
       <input
         onChange={handleTheme}
         type='checkbox'
         className='toggle theme-controller mx-6'
+        checked={theme === "dark"}
       />
     </div>
   );

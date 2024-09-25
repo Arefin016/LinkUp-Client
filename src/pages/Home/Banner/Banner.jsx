@@ -9,7 +9,7 @@ import { BorderBeam } from "@stianlarsen/border-beam"
 
 const Banner = () => {
   return (
-    <div>
+    <div className="mt-16">
       <Swiper
         slidesPerView={1}
         autoplay={{
@@ -188,7 +188,7 @@ const Banner = () => {
                   loop={false}
                   cursor
                   cursorStyle="__!"
-                  typeSpeed={100}
+                  typeSpeed={90}
                   deleteSpeed={50}
                   delaySpeed={1000}
                 />
@@ -307,7 +307,7 @@ const Banner = () => {
                   </svg>
                 </span>
                 <span class="relative w-full text-left transition-colors duration-200 ease-in-out group-hover:text-white">
-                  Meeting Now
+                  Join Meeting
                 </span>
                 <BorderBeam
                   size={70}
