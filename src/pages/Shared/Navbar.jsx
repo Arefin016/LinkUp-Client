@@ -6,6 +6,7 @@ const Navbar = () => {
   // theme
 
   const [theme, setTheme] = useState("light");
+
   useEffect(() => {
     localStorage.setItem("theme", theme);
     const localTheme = localStorage.getItem("theme");
@@ -57,7 +58,7 @@ const Navbar = () => {
   );
 
   return (
-    <div className='navbar bg-base-100   lg:px-36 px-4 fixed top-0 left-0 z-10 opacity-90  shadow  '>
+    <div className='navbar bg-base-100 dark:bg-gray-800 dark:text-white  lg:px-36 px-4 fixed top-0 left-0 z-10 opacity-90  shadow  '>
       <div className='navbar-start '>
         {/* Hamburger icon for small screens */}
         <div className='dropdown'>
@@ -85,7 +86,7 @@ const Navbar = () => {
         </div>
 
         <Link to='/'>
-          <h1 className='font-right font-extrabold lg:text-3xl text-xl text-shadow-purple text-gray-700 dark:text-red-700 '>
+          <h1 className='font-right font-extrabold lg:text-3xl text-xl text-shadow-purple text-gray-700 dark:text-white '>
             <span className='text-emerald-500 '>L</span>inkUp
           </h1>
         </Link>
