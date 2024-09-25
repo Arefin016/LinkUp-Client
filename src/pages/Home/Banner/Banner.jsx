@@ -9,7 +9,7 @@ import { BorderBeam } from "@stianlarsen/border-beam"
 
 const Banner = () => {
   return (
-    <div>
+    <div className="mt-16">
       <Swiper
         slidesPerView={1}
         autoplay={{
@@ -28,11 +28,11 @@ const Banner = () => {
         <SwiperSlide>
           <div className=" relative bg-cover">
             <img
-              className="max-h-[700px] w-full min-h-[500px] overflow-hidden"
+              className="max-h-[700px] w-full min-h-[500px]"
               src="https://i.ibb.co.com/Wxzq8p2/glenn-carstens-peters-npx-XWg-Q33-ZQ-unsplash-1.jpg"
               alt=""
             />
-            <div className="absolute top-12  flex justify-center items-center w-full mx-auto">
+            <div className="absolute top-12  flex justify-center items-center w-[80%] mx-auto">
               <h2 className="text-3xl md:text-5xl italic font-semibold flex justify-center items-center text-[#4141ad]">
                 Arrange
                 <Typewriter
@@ -188,7 +188,7 @@ const Banner = () => {
                   loop={false}
                   cursor
                   cursorStyle="__!"
-                  typeSpeed={100}
+                  typeSpeed={90}
                   deleteSpeed={50}
                   delaySpeed={1000}
                 />
@@ -307,7 +307,7 @@ const Banner = () => {
                   </svg>
                 </span>
                 <span class="relative w-full text-left transition-colors duration-200 ease-in-out group-hover:text-white">
-                  Meeting Now
+                  Join Meeting
                 </span>
                 <BorderBeam
                   size={70}
