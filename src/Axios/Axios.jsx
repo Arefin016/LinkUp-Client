@@ -13,17 +13,13 @@ const axiosClient = axios.create({
 // Add a request interceptor (optional)
 axiosClient.interceptors.request.use(
   (config) => {
-   
-
-    return config;
+       return config;
   },
   (error) => {
     // Handle request error
     return Promise.reject(error);
   }
 );
-
-
 axiosClient.interceptors.response.use(
   (response) => {
     
@@ -34,7 +30,6 @@ axiosClient.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       
     }
-
     return Promise.reject(error);
   }
 );

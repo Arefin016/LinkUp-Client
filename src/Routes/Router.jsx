@@ -4,6 +4,7 @@ import SignIn from "../pages/SignIn/SignIn"
 import SignUp from "../pages/SignUp/SignUp"
 import Home from "../pages/Home/Home/Home"
 import Main from "../Layout/Main"
+import EventHistory from "../pages/Home/EventHistory/EventHistory"
 import Testimonials from "../pages/Testimonials/Testimonials"
 import PrivateRoute from "./PrivateRoute"
 
@@ -27,6 +28,10 @@ export const router = createBrowserRouter([
       {
         path: "/signUp",
         element: <SignUp />,
+      },
+      {
+        path: "/history",
+        element: <EventHistory></EventHistory> ,
       },
       {
         path: "/testimonials",
