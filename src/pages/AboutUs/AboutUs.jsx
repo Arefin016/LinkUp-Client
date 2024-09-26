@@ -12,7 +12,7 @@ const AboutUs = () => {
         data-aos="flip-left"
         data-aos-offset="300"
         data-aos-easing="ease-in-sine"
-        className="text-center"
+        className="text-center md:mt-[68px]"
       >
         <button className="rounded-full bg-[#E6F0FF] p-2 text-[#004EBA]">
           About LinkUp
@@ -88,11 +88,6 @@ const AboutUs = () => {
             </div>
           </div>
         </div>
-      </div>
-      <div>
-        <h3>This is Shah Arefin Ahmed</h3>
-        <h3>This is Shah Arefin Ahmed</h3>
-        <h3>This is Shah Arefin Ahmed</h3>
       </div>
     </div>
   )

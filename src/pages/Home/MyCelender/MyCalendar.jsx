@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Calendar } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { format, parse, startOfWeek, getDay } from "date-fns";
 import { dateFnsLocalizer } from "react-big-calendar";
 import enUS from "date-fns/locale/en-US";
 import Modal from "react-modal";
-import emailjs from "emailjs-com";
 import Swal from "sweetalert2";
-import AOS from "aos";
+import axios from "axios";
+import { AuthContext } from "../../../providers/AuthProvider"; // Import AuthContext
 
 // Setup the date localization
 const locales = {
@@ -32,19 +32,32 @@ const events = [
   },
 ];
 
-// Modal styles
+// Updated modal styles for responsiveness and centering
 const modalStyles = {
   content: {
     top: "50%",
     left: "50%",
     right: "auto",
     bottom: "auto",
+    width: "90%", // Make it responsive
+    maxWidth: "600px", // Max width for large screens
+    height: "auto",
+    maxHeight: "90vh", // Prevent overflow
     marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
+    transform: "translate(-50%, -50%)", // Center the modal
+    padding: "20px", // Add padding for better design
+    overflowY: "auto", // Scroll if content exceeds
+    backgroundColor: "white", // Solid background color for modal
+    border: "none", // Remove border if needed
+    borderRadius: "8px", // Rounded corners
+  },
+  overlay: {
+    backgroundColor: "rgba(0, 0, 0, 0.5)", // Dark overlay for contrast
   },
 };
 
 const MyCalendar = () => {
+  const { user } = useContext(AuthContext); // Use AuthContext to get the logged-in user's info
   const [myEvents, setMyEvents] = useState(events);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [newEvent, setNewEvent] = useState({
@@ -61,43 +74,30 @@ const MyCalendar = () => {
     setModalIsOpen(true);
   };
 
-  // Function to send an email when a new event is added
-  const sendEmail = (eventDetails) => {
-    const emailParams = {
-      event_title: eventDetails.title,
-      event_start: eventDetails.startDate,
-      event_end: eventDetails.endDate,
-      event_description: eventDetails.description,
-      recipient_email: "shihabshamim767@gmail.com", // Verify this email
-      userName: 'Md. Shihab Shamim'
-    };
-
-    emailjs
-      .send(
-        "service_xqyql81", // Replace with your EmailJS Service ID
-        "template_9ugi12d", // Replace with your EmailJS Template ID
-        emailParams,
-        "vz_mcsgnNSq-e__68" // Replace with your EmailJS User ID
-      )
-      .then(
-        (result) => {
-          console.log("Email sent successfully:", result.text);
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Please Check Your Email",
-            showConfirmButton: false,
-            timer: 1500
-          });
-        },
-        (error) => {
-          console.error("Error sending email:", error);
-        }
-      );
+  // Function to send event data to the backend
+  const addEventToBackend = async (eventDetails) => {
+    try {
+      const response = await axios.post("http://localhost:5000/add-event", eventDetails);
+      console.log("Event added to backend:", response.data);
+      Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "Event added successfully!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    } catch (error) {
+      console.error("Error adding event to backend:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong while adding the event!",
+      });
+    }
   };
 
   // Function to handle event creation
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const { title, startDate, endDate, description } = newEvent;
 
     if (title && startDate && endDate && description) {
@@ -108,11 +108,13 @@ const MyCalendar = () => {
         description,
       };
 
+      // Add the new event to the local state
       setMyEvents([...myEvents, newEventData]);
 
-      // Send an email after the event is added
-      sendEmail(newEvent);
+      // Send event data to the backend
+      await addEventToBackend(newEventData);
 
+      // Close the modal
       setModalIsOpen(false);
     } else {
       alert("Please fill out all the fields.");
@@ -129,88 +131,93 @@ const MyCalendar = () => {
   };
 
   return (
-    <div className="calendar-container mx-5 my-5 p-5 bg-blue-50 rounded-lg shadow-lg">
-      <h2 className="text-2xl text-gray-800 font-semibold text-center mb-4">
-        My Scheduling Calendar
-      </h2>
-      <Calendar
-        localizer={localizer}
-        events={myEvents}
-        startAccessor="start"
-        endAccessor="end"
-        selectable
-        onSelectSlot={handleSelectSlot}
-        style={{ height: 500 }}
-        views={["month", "week", "day", "agenda"]}
-        defaultView="month"
-      />
-
-      {/* Modal for adding new events */}
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={() => setModalIsOpen(false)}
-        style={modalStyles}
-      >
-        <h2 className="text-xl font-bold mb-4">Add New Event</h2>
-        <div className="space-y-4">
-          <div>
-            <label className="block text-gray-700">Event Title</label>
-            <input
-              type="text"
-              name="title"
-              value={newEvent.title}
-              onChange={handleChange}
-              className="w-full p-2 border rounded"
-              placeholder="Enter event title"
-            />
-          </div>
-          <div>
-            <label className="block text-gray-700">Start Date and Time</label>
-            <input
-              type="datetime-local"
-              name="startDate"
-              value={newEvent.startDate}
-              onChange={handleChange}
-              className="w-full p-2 border rounded"
-            />
-          </div>
-          <div>
-            <label className="block text-gray-700">End Date and Time</label>
-            <input
-              type="datetime-local"
-              name="endDate"
-              value={newEvent.endDate}
-              onChange={handleChange}
-              className="w-full p-2 border rounded"
-            />
-          </div>
-          <div>
-            <label className="block text-gray-700">Description</label>
-            <textarea
-              name="description"
-              value={newEvent.description}
-              onChange={handleChange}
-              className="w-full p-2 border rounded"
-              placeholder="Enter event description"
-            ></textarea>
-          </div>
-          <div className="flex justify-end space-x-4">
-            <button
-              className="px-4 py-2 bg-red-500 text-white rounded"
-              onClick={() => setModalIsOpen(false)}
-            >
-              Cancel
-            </button>
-            <button
-              className="px-4 py-2 bg-blue-500 text-white rounded"
-              onClick={handleSubmit}
-            >
-              Add Event
-            </button>
-          </div>
+    <>
+      <div className="calendar-container mx-5 mt-32 p-5 bg-blue-50 rounded-lg shadow-lg">
+        <h2 className="text-4xl md:text-6xl font-abril font-extrabold text-center my-4 text-gray-800 dark:text-white">
+          My Scheduling Calendar
+        </h2>
+        <div className="lg:mx-auto lg:max-w-4xl">
+          <Calendar
+            localizer={localizer}
+            events={myEvents}
+            startAccessor="start"
+            endAccessor="end"
+            selectable
+            onSelectSlot={handleSelectSlot}
+            style={{ height: "60vh", backgroundColor: "white" }} // White background for the calendar
+            views={["month", "week", "day", "agenda"]}
+            defaultView="month"
+            className="text-xs md:text-sm text-center font-bold" // Center and bold text
+          />
         </div>
-      </Modal>
-    </div>
+
+        {/* Modal for adding new events */}
+        <Modal
+          isOpen={modalIsOpen}
+          onRequestClose={() => setModalIsOpen(false)}
+          style={modalStyles}
+        >
+          <h2 className="text-xl font-bold mb-4">Add New Event</h2>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-gray-700">Event Title</label>
+              <input
+                type="text"
+                name="title"
+                value={newEvent.title}
+                onChange={handleChange}
+                className="w-full p-2 border rounded"
+                placeholder="Enter event title"
+              />
+            </div>
+            <div>
+              <label className="block text-gray-700">Start Date and Time</label>
+              <input
+                type="datetime-local"
+                name="startDate"
+                value={newEvent.startDate}
+                onChange={handleChange}
+                className="w-full p-2 border rounded"
+              />
+            </div>
+            <div>
+              <label className="block text-gray-700">End Date and Time</label>
+              <input
+                type="datetime-local"
+                name="endDate"
+                value={newEvent.endDate}
+                onChange={handleChange}
+                className="w-full p-2 border rounded"
+              />
+            </div>
+            <div>
+              <label className="block text-gray-700">Description</label>
+              <textarea
+                name="description"
+                value={newEvent.description}
+                onChange={handleChange}
+                className="w-full p-2 border rounded"
+                placeholder="Enter event description"
+              ></textarea>
+            </div>
+            <div className="flex justify-end space-x-4">
+              <button
+                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                onClick={() => setModalIsOpen(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                onClick={handleSubmit}
+              >
+                Add Event
+              </button>
+            </div>
+          </div>
+        </Modal>
+      </div>
+    </>
   );
 };
 
