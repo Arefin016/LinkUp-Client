@@ -1,19 +1,19 @@
-import React, { useState, useContext } from "react";
-import { Calendar } from "react-big-calendar";
-import "react-big-calendar/lib/css/react-big-calendar.css";
-import { format, parse, startOfWeek, getDay } from "date-fns";
-import { dateFnsLocalizer } from "react-big-calendar";
-import enUS from "date-fns/locale/en-US";
-import Modal from "react-modal";
-import Swal from "sweetalert2";
-import AOS from "aos";
-import axios from "axios";
-import { AuthContext } from "../../../providers/AuthProvider"; // Import AuthContext
+import React, { useState, useContext } from "react"
+import { Calendar } from "react-big-calendar"
+import "react-big-calendar/lib/css/react-big-calendar.css"
+import { format, parse, startOfWeek, getDay } from "date-fns"
+import { dateFnsLocalizer } from "react-big-calendar"
+import enUS from "date-fns/locale/en-US"
+import Modal from "react-modal"
+import Swal from "sweetalert2"
+import AOS from "aos"
+import axios from "axios"
+import { AuthContext } from "../../../providers/AuthProvider" // Import AuthContext
 
 // Setup the date localization
 const locales = {
   "en-US": enUS,
-};
+}
 
 const localizer = dateFnsLocalizer({
   format,
@@ -21,7 +21,7 @@ const localizer = dateFnsLocalizer({
   startOfWeek,
   getDay,
   locales,
-});
+})
 
 // Initial events to display
 const events = [
@@ -31,7 +31,7 @@ const events = [
     start: new Date(2024, 8, 18, 10, 0), // September 18, 2024, at 10:00 AM
     end: new Date(2024, 8, 18, 12, 0), // September 18, 2024, at 12:00 PM
   },
-];
+]
 
 // Updated modal styles for responsiveness and centering
 const modalStyles = {
@@ -52,51 +52,54 @@ const modalStyles = {
   overlay: {
     backgroundColor: "rgba(255, 255, 255, 0.75)", // Change to white with 75% opacity
   },
-};
+}
 
 const MyCalendar = () => {
-  const { user } = useContext(AuthContext); // Use AuthContext to get the logged-in user's info
-  const [myEvents, setMyEvents] = useState(events);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const { user } = useContext(AuthContext) // Use AuthContext to get the logged-in user's info
+  const [myEvents, setMyEvents] = useState(events)
+  const [modalIsOpen, setModalIsOpen] = useState(false)
   const [newEvent, setNewEvent] = useState({
     title: "",
     startDate: "",
     endDate: "",
     description: "",
-  });
-  const [selectedSlot, setSelectedSlot] = useState(null);
+  })
+  const [selectedSlot, setSelectedSlot] = useState(null)
 
   // Function to handle adding new events
   const handleSelectSlot = ({ start, end }) => {
-    setSelectedSlot({ start, end });
-    setModalIsOpen(true);
-  };
+    setSelectedSlot({ start, end })
+    setModalIsOpen(true)
+  }
 
   // Function to send event data to the backend
   const addEventToBackend = async (eventDetails) => {
     try {
-      const response = await axios.post("http://localhost:5000/add-event", eventDetails);
-      console.log("Event added to backend:", response.data);
+      const response = await axios.post(
+        "https://link-up-server-nine.vercel.app/add-event",
+        eventDetails
+      )
+      console.log("Event added to backend:", response.data)
       Swal.fire({
         position: "top-end",
         icon: "success",
         title: "Event added successfully!",
         showConfirmButton: false,
         timer: 1500,
-      });
+      })
     } catch (error) {
-      console.error("Error adding event to backend:", error);
+      console.error("Error adding event to backend:", error)
       Swal.fire({
         icon: "error",
         title: "Oops...",
         text: "Something went wrong while adding the event!",
-      });
+      })
     }
-  };
+  }
 
   // Function to handle event creation and send email
   const handleSubmit = async () => {
-    const { title, startDate, endDate, description } = newEvent;
+    const { title, startDate, endDate, description } = newEvent
 
     if (title && startDate && endDate && description) {
       const newEventData = {
@@ -104,29 +107,29 @@ const MyCalendar = () => {
         start: new Date(startDate),
         end: new Date(endDate),
         description,
-      };
+      }
 
       // Add the new event to the local state
-      setMyEvents([...myEvents, newEventData]);
+      setMyEvents([...myEvents, newEventData])
 
       // Send event data to the backend
-      await addEventToBackend(newEventData);
+      await addEventToBackend(newEventData)
 
       // Close the modal
-      setModalIsOpen(false);
+      setModalIsOpen(false)
     } else {
-      alert("Please fill out all the fields.");
+      alert("Please fill out all the fields.")
     }
-  };
+  }
 
   // Function to handle input changes
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     setNewEvent((prevEvent) => ({
       ...prevEvent,
       [name]: value,
-    }));
-  };
+    }))
+  }
 
   return (
     <>
@@ -221,7 +224,7 @@ const MyCalendar = () => {
         </Modal>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default MyCalendar;
+export default MyCalendar
