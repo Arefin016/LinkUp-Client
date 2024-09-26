@@ -9,6 +9,7 @@ import MyCalender from "../pages/Home/MyCelender/MyCalendar"
 import Testimonials from "../pages/Testimonials/Testimonials"
 import PrivateRoute from "./PrivateRoute"
 import ContactUs from "../pages/ContactUs/ContactUs"
+import Dashboard from "../pages/Dashboard/Dashboard"
 
 export const router = createBrowserRouter([
   {
@@ -52,6 +53,14 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <MyCalender></MyCalender>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/dashboard",
+        element: (
+          <PrivateRoute>
+            <Dashboard></Dashboard>
           </PrivateRoute>
         ),
       },

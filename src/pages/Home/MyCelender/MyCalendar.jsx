@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { useState, useContext } from "react"
 import { Calendar } from "react-big-calendar"
 import "react-big-calendar/lib/css/react-big-calendar.css"
@@ -7,21 +6,8 @@ import { dateFnsLocalizer } from "react-big-calendar"
 import enUS from "date-fns/locale/en-US"
 import Modal from "react-modal"
 import Swal from "sweetalert2"
-import AOS from "aos"
 import axios from "axios"
 import { AuthContext } from "../../../providers/AuthProvider" // Import AuthContext
-=======
-import React, { useState, useContext } from "react";
-import { Calendar } from "react-big-calendar";
-import "react-big-calendar/lib/css/react-big-calendar.css";
-import { format, parse, startOfWeek, getDay } from "date-fns";
-import { dateFnsLocalizer } from "react-big-calendar";
-import enUS from "date-fns/locale/en-US";
-import Modal from "react-modal";
-import Swal from "sweetalert2";
-import axios from "axios";
-import { AuthContext } from "../../../providers/AuthProvider"; // Import AuthContext
->>>>>>> 124295410bd2a75efdbb3c69ce8e39c9f2647eb0
 
 // Setup the date localization
 const locales = {
