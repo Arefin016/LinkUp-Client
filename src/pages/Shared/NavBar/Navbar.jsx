@@ -40,21 +40,24 @@ const Navbar = () => {
   const links = (
     <>
       <li>
-        <NavLink className='nav-link' to='/'>
+        <NavLink className="nav-link" to="/">
           Home
         </NavLink>
       </li>
       <li>
-        <NavLink className='nav-link' to='/aboutus'>
+        <NavLink className="nav-link" to="/aboutus">
           About
         </NavLink>
       </li>
       <li>
-        <NavLink className='nav-link' to='/contact'>
+        <NavLink className="nav-link" to="/contact">
           Contact
         </NavLink>
-        <NavLink className='nav-link' to='/testimonials'>
+        <NavLink className="nav-link" to="/testimonials">
           Testimonials
+        </NavLink>
+        <NavLink className="nav-link" to="/dashboard/dashboards">
+          Dashboard
         </NavLink>
       </li>
     </>
