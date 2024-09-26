@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState, useContext } from "react"
 import { Calendar } from "react-big-calendar"
 import "react-big-calendar/lib/css/react-big-calendar.css"
@@ -9,6 +10,18 @@ import Swal from "sweetalert2"
 import AOS from "aos"
 import axios from "axios"
 import { AuthContext } from "../../../providers/AuthProvider" // Import AuthContext
+=======
+import React, { useState, useContext } from "react";
+import { Calendar } from "react-big-calendar";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import { format, parse, startOfWeek, getDay } from "date-fns";
+import { dateFnsLocalizer } from "react-big-calendar";
+import enUS from "date-fns/locale/en-US";
+import Modal from "react-modal";
+import Swal from "sweetalert2";
+import axios from "axios";
+import { AuthContext } from "../../../providers/AuthProvider"; // Import AuthContext
+>>>>>>> 124295410bd2a75efdbb3c69ce8e39c9f2647eb0
 
 // Setup the date localization
 const locales = {
@@ -48,9 +61,12 @@ const modalStyles = {
     transform: "translate(-50%, -50%)", // Center the modal
     padding: "20px", // Add padding for better design
     overflowY: "auto", // Scroll if content exceeds
+    backgroundColor: "white", // Solid background color for modal
+    border: "none", // Remove border if needed
+    borderRadius: "8px", // Rounded corners
   },
   overlay: {
-    backgroundColor: "rgba(255, 255, 255, 0.75)", // Change to white with 75% opacity
+    backgroundColor: "rgba(0, 0, 0, 0.5)", // Dark overlay for contrast
   },
 }
 
@@ -97,7 +113,7 @@ const MyCalendar = () => {
     }
   }
 
-  // Function to handle event creation and send email
+  // Function to handle event creation
   const handleSubmit = async () => {
     const { title, startDate, endDate, description } = newEvent
 
@@ -133,13 +149,8 @@ const MyCalendar = () => {
 
   return (
     <>
-      <div
-        data-aos="flip-left"
-        data-aos-offset="300"
-        data-aos-easing="ease-in-sine"
-        className="calendar-container mx-5 my-5 p-5 bg-blue-50 rounded-lg shadow-lg justify-center"
-      >
-        <h2 className="text-6xl font-abril font-extrabold text-center my-4 text-gray-800 dark:text-white">
+      <div className="calendar-container mx-5 mt-32 p-5 bg-blue-50 rounded-lg shadow-lg">
+        <h2 className="text-4xl md:text-6xl font-abril font-extrabold text-center my-4 text-gray-800 dark:text-white">
           My Scheduling Calendar
         </h2>
         <div className="lg:mx-auto lg:max-w-4xl">
@@ -150,10 +161,10 @@ const MyCalendar = () => {
             endAccessor="end"
             selectable
             onSelectSlot={handleSelectSlot}
-            style={{ height: 400 }} // Smaller height for rows
+            style={{ height: "60vh", backgroundColor: "white" }} // White background for the calendar
             views={["month", "week", "day", "agenda"]}
             defaultView="month"
-            className="text-xs md:text-sm" // Smaller font size for responsiveness
+            className="text-xs md:text-sm text-center font-bold" // Center and bold text
           />
         </div>
 
@@ -208,13 +219,13 @@ const MyCalendar = () => {
             </div>
             <div className="flex justify-end space-x-4">
               <button
-                className="px-4 py-2 bg-red-500 text-white rounded"
+                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
                 onClick={() => setModalIsOpen(false)}
               >
                 Cancel
               </button>
               <button
-                className="px-4 py-2 bg-blue-500 text-white rounded"
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
                 onClick={handleSubmit}
               >
                 Add Event

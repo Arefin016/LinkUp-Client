@@ -5,15 +5,15 @@ import SignUp from "../pages/SignUp/SignUp"
 import Home from "../pages/Home/Home/Home"
 import Main from "../Layout/Main"
 import EventHistory from "../pages/Home/EventHistory/EventHistory"
+import MyCalender from "../pages/Home/MyCelender/MyCalendar"
 import Testimonials from "../pages/Testimonials/Testimonials"
 import PrivateRoute from "./PrivateRoute"
-import ErrorPage from "../pages/ErrorPage/ErrorPage"
+import ContactUs from "../pages/ContactUs/ContactUs"
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <Main></Main>,
-    errorElement: <ErrorPage></ErrorPage>,
     children: [
       {
         path: "/",
@@ -28,18 +28,30 @@ export const router = createBrowserRouter([
         element: <SignIn />,
       },
       {
+        path: "/contact",
+        element: <ContactUs />,
+      },
+      {
         path: "/signUp",
         element: <SignUp />,
       },
       {
         path: "/history",
-        element: <EventHistory></EventHistory> ,
+        element: <EventHistory></EventHistory>,
       },
       {
         path: "/testimonials",
         element: (
           <PrivateRoute>
             <Testimonials></Testimonials>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/celender",
+        element: (
+          <PrivateRoute>
+            <MyCalender></MyCalender>
           </PrivateRoute>
         ),
       },
