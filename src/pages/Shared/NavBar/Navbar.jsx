@@ -21,16 +21,12 @@ const Navbar = () => {
     }
     console.log(theme);
   };
-  // To do: get login and user info from auth context
-  // const login = false;
-  // const login = true;
+  
   const [login, setLogin] = useState(true);
-  const userName = user?.displayName || "demo user";
+  const userName = user?.displayName || "No user";
   const photoURL =
     user?.photoURL || "https://i.ibb.co/5nqdd5h/profile-pic-linkup.jpg";
 
-  // to do: implement logout after authentication
-  // to do: resolve the conflict
   const handleLogout = () => {
     logOut()
       .then(() => {})
@@ -64,8 +60,8 @@ const Navbar = () => {
   );
 
   return (
-    <div className='navbar bg-black  justify-center px-4  bg-opacity-30 shadow'>
-      <div className='navbar-start '>
+    <div className='navbar bg-white  justify-center px-4  bg-opacity-30 shadow'>
+      <div className='navbar-start'>
         {/* Hamburger icon for small screens */}
         <div className='dropdown'>
           <div tabIndex={0} role='button' className='btn btn-ghost lg:hidden'>
@@ -92,9 +88,10 @@ const Navbar = () => {
         </div>
 
         <Link to='/'>
-          <h1 className='font-right font-extrabold lg:text-3xl text-xl text-shadow-purple text-gray-700 dark:text-red-700 '>
-            <span className='text-emerald-500 '>L</span>inkUp
-          </h1>
+        <h1 className='font-right font-extrabold lg:text-3xl text-xl text-shadow-purple text-gray-700 dark:text-green-50'>
+  <span className='text-emerald-500'>L</span>inkUp
+</h1>
+
         </Link>
       </div>
 
