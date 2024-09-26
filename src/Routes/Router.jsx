@@ -9,6 +9,8 @@ import MyCalender from "../pages/Home/MyCelender/MyCalendar"
 import Testimonials from "../pages/Testimonials/Testimonials"
 import PrivateRoute from "./PrivateRoute"
 import ErrorPage from "../pages/ErrorPage/ErrorPage"
+import Dash from "../Layout/Dash"
+import Dashboard from "../pages/Dashboard/Dashboard"
 
 export const router = createBrowserRouter([
   {
@@ -34,9 +36,9 @@ export const router = createBrowserRouter([
       },
       {
         path: "/history",
-        element: <EventHistory></EventHistory> ,
+        element: <EventHistory></EventHistory>,
       },
-          {
+      {
         path: "/testimonials",
         element: (
           <PrivateRoute>
@@ -54,4 +56,14 @@ export const router = createBrowserRouter([
       },
     ],
   },
-])
+  {
+    path: "/dashboard",
+    element: <Dash></Dash>,
+    children: [
+      {
+        path: "/dashboard/dashboards",
+        element:<Dashboard></Dashboard>
+      },
+    ],
+  },
+]);
