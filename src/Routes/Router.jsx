@@ -8,15 +8,13 @@ import EventHistory from "../pages/Home/EventHistory/EventHistory"
 import MyCalender from "../pages/Home/MyCelender/MyCalendar"
 import Testimonials from "../pages/Testimonials/Testimonials"
 import PrivateRoute from "./PrivateRoute"
-import ErrorPage from "../pages/ErrorPage/ErrorPage"
-import Dash from "../Layout/Dash"
+import ContactUs from "../pages/ContactUs/ContactUs"
 import Dashboard from "../pages/Dashboard/Dashboard"
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <Main></Main>,
-    errorElement: <ErrorPage></ErrorPage>,
     children: [
       {
         path: "/",
@@ -29,6 +27,10 @@ export const router = createBrowserRouter([
       {
         path: "/login",
         element: <SignIn />,
+      },
+      {
+        path: "/contact",
+        element: <ContactUs />,
       },
       {
         path: "/signUp",
@@ -54,16 +56,14 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-    ],
-  },
-  {
-    path: "/dashboard",
-    element: <Dash></Dash>,
-    children: [
       {
-        path: "/dashboard/dashboards",
-        element:<Dashboard></Dashboard>
+        path: "/dashboard",
+        element: (
+          <PrivateRoute>
+            <Dashboard></Dashboard>
+          </PrivateRoute>
+        ),
       },
     ],
   },
-]);
+])
