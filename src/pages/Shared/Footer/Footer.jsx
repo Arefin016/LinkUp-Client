@@ -5,13 +5,15 @@ import { faFacebook, faTwitter, faGithub, faInstagram, faLinkedin } from '@forta
 const Footer = () => {
   return (
     <div>
-      <footer className="bg-[#F0F0F0] dark:bg-gray-900 lg:pt-16 md:pt-16 pt-40 ">
+      <footer className=" dark:bg-gray-900 lg:pt-16 md:pt-16 pt-40 ">
         <div className="container p-6 mx-auto">
           <div className="lg:flex">
             <div className="w-full -mx-6 lg:w-2/5">
               <div className="px-6">
                 <a href="#">
-                  <h1 className="font-extrabold text-4xl">LinkUP</h1>
+                <h1 className="font-right font-extrabold text-4xl text-shadow-purple dark:text-white">
+    <span className="text-emerald-500 ">L</span>inkUp
+  </h1>
                 </a>
                 <p className="max-w-sm mt-2 text-gray-500 dark:text-gray-400">
                   Book meetings effortlessly with LinkUp's streamlined scheduling. Perfect for professionals, teams, and individuals.
@@ -47,7 +49,7 @@ const Footer = () => {
             </div>
             <div className="mt-6 lg:mt-0 lg:flex-1">
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                <div>
+                <div className='dark:text-white'>
                   <h3 className="text-black uppercase dark:text-white font-semibold">Company</h3>
                   <a href="#" className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline">About Us</a>
                   <a href="#" className="block mt-2 text-sm text-gray-600 dark:text-gray-400 hover:underline">Careers</a>
