@@ -27,8 +27,7 @@ const Navbar = () => {
   const [login, setLogin] = useState(true);
   const userName = user?.displayName || "demo user";
   const photoURL =
-    user?.photoURL ||
-    "https://i.ibb.co/myTwYWh/hasib-vg-bg-32-1-fotor-202309019507-1.png";
+    user?.photoURL || "https://i.ibb.co/5nqdd5h/profile-pic-linkup.jpg";
 
   // to do: implement logout after authentication
   // to do: resolve the conflict
