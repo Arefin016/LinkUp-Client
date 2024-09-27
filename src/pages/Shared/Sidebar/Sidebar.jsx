@@ -5,13 +5,7 @@ import { Link, NavLink } from "react-router-dom";
 const Sidebar = () => {
   return (
     <aside className="flex side flex-col w-64 h-screen px-5 py-8 overflow-y-auto bg-white border-r rtl:border-r-0 rtl:border-l dark:bg-gray-900 dark:border-gray-700">
-      {/* <a href="#">
-        <img
-          className="w-auto h-7"
-          src="https://merakiui.com/images/logo.svg"
-          alt=""
-        />
-      </a> */}
+     
 
       <div className="flex flex-col justify-between flex-1 mt-6">
         <nav className="flex-1 -mx-3 space-y-3 ">

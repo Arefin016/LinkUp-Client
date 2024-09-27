@@ -10,6 +10,9 @@ import Testimonials from "../pages/Testimonials/Testimonials"
 import PrivateRoute from "./PrivateRoute"
 import ContactUs from "../pages/ContactUs/ContactUs"
 import Dashboard from "../pages/Dashboard/Dashboard"
+import UserDash from "../pages/Userashboard/UserDashboard"// import UserDash component
+import Dash from "../Layout/Dash"
+
 
 export const router = createBrowserRouter([
   {
@@ -60,9 +63,16 @@ export const router = createBrowserRouter([
         path: "/dashboard",
         element: (
           <PrivateRoute>
-            <Dashboard></Dashboard>
+            <Dash></Dash>
           </PrivateRoute>
         ),
+        children: [
+          {
+            path: "/dashboard/dashboards",
+            element: <Dashboard></Dashboard>,
+          },
+        
+        ],
       },
     ],
   },
