@@ -6,7 +6,6 @@ import { dateFnsLocalizer } from "react-big-calendar"
 import enUS from "date-fns/locale/en-US"
 import Modal from "react-modal"
 import Swal from "sweetalert2"
-import AOS from "aos"
 import axios from "axios"
 import { AuthContext } from "../../../providers/AuthProvider" // Import AuthContext
 
@@ -40,20 +39,22 @@ const modalStyles = {
     left: "50%",
     right: "auto",
     bottom: "auto",
-    width: "90%", // Make it responsive
-    maxWidth: "600px", // Max width for large screens
+    width: "90%",
+    maxWidth: "600px",
     height: "auto",
-    maxHeight: "90vh", // Prevent overflow
+    maxHeight: "500px",
     marginRight: "-50%",
-    transform: "translate(-50%, -50%)", // Center the modal
-    padding: "20px", // Add padding for better design
-    overflowY: "auto", // Scroll if content exceeds
-    backgroundColor: "white", // Solid background color for modal
-    border: "none", // Remove border if needed
-    borderRadius: "8px", // Rounded corners
+    transform: "translate(-50%, -50%)",
+    padding: "20px",
+    overflowY: "auto", // Changed to auto for scrolling if needed
+    backgroundColor: "white",
+    border: "none",
+    borderRadius: "8px",
+    zIndex: "1001", // Ensure the modal has a high z-index
   },
   overlay: {
-    backgroundColor: "rgba(0, 0, 0, 0.5)", // Dark overlay for contrast
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    zIndex: "1000", // Overlay also needs a high z-index
   },
 }
 
@@ -118,6 +119,14 @@ const MyCalendar = () => {
       // Send event data to the backend
       await addEventToBackend(newEventData)
 
+      // Clear the input fields after submission
+      setNewEvent({
+        title: "",
+        startDate: "",
+        endDate: "",
+        description: "",
+      })
+
       // Close the modal
       setModalIsOpen(false)
     } else {
@@ -148,7 +157,7 @@ const MyCalendar = () => {
             endAccessor="end"
             selectable
             onSelectSlot={handleSelectSlot}
-            style={{ height: "60vh", backgroundColor: "white" }} // White background for the calendar
+            style={{ height: "60vh", backgroundColor: "white", zIndex: "1" }} // Set calendar z-index lower than the modal
             views={["month", "week", "day", "agenda"]}
             defaultView="month"
             className="text-xs md:text-sm text-center font-bold" // Center and bold text
@@ -161,8 +170,8 @@ const MyCalendar = () => {
           onRequestClose={() => setModalIsOpen(false)}
           style={modalStyles}
         >
-          <h2 className="text-xl font-bold mb-4">Add New Event</h2>
-          <div className="space-y-4">
+          <h2 className="text-xl font-bold mb-4 text-center">Add New Event</h2>
+          <div className="space-y-4 text-center">
             <div>
               <label className="block text-gray-700">Event Title</label>
               <input
@@ -170,7 +179,7 @@ const MyCalendar = () => {
                 name="title"
                 value={newEvent.title}
                 onChange={handleChange}
-                className="w-full p-2 border rounded"
+                className="w-full p-2 border rounded text-center"
                 placeholder="Enter event title"
               />
             </div>
@@ -181,7 +190,7 @@ const MyCalendar = () => {
                 name="startDate"
                 value={newEvent.startDate}
                 onChange={handleChange}
-                className="w-full p-2 border rounded"
+                className="w-full p-2 border rounded text-center"
               />
             </div>
             <div>
@@ -191,7 +200,7 @@ const MyCalendar = () => {
                 name="endDate"
                 value={newEvent.endDate}
                 onChange={handleChange}
-                className="w-full p-2 border rounded"
+                className="w-full p-2 border rounded text-center"
               />
             </div>
             <div>
@@ -200,7 +209,7 @@ const MyCalendar = () => {
                 name="description"
                 value={newEvent.description}
                 onChange={handleChange}
-                className="w-full p-2 border rounded"
+                className="w-full p-2 border rounded text-center"
                 placeholder="Enter event description"
               ></textarea>
             </div>

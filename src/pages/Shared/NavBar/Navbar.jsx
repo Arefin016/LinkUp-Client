@@ -1,37 +1,37 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
-import "./navbar.css";
-import { AuthContext } from "../../../providers/AuthProvider";
+import React, { useContext, useEffect, useState } from "react"
+import { Link, NavLink } from "react-router-dom"
+import "./navbar.css"
+import { AuthContext } from "../../../providers/AuthProvider"
 
 const Navbar = () => {
-  const { user, logOut } = useContext(AuthContext);
+  const { user, logOut } = useContext(AuthContext)
   // theme
 
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState("light")
   useEffect(() => {
-    localStorage.setItem("theme", theme);
-    const localTheme = localStorage.getItem("theme");
-    document.querySelector("html").setAttribute("data-theme", localTheme);
-  }, [theme]);
+    localStorage.setItem("theme", theme)
+    const localTheme = localStorage.getItem("theme")
+    document.querySelector("html").setAttribute("data-theme", localTheme)
+  }, [theme])
   const handleTheme = (e) => {
     if (e.target.checked) {
-      setTheme("dark");
+      setTheme("dark")
     } else {
-      setTheme("light");
+      setTheme("light")
     }
-    console.log(theme);
-  };
-  
-  const [login, setLogin] = useState(true);
-  const userName = user?.displayName || "No user";
+    console.log(theme)
+  }
+
+  const [login, setLogin] = useState(true)
+  const userName = user?.displayName || "No user"
   const photoURL =
-    user?.photoURL || "https://i.ibb.co/5nqdd5h/profile-pic-linkup.jpg";
+    user?.photoURL || "https://i.ibb.co/5nqdd5h/profile-pic-linkup.jpg"
 
   const handleLogout = () => {
     logOut()
       .then(() => {})
-      .catch((error) => console.log(error));
-  };
+      .catch((error) => console.log(error))
+  }
 
   const links = (
     <>
@@ -52,70 +52,73 @@ const Navbar = () => {
         <NavLink className="nav-link" to="/testimonials">
           Testimonials
         </NavLink>
-        <NavLink className="nav-link" to="/dashboard/dashboards">
+        <NavLink className="nav-link" to="/dashboard">
           Dashboard
         </NavLink>
       </li>
     </>
-  );
+  )
 
   return (
-    <div className='navbar bg-white  justify-center px-4  bg-opacity-30 shadow'>
-      <div className='navbar-start'>
+    <div className="navbar bg-white  justify-center px-4  bg-opacity-30 shadow">
+      <div className="navbar-start">
         {/* Hamburger icon for small screens */}
-        <div className='dropdown'>
-          <div tabIndex={0} role='button' className='btn btn-ghost lg:hidden'>
+        <div className="dropdown">
+          <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
             <svg
-              xmlns='http://www.w3.org/2000/svg'
-              className='h-5 w-5'
-              fill='none'
-              viewBox='0 0 24 24'
-              stroke='currentColor'>
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
               <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth='2'
-                d='M4 6h16M4 12h8m-8 6h16'
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h8m-8 6h16"
               />
             </svg>
           </div>
           <ul
             tabIndex={0}
-            className='menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow'>
+            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+          >
             {/* Menu links for small screens */}
             {links}
           </ul>
         </div>
 
-        <Link to='/'>
-        <h1 className='font-right font-extrabold lg:text-3xl text-xl text-shadow-purple text-gray-700 dark:text-green-50'>
-  <span className='text-emerald-500'>L</span>inkUp
-</h1>
-
+        <Link to="/">
+          <h1 className="font-right font-extrabold lg:text-3xl text-xl text-shadow-purple text-gray-700 dark:text-green-50">
+            <span className="text-emerald-500">L</span>inkUp
+          </h1>
         </Link>
       </div>
 
       {/* Menu links for large screens */}
-      <div className='navbar-center hidden lg:flex'>
-        <ul className=' menu-horizontal px-1 space-x-8 '>{links}</ul>
+      <div className="navbar-center hidden lg:flex">
+        <ul className=" menu-horizontal px-1 space-x-8 ">{links}</ul>
       </div>
 
-      <div className='navbar-end'>
+      <div className="navbar-end">
         {login ? (
-          <div className='dropdown dropdown-end'>
+          <div className="dropdown dropdown-end">
             <div
               tabIndex={0}
-              role='button'
-              className='btn btn-ghost btn-circle avatar'>
-              <div className='w-10 rounded-full'>
-                <img alt='User avatar' src={photoURL} />
+              role="button"
+              className="btn btn-ghost btn-circle avatar"
+            >
+              <div className="w-10 rounded-full">
+                <img alt="User avatar" src={photoURL} />
               </div>
             </div>
             <ul
               tabIndex={0}
-              className='menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow'>
+              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+            >
               <li>
-                <a className='justify-between'>{userName}</a>
+                <a className="justify-between">{userName}</a>
               </li>
               <li onClick={handleLogout}>
                 <a>Logout</a>
@@ -123,8 +126,8 @@ const Navbar = () => {
             </ul>
           </div>
         ) : (
-          <div className=''>
-            <Link to='/login' className='btn btn-outline btn-sm'>
+          <div className="">
+            <Link to="/login" className="btn btn-outline btn-sm">
               Login
             </Link>
           </div>
@@ -132,11 +135,11 @@ const Navbar = () => {
       </div>
       <input
         onChange={handleTheme}
-        type='checkbox'
-        className='toggle theme-controller mx-6'
+        type="checkbox"
+        className="toggle theme-controller mx-6"
       />
     </div>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar
