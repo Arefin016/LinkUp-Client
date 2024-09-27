@@ -3,6 +3,7 @@ import { ChevronRightIcon } from '@chakra-ui/icons'; // Ensure this is installed
 import capture_1 from "../../../../public/capture_1.png";
 import { Link } from 'react-router-dom';
 import { BorderBeam } from "@stianlarsen/border-beam"
+import { Typewriter } from 'react-simple-typewriter'
 
 const Banner = () => {
   return (
@@ -12,7 +13,17 @@ const Banner = () => {
   {/* Left Side - Text Content */}
   <div className="w-full md:w-1/3 text-left mb-8 md:mb-0">
     <h2 className="text-5xl font-extrabold leading-tight">
-      Easy Scheduling <span className="text-blue-600">With LinkUp</span>
+    <Typewriter
+  words={['Easy Scheduling', '']}
+  loop={false}
+  cursor
+  cursorStyle='|'
+  typeSpeed={70}
+  deleteSpeed={50}
+  delaySpeed={1000}
+/>
+    <br />
+      <span className="text-[#10B981]">With LinkUp</span>
     </h2>
     <p className="mt-8 text-gray-400">
       LinkUp is your hub for scheduling meetings professionally and efficiently, eliminating the hassle of back-and-forth emails so you can get back to work.
@@ -82,8 +93,10 @@ const Banner = () => {
 
 
       {/* Features Section */}
-      <div className="w-4/5 mx-auto text-center mb-24">
-        <h3 className="text-3xl font-bold text-gray-800">We make it easy to get started</h3>
+      <div className="mx-auto text-center mb-24">
+      <h3 className="text-3xl font-bold">
+        We make it easy to get started
+      </h3>
         <div className="mt-10 flex justify-center gap-8 flex-wrap">
           <div className="shadow-2xl w-80 h-52 p-5 text-left bg-white rounded-lg">
             <img src='https://images.ctfassets.net/k0lk9kiuza3o/2lyAPMRxz8pdvkah5K6NFp/14203e7358e18e312b30c9674d8e72f1/icon-checkmark.svg' alt="Checkmark" className="w-8 h-8" />
@@ -105,7 +118,7 @@ const Banner = () => {
 
       {/* Meeting Types Section */}
       <div className="w-4/5 mx-auto text-center mb-32">
-        <h5 className="mb-6 text-3xl font-bold text-gray-800">Scheduling for any meeting type</h5>
+        <h5 className="mb-6 text-3xl font-bold">Scheduling for any meeting type</h5>
         <div className="flex flex-wrap justify-center gap-5 text-left">
           <div className="shadow-2xl w-80 h-56 p-5 bg-white rounded-lg">
             <h6 className="text-xl font-semibold mb-2">One-on-One Meetings</h6>

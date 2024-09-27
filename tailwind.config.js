@@ -2,14 +2,15 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        abril: ['"Abril Fatface"', "cursive"],
+      },
+    },
   },
+  darkMode: "class", // Dark mode enabled with the "class" strategy
   plugins: [require("daisyui")],
-  darkMode: "class",
   daisyui: {
-    themes: ["light", "dark"],
-  },
-  fontFamily: {
-    abril: ['"Abril Fatface"', "cursive"],
+    themes: ["light", "dark"], // Enables light and dark themes for Daisy UI
   },
 };
