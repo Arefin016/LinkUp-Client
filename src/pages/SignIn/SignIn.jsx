@@ -9,6 +9,7 @@ import SocialLogin from "../../components/SocialLogin/SocialLogin"
 const SignIn = () => {
   const { signIn } = useContext(AuthContext)
   const navigate = useNavigate()
+  const location = useLocation() // Destructure useLocation here
 
   const from = location.state?.from?.pathname || "/"
 
@@ -28,7 +29,7 @@ const SignIn = () => {
         showConfirmButton: false,
         timer: 1500,
       })
-      navigate(from, { replace: true })
+      navigate(from, { replace: true }) // Navigates to the desired route after login
     })
   }
 
