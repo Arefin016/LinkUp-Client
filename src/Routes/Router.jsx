@@ -9,11 +9,7 @@ import MyCalender from "../pages/Home/MyCelender/MyCalendar"
 import Testimonials from "../pages/Testimonials/Testimonials"
 import PrivateRoute from "./PrivateRoute"
 import ContactUs from "../pages/ContactUs/ContactUs"
-import Dashboard from "../pages/Dashboard/Dashboard"
-import UserDash from "../pages/Userashboard/UserDashboard"// import UserDash component
-import Dash from "../Layout/Dash"
-import UserDashboard from './../pages/Userashboard/UserDashboard';
-
+import Rating from "../pages/Rateing/Rating"
 
 export const router = createBrowserRouter([
   {
@@ -35,6 +31,10 @@ export const router = createBrowserRouter([
       {
         path: "/contact",
         element: <ContactUs />,
+      },
+      {
+        path: "/Rating",
+        element:<Rating/>,
       },
       {
         path: "/signUp",
