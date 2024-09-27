@@ -12,6 +12,7 @@ import ContactUs from "../pages/ContactUs/ContactUs"
 import Dashboard from "../pages/Dashboard/Dashboard"
 import UserDash from "../pages/Userashboard/UserDashboard"// import UserDash component
 import Dash from "../Layout/Dash"
+import UserDashboard from './../pages/Userashboard/UserDashboard';
 
 
 export const router = createBrowserRouter([
@@ -70,6 +71,11 @@ export const router = createBrowserRouter([
           {
             path: "/dashboard/history",
             element: <EventHistory></EventHistory>,
+          },
+        
+          {
+            path: "/dashboard/user",
+            element: <UserDashboard></UserDashboard> ,
           },
         
         ],
