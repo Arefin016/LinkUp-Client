@@ -1,37 +1,34 @@
 // src/axios.js
-import axios from "axios";
+import axios from "axios"
 
 // Create an Axios instance
 const axiosClient = axios.create({
-  baseURL: "http://localhost:5000", // Replace with your backend base URL
+  baseURL: "https://link-up-server-sable.vercel.app", // Replace with your backend base URL
   timeout: 10000, // Set timeout (optional)
   headers: {
     "Content-Type": "application/json", // Global content type
   },
-});
+})
 
 // Add a request interceptor (optional)
 axiosClient.interceptors.request.use(
   (config) => {
-       return config;
+    return config
   },
   (error) => {
     // Handle request error
-    return Promise.reject(error);
+    return Promise.reject(error)
   }
-);
+)
 axiosClient.interceptors.response.use(
   (response) => {
-    
-    return response;
+    return response
   },
   (error) => {
-  
     if (error.response && error.response.status === 401) {
-      
     }
-    return Promise.reject(error);
+    return Promise.reject(error)
   }
-);
+)
 
-export default axiosClient;
+export default axiosClient
