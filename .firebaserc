@@ -1,5 +1,9 @@
 {
   "projects": {
+<<<<<<< HEAD
     "default": "linkup-client-f52e1"
+=======
+    "default": "linkup-client-5437f"
+>>>>>>> c8d9cd37b15f07714dd2c13f22f444385f0c98dc
   }
 }

@@ -20,10 +20,10 @@ const ContactUs = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex dark:bg-black dark:text-white justify-center items-center h-screen">
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-8 rounded-lg shadow-lg max-w-sm w-full"
+        className="bg-white dark:bg-black dark:text-white p-8 rounded-lg shadow-lg max-w-sm w-full"
       >
         <h2 className="text-2xl font-semibold mb-6 text-center">Contact Us</h2>
         <p className="text-center mb-4 text-gray-600">

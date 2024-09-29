@@ -9,7 +9,7 @@ import MyCalender from "../pages/Home/MyCelender/MyCalendar"
 import Testimonials from "../pages/Testimonials/Testimonials"
 import PrivateRoute from "./PrivateRoute"
 import ContactUs from "../pages/ContactUs/ContactUs"
-import Dashboard from "../pages/Dashboard/Dashboard"
+import Rating from "../pages/Rateing/Rating"
 
 export const router = createBrowserRouter([
   {
@@ -33,14 +33,14 @@ export const router = createBrowserRouter([
         element: <ContactUs />,
       },
       {
+        path: "/Rating",
+        element:<Rating/>,
+      },
+      {
         path: "/signUp",
         element: <SignUp />,
       },
-      {
-        path: "/history",
-        element: <EventHistory></EventHistory>,
-      },
-      {
+            {
         path: "/testimonials",
         element: (
           <PrivateRoute>
@@ -60,9 +60,25 @@ export const router = createBrowserRouter([
         path: "/dashboard",
         element: (
           <PrivateRoute>
-            <Dashboard></Dashboard>
+            <Dash></Dash>
           </PrivateRoute>
         ),
+        children: [
+          {
+            path: "/dashboard/dashboards",
+            element: <Dashboard></Dashboard>,
+          },
+          {
+            path: "/dashboard/history",
+            element: <EventHistory></EventHistory>,
+          },
+        
+          {
+            path: "/dashboard/user",
+            element: <UserDashboard></UserDashboard> ,
+          },
+        
+        ],
       },
     ],
   },
