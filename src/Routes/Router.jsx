@@ -4,12 +4,15 @@ import SignIn from "../pages/SignIn/SignIn"
 import SignUp from "../pages/SignUp/SignUp"
 import Home from "../pages/Home/Home/Home"
 import Main from "../Layout/Main"
+import Dash from "../Layout/Dash"
 import EventHistory from "../pages/Home/EventHistory/EventHistory"
 import MyCalender from "../pages/Home/MyCelender/MyCalendar"
 import Testimonials from "../pages/Testimonials/Testimonials"
 import PrivateRoute from "./PrivateRoute"
 import ContactUs from "../pages/ContactUs/ContactUs"
 import Rating from "../pages/Rateing/Rating"
+import Dashboard from "../pages/Dashboard/Dashboard"
+import UserDashboard from "../pages/Userashboard/UserDashboard"
 
 export const router = createBrowserRouter([
   {

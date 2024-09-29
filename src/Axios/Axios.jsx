@@ -3,14 +3,14 @@ import axios from "axios"
 
 // Create an Axios instance
 const axiosClient = axios.create({
-  baseURL: "https://link-up-server-sable.vercel.app", // Replace with your backend base URL
-  timeout: 10000, // Set timeout (optional)
+  baseURL: "http://localhost:5000",
+  timeout: 0,
   headers: {
-    "Content-Type": "application/json", // Global content type
+    "Content-Type": "application/json", 
   },
 })
 
-// Add a request interceptor (optional)
+
 axiosClient.interceptors.request.use(
   (config) => {
     return config
