@@ -3,7 +3,7 @@ import axios from "axios";
 
 // Create an Axios instance
 const axiosClient = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: "https://link-up-server-three.vercel.app",
   timeout: 0, // No timeout
   headers: {
     "Content-Type": "application/json", // Global content type
