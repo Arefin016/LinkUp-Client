@@ -4,7 +4,6 @@ import SignIn from "../pages/SignIn/SignIn"
 import SignUp from "../pages/SignUp/SignUp"
 import Home from "../pages/Home/Home/Home"
 import Main from "../Layout/Main"
-import Dash from "../Layout/Dash"
 import EventHistory from "../pages/Home/EventHistory/EventHistory"
 import MyCalender from "../pages/Home/MyCelender/MyCalendar"
 import Testimonials from "../pages/Testimonials/Testimonials"
@@ -13,6 +12,7 @@ import ContactUs from "../pages/ContactUs/ContactUs"
 import Rating from "../pages/Rateing/Rating"
 import Dashboard from "../pages/Dashboard/Dashboard"
 import UserDashboard from "../pages/Userashboard/UserDashboard"
+import Dash from "../Layout/Dash"
 
 export const router = createBrowserRouter([
   {
@@ -63,7 +63,7 @@ export const router = createBrowserRouter([
         path: "/dashboard",
         element: (
           <PrivateRoute>
-            <Dashboard></Dashboard>
+            <Dash></Dash>
           </PrivateRoute>
         ),
         children: [

@@ -80,11 +80,7 @@ const MyCalendar = () => {
   const addEventToBackend = async (eventDetails) => {
     try {
       const response = await axios.post(
-<<<<<<< HEAD
         "http://localhost:5000/add-event",
-=======
-        "https://link-up-server-three.vercel.app/add-event",
->>>>>>> fac4f274a757fbe8e7b6a49aba0bc456de7e0bd3
         eventDetails
       )
       console.log("Event added to backend:", response.data)
