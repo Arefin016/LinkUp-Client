@@ -3,7 +3,7 @@ import axios from "axios"
 
 // Create an Axios instance
 const axiosClient = axios.create({
-  baseURL: "http://localhost:5000", // Replace with your backend base URL
+  baseURL: "https://link-up-server-taupe.vercel.app", // Replace with your backend base URL
   timeout: 0, // Set timeout (optional)
   headers: {
     "Content-Type": "application/json", // Global content type
