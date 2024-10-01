@@ -33,6 +33,10 @@ const SignUp = () => {
           const userInfo = {
             name: data.name,
             email: data.email,
+            img:data.photoURL,
+           date: new Date().toLocaleString(),
+           role:'user',
+
           }
           axiosPublic.post("/users", userInfo).then((res) => {
             if (res.data.insertedId) {

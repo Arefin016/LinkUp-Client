@@ -117,7 +117,7 @@ const Banner = () => {
       </div>
 
       {/* Meeting Types Section */}
-      <div className="w-4/5 mx-auto text-center mb-32">
+      <div className="w-4/5 mx-auto text-center mb-32 ">
         <h5 className="mb-6 text-3xl font-bold">Scheduling for any meeting type</h5>
         <div className="flex flex-wrap justify-center gap-5 text-left">
           <div className="shadow-2xl w-80 h-56 p-5 bg-white rounded-lg">

@@ -1,37 +1,66 @@
-import Lottie from "lottie-react"
-import { Link, useLocation, useNavigate } from "react-router-dom"
-import SignUp from "../../../public/SignIn.json"
-import { useContext } from "react"
-import { AuthContext } from "../../providers/AuthProvider"
-import Swal from "sweetalert2"
-import SocialLogin from "../../components/SocialLogin/SocialLogin"
+import Lottie from "lottie-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import SignUp from "../../../public/SignIn.json";
+import { useContext } from "react";
+import { AuthContext } from "../../providers/AuthProvider";
+import Swal from "sweetalert2";
+import SocialLogin from "../../components/SocialLogin/SocialLogin";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const SignIn = () => {
-  const { signIn } = useContext(AuthContext)
-  const navigate = useNavigate()
-  const location = useLocation() // Destructure useLocation here
+  const axiosPublic = useAxiosPublic();
+  const { signIn } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation(); // Destructure useLocation here
 
-  const from = location.state?.from?.pathname || "/"
+  const from = location.state?.from?.pathname || "/";
 
-  const handleLogin = (event) => {
-    event.preventDefault()
-    const form = event.target
-    const email = form.email.value
-    const password = form.password.value
-    console.log(email, password)
-    signIn(email, password).then((result) => {
-      const user = result.user
-      console.log(user)
+  const handleLogin = async (event) => {
+    event.preventDefault(); // Prevent form from refreshing the page
+    const form = event.target;
+    const email = form.email.value;
+    const password = form.password.value;
+    console.log(email, password);
+
+    try {
+      // Sign in the user with email and password
+      const result = await signIn(email, password); // Await the signIn promise
+      const user = result.user;
+      console.log(user);
+
+      // Prepare the updated user object
+      const updated = {
+        email: user.email,
+        img: user.photoURL,
+        date: new Date().toLocaleString(),
+        role: 'user',
+      };
+
+      // Update the user in your database
+      const res = await axiosPublic.put(`/user/${user.email}`, updated); // Await the Axios request
+      console.log(res.data, 'Response data');
+
+      // Show success alert
       Swal.fire({
         position: "top",
         icon: "success",
         title: "User Login Successfully",
         showConfirmButton: false,
         timer: 1500,
-      })
-      navigate(from, { replace: true }) // Navigates to the desired route after login
-    })
-  }
+      });
+
+      navigate(from, { replace: true }); // Navigate to the desired route after login
+    } catch (error) {
+      console.error("Login failed:", error);
+      Swal.fire({
+        position: "top",
+        icon: "error",
+        title: "Login failed",
+        text: error.message,
+        showConfirmButton: true,
+      });
+    }
+  };
 
   return (
     <div className="hero min-h-screen bg-base-200">
@@ -86,7 +115,7 @@ const SignIn = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SignIn
+export default SignIn;
