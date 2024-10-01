@@ -8,19 +8,37 @@ const SocialLogin = () => {
   const axiosPublic = useAxiosPublic()
   const navigate = useNavigate()
 
-  const handleGoogleSignIn = () => {
-    googleSignIn().then((result) => {
-      console.log(result.user)
+  const handleGoogleSignIn = async () => { // Make the function async
+    try {
+      const result = await googleSignIn(); // Await the Google sign-in
+      const user=result.user;
+      
       const userInfo = {
         email: result.user?.email,
         name: result.user?.displayName,
-      }
-      axiosPublic.post("/users", userInfo).then((res) => {
-        console.log(res.data)
-        navigate("/")
-      })
-    })
-  }
+        img: result.user?.photoURL,
+        date: new Date().toLocaleString(),
+        role: 'user'
+      };
+  
+      const res = await axiosPublic.post("/users", userInfo); // Await the Axios post request
+      console.log(res.data, 'Data');
+  
+      const updated = {
+        email: user.email,
+        img: user.photoURL,
+        date: new Date().toLocaleString(),
+        role: 'user',
+      };
+      const updateResponse = await axiosPublic.put(`/user/${userInfo.email}`, updated); // Await the Axios put request
+      console.log(updateResponse.data, 'Response data');
+  
+      navigate("/"); // Navigate after successful requests
+    } catch (error) {
+      console.error('Error during sign-in or API requests:', error);
+    }
+  };
+  
 
   return (
     <div className="w-full">

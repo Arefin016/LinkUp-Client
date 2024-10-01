@@ -1,7 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaUsers } from "react-icons/fa6";
 import { CiBookmark, CiBookmarkCheck, CiBookmarkRemove } from "react-icons/ci";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 const Dashboard = () => {
+  const axiosPublic=useAxiosPublic()
+  const [users,setUsers]=useState([])
+  console.log(users)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axiosPublic.get('/users');
+        setUsers(res.data); // Handle the response data
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+  
+    fetchData();
+  }, []);
+  
   return (
     <div className="ml-8">
       <p className="my-3 font-semibold">Dashboard</p>
@@ -53,67 +71,38 @@ const Dashboard = () => {
       </div>
       <div>
         <p className="my-3 font-semibold">Recently Visited Clients</p>
-        <div className="flex gap-5">
-          <div className="flex flex-col items-center">
+        <div className="flex flex-wrap gap-5">
+          
+          
+        {/* {
+          users.map(user=><div key={user._id} className="flex flex-col items-center">
             <figure>
               <img
-                className="w-44 rounded-lg"
-                src="https://media.istockphoto.com/id/1364917563/photo/businessman-smiling-with-arms-crossed-on-white-background.jpg?s=612x612&w=0&k=20&c=NtM9Wbs1DBiGaiowsxJY6wNCnLf0POa65rYEwnZymrM="
+                className="w-44 h-36 rounded-lg bg-cover"
+                src={user?.img}
                 alt=""
               />
             </figure>
             <div className="mt-2">
-              <h3 className="font-semibold">MD. HAMIM</h3>
+              <h3 className="font-semibold">{user.name}</h3>
             </div>
+          </div>)
+        } */}
+       {
+        users.map(user=> <div key={user._id} className="bg-white rounded-lg p-5 shadow-md w-64 text-center ">
+          <div className="rounded-full overflow-hidden w-20 h-20 mx-auto mb-4">
+            <img 
+              src={user?.img}
+              alt="Blanche Pearson" 
+              className="w-full h-full object-cover"
+            />
           </div>
-          <div className="flex flex-col items-center">
-            <figure>
-              <img
-                className="w-44 rounded-lg"
-                src="https://media.istockphoto.com/id/1364917563/photo/businessman-smiling-with-arms-crossed-on-white-background.jpg?s=612x612&w=0&k=20&c=NtM9Wbs1DBiGaiowsxJY6wNCnLf0POa65rYEwnZymrM="
-                alt=""
-              />
-            </figure>
-            <div className="mt-2">
-              <h3 className="font-semibold">MD. HAMIM</h3>
-            </div>
-          </div>
-          <div className="flex flex-col items-center">
-            <figure>
-              <img
-                className="w-44 rounded-lg"
-                src="https://media.istockphoto.com/id/1364917563/photo/businessman-smiling-with-arms-crossed-on-white-background.jpg?s=612x612&w=0&k=20&c=NtM9Wbs1DBiGaiowsxJY6wNCnLf0POa65rYEwnZymrM="
-                alt=""
-              />
-            </figure>
-            <div className="mt-2">
-              <h3 className="font-semibold">MD. HAMIM</h3>
-            </div>
-          </div>
-          <div className="flex flex-col items-center">
-            <figure>
-              <img
-                className="w-44 rounded-lg"
-                src="https://media.istockphoto.com/id/1364917563/photo/businessman-smiling-with-arms-crossed-on-white-background.jpg?s=612x612&w=0&k=20&c=NtM9Wbs1DBiGaiowsxJY6wNCnLf0POa65rYEwnZymrM="
-                alt=""
-              />
-            </figure>
-            <div className="mt-2">
-              <h3 className="font-semibold">MD. HAMIM</h3>
-            </div>
-          </div>
-          <div className="flex flex-col items-center">
-            <figure>
-              <img
-                className="w-44 rounded-lg"
-                src="https://media.istockphoto.com/id/1364917563/photo/businessman-smiling-with-arms-crossed-on-white-background.jpg?s=612x612&w=0&k=20&c=NtM9Wbs1DBiGaiowsxJY6wNCnLf0POa65rYEwnZymrM="
-                alt=""
-              />
-            </figure>
-            <div className="mt-2">
-              <h3 className="font-semibold">MD. HAMIM</h3>
-            </div>
-          </div>
+          <h2 className="text-lg font-semibold text-gray-800 mb-2">{user?.name}</h2>
+          <p className="text-sm text-gray-500 mb-4">{user?.email}</p>
+          <p >Date:{user?.date.split(',')[0]}</p>
+          <p >Time:{user?.date.split(',')[1]}</p>
+        </div>)
+       }
         </div>
       </div>
     </div>
