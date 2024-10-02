@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosPublic = axios.create({
-  baseURL: "https://link-up-server-three.vercel.app",
+  baseURL: "https://link-up-shaharul.vercel.app",
 });
 
 const useAxiosPublic = () => {
