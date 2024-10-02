@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
-import axiosClient from "../../../Axios/Axios"; // Assuming axiosClient is set up for making API requests
+import useAxiosPublic from "../../../hooks/useAxiosPublic"; // Hook to get axios instance
 
 const EventHistory = () => {
   const [events, setEvents] = useState([]);
   const [error, setError] = useState(null);
+  
+  // Call useAxiosPublic to get axiosPublic instance
+  const axiosPublic = useAxiosPublic(); 
 
   // Fetch event data when the component mounts
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axiosClient.get("/events"); // Your API endpoint
+        const response = await axiosPublic.get("/events"); // Your API endpoint
         setEvents(response.data);
       } catch (err) {
         console.error("Error fetching events: ", err);
@@ -18,7 +21,7 @@ const EventHistory = () => {
     };
 
     fetchEvents();
-  }, []);
+  }, [axiosPublic]); // Add axiosPublic as a dependency
 
   // Update an event
   const handleUpdate = async (id) => {
@@ -28,7 +31,7 @@ const EventHistory = () => {
     const updatedEnd = prompt("Enter new end date (YYYY-MM-DD):");
 
     try {
-      const response = await axiosClient.put(`/events/${id}`, {
+      const response = await axiosPublic.put(`/events/${id}`, {
         title: updatedTitle,
         description: updatedDescription,
         start: new Date(updatedStart),
@@ -45,7 +48,7 @@ const EventHistory = () => {
   const handleCancel = async (id) => {
     if (window.confirm("Are you sure you want to cancel this event?")) {
       try {
-        await axiosClient.delete(`/events/${id}`);
+        await axiosPublic.delete(`/events/${id}`);
         setEvents(events.filter((event) => event._id !== id));
       } catch (err) {
         console.error("Error deleting event: ", err);
