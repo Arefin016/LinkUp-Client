@@ -12,7 +12,8 @@ const EventHistory = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axiosPublic.get("/events"); // Your API endpoint
+        console.log("Fetching events from:", axiosPublic.defaults.baseURL + "/events");
+        const response = await axiosPublic.get("/events");
         setEvents(response.data);
       } catch (err) {
         console.error("Error fetching events: ", err);
