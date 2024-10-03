@@ -11,7 +11,7 @@ const EventHistory = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axiosPublic.get("/events") // Your API endpoint
+        const response = await axiosPublic.get("/events", { timeout: 5000 }) // Your API endpoint
         setEvents(response.data)
       } catch (err) {
         console.error("Error fetching events: ", err)
@@ -49,7 +49,7 @@ const EventHistory = () => {
   const handleCancel = async (id) => {
     if (window.confirm("Are you sure you want to cancel this event?")) {
       try {
-        await axiosClient.delete(`/events/${id}`)
+        await axiosPublic.delete(`/events/${id}`)
         setEvents(events.filter((event) => event._id !== id))
       } catch (err) {
         console.error("Error deleting event: ", err)
