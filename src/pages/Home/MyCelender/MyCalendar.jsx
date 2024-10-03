@@ -6,8 +6,7 @@ import { dateFnsLocalizer } from "react-big-calendar"
 import enUS from "date-fns/locale/en-US"
 import Modal from "react-modal"
 import Swal from "sweetalert2"
-import axios from "axios"
-import { AuthContext } from "../../../providers/AuthProvider" // Import AuthContext
+import { AuthContext } from "../../../providers/AuthProvider"
 
 // Setup the date localization
 const locales = {
@@ -23,12 +22,13 @@ const localizer = dateFnsLocalizer({
 })
 
 // Initial events to display
-const events = [
+const initialEvents = [
   {
     title: "Meeting",
     allDay: false,
     start: new Date(2024, 8, 18, 10, 0), // September 18, 2024, at 10:00 AM
     end: new Date(2024, 8, 18, 12, 0), // September 18, 2024, at 12:00 PM
+    meetingType: "", // Add meetingType property
   },
 ]
 
@@ -46,7 +46,7 @@ const modalStyles = {
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
     padding: "20px",
-    overflowY: "auto", // Changed to auto for scrolling if needed
+    overflowY: "auto",
     backgroundColor: "white",
     border: "none",
     borderRadius: "8px",
@@ -60,13 +60,14 @@ const modalStyles = {
 
 const MyCalendar = () => {
   const { user } = useContext(AuthContext) // Use AuthContext to get the logged-in user's info
-  const [myEvents, setMyEvents] = useState(events)
+  const [myEvents, setMyEvents] = useState(initialEvents)
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [newEvent, setNewEvent] = useState({
     title: "",
     startDate: "",
     endDate: "",
     description: "",
+    meetingType: "", // Add meetingType to the new event state
   })
   const [selectedSlot, setSelectedSlot] = useState(null)
 
@@ -103,35 +104,52 @@ const MyCalendar = () => {
 
   // Function to handle event creation
   const handleSubmit = async () => {
-    const { title, startDate, endDate, description } = newEvent
+    const { title, startDate, endDate, description, meetingType } = newEvent
 
-    if (title && startDate && endDate && description) {
-      const newEventData = {
-        title,
-        start: new Date(startDate),
-        end: new Date(endDate),
-        description,
-      }
-
-      // Add the new event to the local state
-      setMyEvents([...myEvents, newEventData])
-
-      // Send event data to the backend
-      await addEventToBackend(newEventData)
-
-      // Clear the input fields after submission
-      setNewEvent({
-        title: "",
-        startDate: "",
-        endDate: "",
-        description: "",
+    // Validate that all fields are filled and dates are correct
+    if (!title || !startDate || !endDate || !description) {
+      Swal.fire({
+        icon: "warning",
+        title: "Incomplete Information",
+        text: "Please fill out all the fields.",
       })
-
-      // Close the modal
-      setModalIsOpen(false)
-    } else {
-      alert("Please fill out all the fields.")
+      return
     }
+
+    if (new Date(startDate) >= new Date(endDate)) {
+      Swal.fire({
+        icon: "warning",
+        title: "Invalid Dates",
+        text: "End date must be later than start date.",
+      })
+      return
+    }
+
+    const newEventData = {
+      title,
+      start: new Date(startDate),
+      end: new Date(endDate),
+      description,
+      meetingType, // Add meetingType to event data
+    }
+
+    // Add the new event to the local state
+    setMyEvents([...myEvents, newEventData])
+
+    // Send event data to the backend
+    await addEventToBackend(newEventData)
+
+    // Clear the input fields after submission
+    setNewEvent({
+      title: "",
+      startDate: "",
+      endDate: "",
+      description: "",
+      meetingType: "",
+    })
+
+    // Close the modal
+    setModalIsOpen(false)
   }
 
   // Function to handle input changes
@@ -141,6 +159,22 @@ const MyCalendar = () => {
       ...prevEvent,
       [name]: value,
     }))
+  }
+
+  // Event color differentiation
+  const eventPropGetter = (event) => {
+    let backgroundColor
+    switch (event.meetingType) {
+      case "zoom":
+        backgroundColor = "lightblue" // Example color for Zoom
+        break
+      case "meet":
+        backgroundColor = "lightgreen" // Example color for Google Meet
+        break
+      default:
+        backgroundColor = "lightgray" // Default color
+    }
+    return { style: { backgroundColor } }
   }
 
   return (
@@ -157,10 +191,11 @@ const MyCalendar = () => {
             endAccessor="end"
             selectable
             onSelectSlot={handleSelectSlot}
-            style={{ height: "60vh", backgroundColor: "white", zIndex: "1" }} // Set calendar z-index lower than the modal
+            style={{ height: "60vh", backgroundColor: "white", zIndex: "1" }}
             views={["month", "week", "day", "agenda"]}
             defaultView="month"
-            className="text-xs md:text-sm text-center font-bold" // Center and bold text
+            className="text-xs md:text-sm text-center font-bold"
+            eventPropGetter={eventPropGetter} // Set event colors
           />
         </div>
 
@@ -169,9 +204,10 @@ const MyCalendar = () => {
           isOpen={modalIsOpen}
           onRequestClose={() => setModalIsOpen(false)}
           style={modalStyles}
+          ariaHideApp={false}
         >
           <h2 className="text-xl font-bold mb-4 text-center">Add New Event</h2>
-          <div className="space-y-4 text-center">
+          <div className="space-y-4">
             <div>
               <label className="block text-gray-700">Event Title</label>
               <input
@@ -212,6 +248,20 @@ const MyCalendar = () => {
                 className="w-full p-2 border rounded text-center"
                 placeholder="Enter event description"
               ></textarea>
+            </div>
+            {/* Dropdown for selecting meeting type */}
+            <div>
+              <label className="block text-gray-700">Meeting Type</label>
+              <select
+                name="meetingType"
+                value={newEvent.meetingType}
+                onChange={handleChange}
+                className="w-full p-2 border rounded text-center"
+              >
+                <option value="">None</option>
+                <option value="zoom">Zoom</option>
+                <option value="meet">Google Meet</option>
+              </select>
             </div>
             <div className="flex justify-end space-x-4">
               <button
