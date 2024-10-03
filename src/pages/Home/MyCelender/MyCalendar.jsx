@@ -1,18 +1,18 @@
-import React, { useState, useContext } from "react";
-import { Calendar } from "react-big-calendar";
-import "react-big-calendar/lib/css/react-big-calendar.css";
-import { format, parse, startOfWeek, getDay } from "date-fns";
-import { dateFnsLocalizer } from "react-big-calendar";
-import enUS from "date-fns/locale/en-US";
-import Modal from "react-modal";
-import Swal from "sweetalert2";
-import axiosPublic from "../../../hooks/useAxiosPublic";
-import { AuthContext } from "../../../providers/AuthProvider"; 
+import React, { useState, useContext } from "react"
+import { Calendar } from "react-big-calendar"
+import "react-big-calendar/lib/css/react-big-calendar.css"
+import { format, parse, startOfWeek, getDay } from "date-fns"
+import { dateFnsLocalizer } from "react-big-calendar"
+import enUS from "date-fns/locale/en-US"
+import Modal from "react-modal"
+import Swal from "sweetalert2"
+import { AuthContext } from "../../../providers/AuthProvider"
+import useAxiosPublic from "../../../hooks/useAxiosPublic"
 
 // Setup the date localization
 const locales = {
   "en-US": enUS,
-};
+}
 
 const localizer = dateFnsLocalizer({
   format,
@@ -20,7 +20,7 @@ const localizer = dateFnsLocalizer({
   startOfWeek,
   getDay,
   locales,
-});
+})
 
 // Initial events to display
 const initialEvents = [
@@ -31,7 +31,7 @@ const initialEvents = [
     end: new Date(2024, 8, 18, 12, 0), // September 18, 2024, at 12:00 PM
     meetingType: "", // Add meetingType property
   },
-];
+]
 
 // Updated modal styles for responsiveness and centering
 const modalStyles = {
@@ -57,55 +57,57 @@ const modalStyles = {
     backgroundColor: "rgba(0, 0, 0, 0.5)",
     zIndex: "1000", // Overlay also needs a high z-index
   },
-};
+}
 
 const MyCalendar = () => {
-  const { user } = useContext(AuthContext); // Use AuthContext to get the logged-in user's info
-  const [myEvents, setMyEvents] = useState(initialEvents);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const { user } = useContext(AuthContext) // Use AuthContext to get the logged-in user's info
+  const [myEvents, setMyEvents] = useState(initialEvents)
+  const [modalIsOpen, setModalIsOpen] = useState(false)
   const [newEvent, setNewEvent] = useState({
     title: "",
     startDate: "",
     endDate: "",
     description: "",
     meetingType: "", // Add meetingType to the new event state
-  });
-  const [selectedSlot, setSelectedSlot] = useState(null);
+  })
+  const [selectedSlot, setSelectedSlot] = useState(null)
+
+  const axiosInstance = useAxiosPublic() // Initialize axios instance here
 
   // Function to handle adding new events
   const handleSelectSlot = ({ start, end }) => {
-    setSelectedSlot({ start, end });
-    setModalIsOpen(true);
-  };
+    setSelectedSlot({ start, end })
+    setModalIsOpen(true)
+  }
 
   // Function to send event data to the backend
   const addEventToBackend = async (eventDetails) => {
     try {
-      const response = await axiosPublic.post(
-        "https://link-up-shaharul.vercel.app/add-event",
+      const response = await axiosInstance.post(
+        "http://localhost:5000/add-event",
         eventDetails
-      );
-      console.log("Event added to backend:", response.data);
+      )
+      console.log("Event added to backend:", response.data)
       Swal.fire({
         position: "top-end",
         icon: "success",
         title: "Event added successfully!",
         showConfirmButton: false,
         timer: 1500,
-      });
+      })
     } catch (error) {
-      console.error("Error adding event to backend:", error);
+      console.error("Error adding event to backend:", error)
       Swal.fire({
         icon: "error",
         title: "Oops...",
         text: "Something went wrong while adding the event!",
-      });
+      })
     }
-  };
+  }
 
   // Function to handle event creation
   const handleSubmit = async () => {
-    const { title, startDate, endDate, description, meetingType } = newEvent;
+    const { title, startDate, endDate, description, meetingType } = newEvent
 
     // Validate that all fields are filled and dates are correct
     if (!title || !startDate || !endDate || !description) {
@@ -113,8 +115,8 @@ const MyCalendar = () => {
         icon: "warning",
         title: "Incomplete Information",
         text: "Please fill out all the fields.",
-      });
-      return;
+      })
+      return
     }
 
     if (new Date(startDate) >= new Date(endDate)) {
@@ -122,8 +124,8 @@ const MyCalendar = () => {
         icon: "warning",
         title: "Invalid Dates",
         text: "End date must be later than start date.",
-      });
-      return;
+      })
+      return
     }
 
     const newEventData = {
@@ -132,13 +134,13 @@ const MyCalendar = () => {
       end: new Date(endDate),
       description,
       meetingType, // Add meetingType to event data
-    };
+    }
 
     // Add the new event to the local state
-    setMyEvents([...myEvents, newEventData]);
+    setMyEvents([...myEvents, newEventData])
 
     // Send event data to the backend
-    await addEventToBackend(newEventData);
+    await addEventToBackend(newEventData)
 
     // Clear the input fields after submission
     setNewEvent({
@@ -147,36 +149,36 @@ const MyCalendar = () => {
       endDate: "",
       description: "",
       meetingType: "",
-    });
+    })
 
     // Close the modal
-    setModalIsOpen(false);
-  };
+    setModalIsOpen(false)
+  }
 
   // Function to handle input changes
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     setNewEvent((prevEvent) => ({
       ...prevEvent,
       [name]: value,
-    }));
-  };
+    }))
+  }
 
   // Event color differentiation
   const eventPropGetter = (event) => {
-    let backgroundColor;
+    let backgroundColor
     switch (event.meetingType) {
       case "zoom":
-        backgroundColor = "lightblue"; // Example color for Zoom
-        break;
+        backgroundColor = "lightblue" // Example color for Zoom
+        break
       case "meet":
-        backgroundColor = "lightgreen"; // Example color for Google Meet
-        break;
+        backgroundColor = "lightgreen" // Example color for Google Meet
+        break
       default:
-        backgroundColor = "lightgray"; // Default color
+        backgroundColor = "lightgray" // Default color
     }
-    return { style: { backgroundColor } };
-  };
+    return { style: { backgroundColor } }
+  }
 
   return (
     <>
@@ -250,7 +252,7 @@ const MyCalendar = () => {
                 placeholder="Enter event description"
               ></textarea>
             </div>
-            {/* Dropdown for selecting meeting type */}
+            {/* Dropdown for meeting type */}
             <div>
               <label className="block text-gray-700">Meeting Type</label>
               <select
@@ -259,7 +261,7 @@ const MyCalendar = () => {
                 onChange={handleChange}
                 className="w-full p-2 border rounded text-center"
               >
-                <option value="">None</option>
+                <option value="">Select meeting type</option>
                 <option value="zoom">Zoom</option>
                 <option value="meet">Google Meet</option>
               </select>
@@ -282,7 +284,7 @@ const MyCalendar = () => {
         </Modal>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default MyCalendar;
+export default MyCalendar

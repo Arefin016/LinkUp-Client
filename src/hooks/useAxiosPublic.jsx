@@ -1,8 +1,11 @@
-import axios from "axios";
+import axios from "axios"
 
 const axiosPublic = axios.create({
-  baseURL: "https://link-up-shaharul.vercel.app",
-  timeout: 0,
-});
+  baseURL: "http://localhost:5000",
+})
 
-export default axiosPublic;
+const useAxiosPublic = () => {
+  return axiosPublic
+}
+
+export default useAxiosPublic

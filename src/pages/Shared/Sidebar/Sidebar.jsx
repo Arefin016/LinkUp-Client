@@ -1,6 +1,6 @@
-import React from "react";
-import { FaUser, FaUsers, FaHistory } from "react-icons/fa"; // Use 'react-icons/fa' instead of 'fa6'
-import { Link, NavLink } from "react-router-dom";
+import React from "react"
+import { FaUsers, FaHistory } from "react-icons/fa" // Use 'react-icons/fa' instead of 'fa6'
+import { Link, NavLink } from "react-router-dom"
 
 const Sidebar = () => {
   return (
@@ -125,7 +125,7 @@ const Sidebar = () => {
         </div>
       </div>
     </aside>
-  );
-};
+  )
+}
 
-export default Sidebar;
+export default Sidebar

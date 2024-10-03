@@ -1,41 +1,41 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
-import { AuthContext } from "../../../providers/AuthProvider"; // Adjust path based on your file structure
-import "./navbar.css";
+import React, { useContext, useEffect, useState } from "react"
+import { Link, NavLink } from "react-router-dom"
+import { AuthContext } from "../../../providers/AuthProvider" // Adjust path based on your file structure
+import "./navbar.css"
 
 const Navbar = () => {
-  const { user, logOut } = useContext(AuthContext); // Access AuthContext for user data and logout
-  const [theme, setTheme] = useState("light");
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // For toggling the dropdown
+  const { user, logOut } = useContext(AuthContext) // Access AuthContext for user data and logout
+  const [theme, setTheme] = useState("light")
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false) // For toggling the dropdown
 
   // Set theme from localStorage or default to light mode
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") || "light";
-    setTheme(savedTheme);
-    document.querySelector("html").setAttribute("data-theme", savedTheme);
-  }, []);
+    const savedTheme = localStorage.getItem("theme") || "light"
+    setTheme(savedTheme)
+    document.querySelector("html").setAttribute("data-theme", savedTheme)
+  }, [])
 
   // Toggle between dark and light theme
   const handleTheme = (e) => {
-    const selectedTheme = e.target.checked ? "dark" : "light";
-    setTheme(selectedTheme);
-    localStorage.setItem("theme", selectedTheme);
-    document.querySelector("html").setAttribute("data-theme", selectedTheme);
-  };
+    const selectedTheme = e.target.checked ? "dark" : "light"
+    setTheme(selectedTheme)
+    localStorage.setItem("theme", selectedTheme)
+    document.querySelector("html").setAttribute("data-theme", selectedTheme)
+  }
 
   // Handle user logout
   const handleLogout = () => {
     logOut()
       .then(() => {
-        console.log("User logged out successfully");
+        console.log("User logged out successfully")
       })
-      .catch((error) => console.error("Logout failed: ", error));
-  };
+      .catch((error) => console.error("Logout failed: ", error))
+  }
 
   // Toggle dropdown on profile picture click
   const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
+    setIsDropdownOpen(!isDropdownOpen)
+  }
 
   // Define navigation links
   const links = (
@@ -56,8 +56,8 @@ const Navbar = () => {
         </NavLink>
       </li>
       <li>
-        <NavLink className="nav-link" to="/testimonials">
-          Testimonials
+        <NavLink className="nav-link" to="/guides">
+          Guides
         </NavLink>
       </li>
       <li>
@@ -66,13 +66,15 @@ const Navbar = () => {
         </NavLink>
       </li>
     </>
-  );
+  )
 
   // Display profile dropdown if the user is logged in
   const userProfile = user ? (
     <div className="relative">
       <img
-        src={user?.photoURL || "https://i.ibb.co/5nqdd5h/profile-pic-linkup.jpg"}
+        src={
+          user?.photoURL || "https://i.ibb.co/5nqdd5h/profile-pic-linkup.jpg"
+        }
         alt="Profile"
         className="w-10 h-10 rounded-full cursor-pointer"
         onClick={toggleDropdown} // Toggle dropdown on click
@@ -101,7 +103,7 @@ const Navbar = () => {
         <button className="btn btn-sm btn-primary">Join Us</button>
       </Link>
     </>
-  );
+  )
 
   return (
     <div className="navbar bg-white justify-center px-4 bg-opacity-30 shadow">
@@ -158,7 +160,7 @@ const Navbar = () => {
         />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar
