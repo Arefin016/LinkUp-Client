@@ -1,18 +1,18 @@
-import React, { useState, useContext } from "react"
-import { Calendar } from "react-big-calendar"
-import "react-big-calendar/lib/css/react-big-calendar.css"
-import { format, parse, startOfWeek, getDay } from "date-fns"
-import { dateFnsLocalizer } from "react-big-calendar"
-import enUS from "date-fns/locale/en-US"
-import Modal from "react-modal"
-import Swal from "sweetalert2"
-import axios from "axios"
-import { AuthContext } from "../../../providers/AuthProvider" // Import AuthContext
+import React, { useState, useContext } from "react";
+import { Calendar } from "react-big-calendar";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import { format, parse, startOfWeek, getDay } from "date-fns";
+import { dateFnsLocalizer } from "react-big-calendar";
+import enUS from "date-fns/locale/en-US";
+import Modal from "react-modal";
+import Swal from "sweetalert2";
+import axiosPublic from "../../../hooks/useAxiosPublic";
+import { AuthContext } from "../../../providers/AuthProvider"; 
 
 // Setup the date localization
 const locales = {
   "en-US": enUS,
-}
+};
 
 const localizer = dateFnsLocalizer({
   format,
@@ -20,17 +20,18 @@ const localizer = dateFnsLocalizer({
   startOfWeek,
   getDay,
   locales,
-})
+});
 
 // Initial events to display
-const events = [
+const initialEvents = [
   {
     title: "Meeting",
     allDay: false,
     start: new Date(2024, 8, 18, 10, 0), // September 18, 2024, at 10:00 AM
     end: new Date(2024, 8, 18, 12, 0), // September 18, 2024, at 12:00 PM
+    meetingType: "", // Add meetingType property
   },
-]
+];
 
 // Updated modal styles for responsiveness and centering
 const modalStyles = {
@@ -46,7 +47,7 @@ const modalStyles = {
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
     padding: "20px",
-    overflowY: "auto", // Changed to auto for scrolling if needed
+    overflowY: "auto",
     backgroundColor: "white",
     border: "none",
     borderRadius: "8px",
@@ -56,92 +57,126 @@ const modalStyles = {
     backgroundColor: "rgba(0, 0, 0, 0.5)",
     zIndex: "1000", // Overlay also needs a high z-index
   },
-}
+};
 
 const MyCalendar = () => {
-  const { user } = useContext(AuthContext) // Use AuthContext to get the logged-in user's info
-  const [myEvents, setMyEvents] = useState(events)
-  const [modalIsOpen, setModalIsOpen] = useState(false)
+  const { user } = useContext(AuthContext); // Use AuthContext to get the logged-in user's info
+  const [myEvents, setMyEvents] = useState(initialEvents);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [newEvent, setNewEvent] = useState({
     title: "",
     startDate: "",
     endDate: "",
     description: "",
-  })
-  const [selectedSlot, setSelectedSlot] = useState(null)
+    meetingType: "", // Add meetingType to the new event state
+  });
+  const [selectedSlot, setSelectedSlot] = useState(null);
 
   // Function to handle adding new events
   const handleSelectSlot = ({ start, end }) => {
-    setSelectedSlot({ start, end })
-    setModalIsOpen(true)
-  }
+    setSelectedSlot({ start, end });
+    setModalIsOpen(true);
+  };
 
   // Function to send event data to the backend
   const addEventToBackend = async (eventDetails) => {
     try {
-      const response = await axios.post(
-        "https://link-up-shaharul.vercel.app/add-event",
+      const response = await axiosPublic.post(
+        "http://localhost:5000/add-event",
         eventDetails
-      )
-      console.log("Event added to backend:", response.data)
+      );
+      console.log("Event added to backend:", response.data);
       Swal.fire({
         position: "top-end",
         icon: "success",
         title: "Event added successfully!",
         showConfirmButton: false,
         timer: 1500,
-      })
+      });
     } catch (error) {
-      console.error("Error adding event to backend:", error)
+      console.error("Error adding event to backend:", error);
       Swal.fire({
         icon: "error",
         title: "Oops...",
         text: "Something went wrong while adding the event!",
-      })
+      });
     }
-  }
+  };
 
   // Function to handle event creation
   const handleSubmit = async () => {
-    const { title, startDate, endDate, description } = newEvent
+    const { title, startDate, endDate, description, meetingType } = newEvent;
 
-    if (title && startDate && endDate && description) {
-      const newEventData = {
-        title,
-        start: new Date(startDate),
-        end: new Date(endDate),
-        description,
-      }
-
-      // Add the new event to the local state
-      setMyEvents([...myEvents, newEventData])
-
-      // Send event data to the backend
-      await addEventToBackend(newEventData)
-
-      // Clear the input fields after submission
-      setNewEvent({
-        title: "",
-        startDate: "",
-        endDate: "",
-        description: "",
-      })
-
-      // Close the modal
-      setModalIsOpen(false)
-    } else {
-      alert("Please fill out all the fields.")
+    // Validate that all fields are filled and dates are correct
+    if (!title || !startDate || !endDate || !description) {
+      Swal.fire({
+        icon: "warning",
+        title: "Incomplete Information",
+        text: "Please fill out all the fields.",
+      });
+      return;
     }
-  }
+
+    if (new Date(startDate) >= new Date(endDate)) {
+      Swal.fire({
+        icon: "warning",
+        title: "Invalid Dates",
+        text: "End date must be later than start date.",
+      });
+      return;
+    }
+
+    const newEventData = {
+      title,
+      start: new Date(startDate),
+      end: new Date(endDate),
+      description,
+      meetingType, // Add meetingType to event data
+    };
+
+    // Add the new event to the local state
+    setMyEvents([...myEvents, newEventData]);
+
+    // Send event data to the backend
+    await addEventToBackend(newEventData);
+
+    // Clear the input fields after submission
+    setNewEvent({
+      title: "",
+      startDate: "",
+      endDate: "",
+      description: "",
+      meetingType: "",
+    });
+
+    // Close the modal
+    setModalIsOpen(false);
+  };
 
   // Function to handle input changes
   const handleChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setNewEvent((prevEvent) => ({
       ...prevEvent,
       [name]: value,
-    }))
-  }
+    }));
+  };
+
+  // Event color differentiation
+  const eventPropGetter = (event) => {
+    let backgroundColor;
+    switch (event.meetingType) {
+      case "zoom":
+        backgroundColor = "lightblue"; // Example color for Zoom
+        break;
+      case "meet":
+        backgroundColor = "lightgreen"; // Example color for Google Meet
+        break;
+      default:
+        backgroundColor = "lightgray"; // Default color
+    }
+    return { style: { backgroundColor } };
+  };
 
   return (
     <>
@@ -157,10 +192,11 @@ const MyCalendar = () => {
             endAccessor="end"
             selectable
             onSelectSlot={handleSelectSlot}
-            style={{ height: "60vh", backgroundColor: "white", zIndex: "1" }} // Set calendar z-index lower than the modal
+            style={{ height: "60vh", backgroundColor: "white", zIndex: "1" }}
             views={["month", "week", "day", "agenda"]}
             defaultView="month"
-            className="text-xs md:text-sm text-center font-bold" // Center and bold text
+            className="text-xs md:text-sm text-center font-bold"
+            eventPropGetter={eventPropGetter} // Set event colors
           />
         </div>
 
@@ -169,9 +205,10 @@ const MyCalendar = () => {
           isOpen={modalIsOpen}
           onRequestClose={() => setModalIsOpen(false)}
           style={modalStyles}
+          ariaHideApp={false}
         >
           <h2 className="text-xl font-bold mb-4 text-center">Add New Event</h2>
-          <div className="space-y-4 text-center">
+          <div className="space-y-4">
             <div>
               <label className="block text-gray-700">Event Title</label>
               <input
@@ -213,6 +250,20 @@ const MyCalendar = () => {
                 placeholder="Enter event description"
               ></textarea>
             </div>
+            {/* Dropdown for selecting meeting type */}
+            <div>
+              <label className="block text-gray-700">Meeting Type</label>
+              <select
+                name="meetingType"
+                value={newEvent.meetingType}
+                onChange={handleChange}
+                className="w-full p-2 border rounded text-center"
+              >
+                <option value="">None</option>
+                <option value="zoom">Zoom</option>
+                <option value="meet">Google Meet</option>
+              </select>
+            </div>
             <div className="flex justify-end space-x-4">
               <button
                 className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
@@ -231,7 +282,7 @@ const MyCalendar = () => {
         </Modal>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default MyCalendar
+export default MyCalendar;

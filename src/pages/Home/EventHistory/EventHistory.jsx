@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
-import useAxiosPublic from "../../../hooks/useAxiosPublic"; // Hook to get axios instance
+import axiosPublic from "../../../hooks/useAxiosPublic"; // Import axiosPublic directly
+import zoomLogo from "../../../assets/Zoom.png"; // Zoom logo in public folder
+import googleMeetLogo from "../../../assets/meet.png"; // Google Meet logo in public folder
 
 const EventHistory = () => {
   const [events, setEvents] = useState([]);
   const [error, setError] = useState(null);
-  
-  // Call useAxiosPublic to get axiosPublic instance
-  const axiosPublic = useAxiosPublic(); 
 
   // Fetch event data when the component mounts
   useEffect(() => {
@@ -15,6 +14,7 @@ const EventHistory = () => {
         console.log("Fetching events from:", axiosPublic.defaults.baseURL + "/events");
         const response = await axiosPublic.get("/events");
         setEvents(response.data);
+        console.log("Fetched events:", response.data); // Log fetched events
       } catch (err) {
         console.error("Error fetching events: ", err);
         setError(err.message);
@@ -22,7 +22,7 @@ const EventHistory = () => {
     };
 
     fetchEvents();
-  }, [axiosPublic]); // Add axiosPublic as a dependency
+  }, []); // No need for axiosPublic as a dependency here
 
   // Update an event
   const handleUpdate = async (id) => {
@@ -65,46 +65,51 @@ const EventHistory = () => {
         <p className="text-red-500 text-center">Failed to load events: {error}</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {events.map((event) => (
-            <div key={event._id} className="bg-white rounded-lg shadow-lg p-6 flex flex-col justify-between">
-              {/* Card content - Flexbox for user image and event info */}
-              <div className="flex items-start">
-                {/* User image */}
-                <img
-                  src={event.userImage || "https://via.placeholder.com/50"} // Use actual image URL or placeholder
-                  alt={event.title}
-                  className="w-12 h-12 rounded-full mr-4"
-                />
-                {/* Event info */}
-                <div className="flex-1">
-                  <h3 className="text-2xl font-semibold">{event.title}</h3>
-                  <p className="text-gray-600 mt-2">
-                    <strong>Start:</strong> {new Date(event.start).toLocaleString()}
-                  </p>
-                  <p className="text-gray-600 mt-2">
-                    <strong>End:</strong> {new Date(event.end).toLocaleString()}
-                  </p>
-                  <p className="text-gray-600 mt-4">{event.description}</p>
+          {events.map((event) => {
+            console.log("Event meeting type:", event.meetingType); // Log meeting type for each event
+            return (
+              <div key={event._id} className="bg-white rounded-lg shadow-lg p-6 flex flex-col justify-between">
+                <div className="flex items-start">
+                  <img
+                    src={
+                      event.meetingType === "zoom"
+                        ? zoomLogo
+                        : event.meetingType === "meet"
+                        ? googleMeetLogo
+                        : "https://via.placeholder.com/50"
+                    }
+                    alt={event.title}
+                    className="w-12 h-12 rounded-full mr-4"
+                  />
+                  <div className="flex-1">
+                    <h3 className="text-2xl font-semibold">{event.title}</h3>
+                    <p className="text-gray-600 mt-2">
+                      <strong>Start:</strong> {new Date(event.start).toLocaleString()}
+                    </p>
+                    <p className="text-gray-600 mt-2">
+                      <strong>End:</strong> {new Date(event.end).toLocaleString()}
+                    </p>
+                    <p className="text-gray-600 mt-4">{event.description}</p>
+                  </div>
+                </div>
+
+                <div className="mt-6 flex justify-end space-x-3">
+                  <button
+                    className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
+                    onClick={() => handleUpdate(event._id)}
+                  >
+                    Update
+                  </button>
+                  <button
+                    className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
+                    onClick={() => handleCancel(event._id)}
+                  >
+                    Cancel Event
+                  </button>
                 </div>
               </div>
-
-              {/* Update and Cancel buttons */}
-              <div className="mt-6 flex justify-end space-x-3">
-                <button
-                  className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
-                  onClick={() => handleUpdate(event._id)}
-                >
-                  Update
-                </button>
-                <button
-                  className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
-                  onClick={() => handleCancel(event._id)}
-                >
-                  Cancel Event
-                </button>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
