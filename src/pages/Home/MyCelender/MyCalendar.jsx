@@ -7,6 +7,7 @@ import enUS from "date-fns/locale/en-US"
 import Modal from "react-modal"
 import Swal from "sweetalert2"
 import { AuthContext } from "../../../providers/AuthProvider"
+import useAxiosPublic from "../../../hooks/useAxiosPublic"
 
 // Setup the date localization
 const locales = {
@@ -71,6 +72,8 @@ const MyCalendar = () => {
   })
   const [selectedSlot, setSelectedSlot] = useState(null)
 
+  const axiosInstance = useAxiosPublic() // Initialize axios instance here
+
   // Function to handle adding new events
   const handleSelectSlot = ({ start, end }) => {
     setSelectedSlot({ start, end })
@@ -80,8 +83,8 @@ const MyCalendar = () => {
   // Function to send event data to the backend
   const addEventToBackend = async (eventDetails) => {
     try {
-      const response = await axios.post(
-        "https://link-up-server-pbarqf0zy-shah-arefin-ahmeds-projects.vercel.app/events",
+      const response = await axiosInstance.post(
+        "http://localhost:5000/add-event",
         eventDetails
       )
       console.log("Event added to backend:", response.data)
@@ -249,7 +252,7 @@ const MyCalendar = () => {
                 placeholder="Enter event description"
               ></textarea>
             </div>
-            {/* Dropdown for selecting meeting type */}
+            {/* Dropdown for meeting type */}
             <div>
               <label className="block text-gray-700">Meeting Type</label>
               <select
@@ -258,7 +261,7 @@ const MyCalendar = () => {
                 onChange={handleChange}
                 className="w-full p-2 border rounded text-center"
               >
-                <option value="">None</option>
+                <option value="">Select meeting type</option>
                 <option value="zoom">Zoom</option>
                 <option value="meet">Google Meet</option>
               </select>
