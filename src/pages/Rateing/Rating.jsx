@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 ;
 import { FaStar, FaStarHalfAlt } from "react-icons/fa";
 import { AiOutlineStar } from "react-icons/ai";
 import "@fortawesome/fontawesome-free/css/all.css"; // FontAwesome for other icons
 import axiosClient from "../../Axios/Axios";
+import { AuthContext } from "../../providers/AuthProvider";
 
 const StarRating = ({ rating }) => {
   const fullStars = Math.floor(rating);
   const hasHalfStar = rating - fullStars >= 0.5;
   const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
 
+ 
   return (
     <div className="flex justify-center mt-2">
       {[...Array(fullStars)].map((_, i) => (
@@ -30,12 +32,21 @@ const Rating = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-
+  const { user } = useContext(AuthContext)
+  console.log(user);
   const handleSubmit = async (e) => {
     e.preventDefault();
   
     if (review.trim()) {
-      const newReview = { rating, review };
+      const email = user ? user.email : "Unknown";
+      const userName = user ? user.displayName : "Unknown";
+      const photoURL = user ? user?.photoURL : "Unknown";
+
+      const newReview = { rating, 
+        review,
+        email: email,
+        userName: userName,
+        photoURL: photoURL, };
       console.log(newReview);
   
       setIsSubmitting(true);
@@ -135,7 +146,7 @@ console.log(reviews);
       reviews.slice(-6).map((reviewItem, index) => (  // Limit to 6 reviews
         <div
           key={index}
-          className="bg-white p-6  rounded-xl shadow-lg border border-gray-300 hover:shadow-xl transition duration-300 w-full text-center"
+          className="bg-white p-6  rounded-xl shadow-lg border border-gray-300 hover:shadow-xl transition duration-300n max-w-sm w-full text-center"
         >
           <div className="flex items-center justify-center">
             <span className="text-4xl font-bold">{reviewItem.rating}</span>
