@@ -1,68 +1,77 @@
-import React, { useEffect, useState } from "react";
-import axiosClient from "../../../Axios/Axios"; // Assuming axiosClient is set up for making API requests
+import React, { useEffect, useState } from "react" // Assuming axiosClient is set up for making API requests
+import useAxiosPublic from "../../../hooks/useAxiosPublic"
 
 const EventHistory = () => {
-  const [events, setEvents] = useState([]);
-  const [error, setError] = useState(null);
+  const [events, setEvents] = useState([])
+  const [error, setError] = useState(null)
+
+  const axiosPublic = useAxiosPublic()
 
   // Fetch event data when the component mounts
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axiosClient.get("/events"); // Your API endpoint
-        setEvents(response.data);
+        const response = await axiosPublic.get("/events") // Your API endpoint
+        setEvents(response.data)
       } catch (err) {
-        console.error("Error fetching events: ", err);
-        setError(err.message);
+        console.error("Error fetching events: ", err)
+        setError(err.message)
       }
-    };
+    }
 
-    fetchEvents();
-  }, []);
+    fetchEvents()
+  }, [])
 
   // Update an event
   const handleUpdate = async (id) => {
-    const updatedTitle = prompt("Enter new title:");
-    const updatedDescription = prompt("Enter new description:");
-    const updatedStart = prompt("Enter new start date (YYYY-MM-DD):");
-    const updatedEnd = prompt("Enter new end date (YYYY-MM-DD):");
+    const updatedTitle = prompt("Enter new title:")
+    const updatedDescription = prompt("Enter new description:")
+    const updatedStart = prompt("Enter new start date (YYYY-MM-DD):")
+    const updatedEnd = prompt("Enter new end date (YYYY-MM-DD):")
 
     try {
-      const response = await axiosClient.put(`/events/${id}`, {
+      const response = await axiosPublic.put(`/events/${id}`, {
         title: updatedTitle,
         description: updatedDescription,
         start: new Date(updatedStart),
         end: new Date(updatedEnd),
-      });
-      setEvents(events.map((event) => (event._id === id ? response.data : event)));
+      })
+      setEvents(
+        events.map((event) => (event._id === id ? response.data : event))
+      )
     } catch (err) {
-      console.error("Error updating event: ", err);
-      setError(err.message);
+      console.error("Error updating event: ", err)
+      setError(err.message)
     }
-  };
+  }
 
   // Cancel (delete) an event
   const handleCancel = async (id) => {
     if (window.confirm("Are you sure you want to cancel this event?")) {
       try {
-        await axiosClient.delete(`/events/${id}`);
-        setEvents(events.filter((event) => event._id !== id));
+        await axiosClient.delete(`/events/${id}`)
+        setEvents(events.filter((event) => event._id !== id))
       } catch (err) {
-        console.error("Error deleting event: ", err);
-        setError(err.message);
+        console.error("Error deleting event: ", err)
+        setError(err.message)
       }
     }
-  };
+  }
 
   return (
     <div className="event-history-container mx-auto mt-10 p-4">
       <h2 className="text-4xl font-bold text-center mb-6">Event History</h2>
       {error ? (
-        <p className="text-red-500 text-center">Failed to load events: {error}</p>
+        <p className="text-red-500 text-center">
+          Failed to load events: {error}
+        </p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {events.map((event) => (
-            <div key={event._id} className="bg-white rounded-lg shadow-lg p-6 flex flex-col justify-between">
+            <div
+              key={event._id}
+              className="bg-white rounded-lg shadow-lg p-6 flex flex-col justify-between"
+            >
               {/* Card content - Flexbox for user image and event info */}
               <div className="flex items-start">
                 {/* User image */}
@@ -75,7 +84,8 @@ const EventHistory = () => {
                 <div className="flex-1">
                   <h3 className="text-2xl font-semibold">{event.title}</h3>
                   <p className="text-gray-600 mt-2">
-                    <strong>Start:</strong> {new Date(event.start).toLocaleString()}
+                    <strong>Start:</strong>{" "}
+                    {new Date(event.start).toLocaleString()}
                   </p>
                   <p className="text-gray-600 mt-2">
                     <strong>End:</strong> {new Date(event.end).toLocaleString()}
@@ -104,7 +114,7 @@ const EventHistory = () => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default EventHistory;
+export default EventHistory
