@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 ;
 import { FaStar, FaStarHalfAlt } from "react-icons/fa";
 import { AiOutlineStar } from "react-icons/ai";
@@ -33,26 +33,29 @@ const Rating = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+  
     if (review.trim()) {
-      
       const newReview = { rating, review };
       console.log(newReview);
+  
       setIsSubmitting(true);
       setErrorMessage("");
       setSuccessMessage("");
 
+
+  
       try {
         // Send review data securely to backend
-        const response = await axiosClient.post("/reviews",
-          newReview,);
+        const response = await axiosClient.post("/reviews", newReview);
         console.log(response);
+  
         // Handle response and update state with new review
         // setReviews([...reviews, response.data]);
-        // setRating(0);
-        // setReview("");
-        // setSuccessMessage("Review submitted successfully!");
-      } 
-      catch (error) {
+        setRating(0);
+        setReview("");
+        setSuccessMessage("Review submitted successfully!");
+        window.location.reload();
+      } catch (error) {
         setErrorMessage("Error submitting review. Please try again.");
         console.error("Error submitting review:", error);
       } finally {
@@ -60,11 +63,26 @@ const Rating = () => {
       }
     }
   };
+  
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await axiosClient.get("/reviews"); // Your API endpoint
+        setReviews(response.data);
+      } catch (err) {
+        console.error("Error fetching events: ", err);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+console.log(reviews);
 
   return (
     <div className="justify-center mx-auto p-4">
       {/* Rating Submission Card */}
-      <div className="max-w-sm rounded-xl overflow-hidden w-full shadow-md p-6 bg-white transition">
+      <div className="rounded-xl overflow-hidden w-full shadow-md p-6 bg-white transition">
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-4">Rate and Review</h2>
           <StarRating rating={rating} />
@@ -109,30 +127,31 @@ const Rating = () => {
       </div>
 
       {/* Displaying Submitted Reviews */}
-      <div className="flex justify-center items-center h-screen flex-col w-full px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-          {reviews.length === 0 ? (
-            <p className="text-gray-500">No reviews yet</p>
-          ) : (
-            reviews.map((reviewItem, index) => (
-              <div
-                key={index}
-                className="bg-white p-6 rounded-xl shadow-lg border border-gray-300 hover:shadow-xl transition duration-300 max-w-xs w-full text-center"
-              >
-                <div className="flex items-center justify-center">
-                  <span className="text-4xl font-bold">{reviewItem.rating}</span>
-                  <span className="ml-2 text-gray-500 text-sm">
-                    Out of 5 stars
-                  </span>
-                </div>
-                <StarRating rating={reviewItem.rating} />
-                <p className="text-gray-600 mt-2">{reviewItem.review}</p>
-                <p className="text-gray-500 mt-4 text-sm">Powered by GatherUp</p>
-              </div>
-            ))
-          )}
+      <div className="flex justify-center mt-10 flex-col w-full px-4">
+  <div className="grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3 gap-6 w-full">
+    {reviews.length === 0 ? (
+      <p className="text-gray-500">No reviews yet</p>
+    ) : (
+      reviews.slice(-6).map((reviewItem, index) => (  // Limit to 6 reviews
+        <div
+          key={index}
+          className="bg-white p-6  rounded-xl shadow-lg border border-gray-300 hover:shadow-xl transition duration-300 w-full text-center"
+        >
+          <div className="flex items-center justify-center">
+            <span className="text-4xl font-bold">{reviewItem.rating}</span>
+            <span className="ml-2 text-gray-500 text-sm">
+              Out of {reviewItem.rating} stars
+            </span>
+          </div>
+          <StarRating rating={reviewItem.rating} />
+          <p className="text-gray-600 break-words mt-2">{reviewItem.review}</p>
+          <p className="text-gray-500 mt-4 text-sm">Powered by LinkUp</p>
         </div>
-      </div>
+      ))
+    )}
+  </div>
+</div>
+
     </div>
   );
 };
