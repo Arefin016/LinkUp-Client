@@ -1,5 +1,6 @@
 import React from "react";
 import { FaUser, FaUsers, FaHistory } from "react-icons/fa"; // Use 'react-icons/fa' instead of 'fa6'
+import { FcRating } from "react-icons/fc";
 import { Link, NavLink } from "react-router-dom";
 
 const Sidebar = () => {
@@ -68,6 +69,14 @@ const Sidebar = () => {
           >
             <FaHistory /> {/* History icon */}
             <span className="mx-2 text-sm font-medium">Event History</span>
+          </NavLink>
+          {/* review section */}
+          <NavLink
+            to="/dashboard/Rating"
+            className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-300 hover:bg-gray-100  dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-orange-600"
+          >
+            <FcRating /> {/* rating icon */}
+            <span className="mx-2 text-sm font-medium">ADD Review & rating</span>
           </NavLink>
         </nav>
 

@@ -10,6 +10,9 @@ import Testimonials from "../pages/Testimonials/Testimonials"
 import PrivateRoute from "./PrivateRoute"
 import ContactUs from "../pages/ContactUs/ContactUs"
 import Rating from "../pages/Rateing/Rating"
+import Dash from "../Layout/Dash"
+import Dashboard from "../pages/Dashboard/Dashboard"
+import UserDashboard from "../pages/Userashboard/UserDashboard"
 
 export const router = createBrowserRouter([
   {
@@ -66,7 +69,7 @@ export const router = createBrowserRouter([
         children: [
           {
             path: "/dashboard/dashboards",
-            element: <Dashboard></Dashboard>,
+            element:<Dashboard></Dashboard>
           },
           {
             path: "/dashboard/history",
@@ -75,7 +78,12 @@ export const router = createBrowserRouter([
         
           {
             path: "/dashboard/user",
-            element: <UserDashboard></UserDashboard> ,
+            element:<UserDashboard></UserDashboard>
+          },
+        
+          {
+            path: "/dashboard/Rating",
+            element:<Rating></Rating>
           },
         
         ],
