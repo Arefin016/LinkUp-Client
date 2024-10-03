@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const axiosUsers = axios.create({
-  baseURL: "https://link-up-shaharul.vercel.app",
+  baseURL: "http://localhost:5000",
 })
 
 const useAxiosUsers = () => {
