@@ -11,7 +11,7 @@ const StarRating = ({ rating }) => {
   const hasHalfStar = rating - fullStars >= 0.5;
   const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
 
- 
+
   return (
     <div className="flex justify-center mt-2">
       {[...Array(fullStars)].map((_, i) => (
@@ -33,6 +33,7 @@ const Rating = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const { user } = useContext(AuthContext)
+  const axiosPublic = useAxiosPublic();
   console.log(user);
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -57,7 +58,7 @@ const Rating = () => {
   
       try {
         // Send review data securely to backend
-        const response = await useAxiosPublic.post("/reviews", newReview);
+        const response = await axiosPublic.post("/reviews", newReview);
         console.log(response);
   
         // Handle response and update state with new review
@@ -79,7 +80,7 @@ const Rating = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await useAxiosPublic.get("/reviews"); // Your API endpoint
+        const response = await axiosPublic.get("/reviews"); // Your API endpoint
         setReviews(response.data);
       } catch (err) {
         console.error("Error fetching events: ", err);
