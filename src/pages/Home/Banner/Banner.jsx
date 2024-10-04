@@ -29,7 +29,7 @@ const Banner = () => {
       LinkUp is your hub for scheduling meetings professionally and efficiently, eliminating the hassle of back-and-forth emails so you can get back to work.
     </p>
     <div className="flex mt-8 justify-center md:justify-start">
-      <Link to='celender'>
+      <Link to='calendar'>
         <div className="relative flex justify-center items-center w-[80%] mx-auto md:w-auto">
           <a
             href="#_"
