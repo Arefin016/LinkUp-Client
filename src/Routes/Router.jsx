@@ -14,11 +14,12 @@ import UserDashboard from "../pages/Userashboard/UserDashboard"; // Correct impo
 import Dash from "../Layout/Dash";
 import Guides from "../pages/Guides/Guides";
 import Introduction from "../pages/Introduction/Introduction";
-import Contact from "../pages/Contact/Contact";
+
 import UseLinkUp from "../pages/UseLinkUp/UseLinkUp";
 import Features from "../pages/Features/Features";
 import Faqs from "../pages/Faqs/Faqs";
 import BestUse from "../pages/BestUse/BestUse";
+import Contact from './../pages/Contact/Contact';
 
 export const router = createBrowserRouter([
   {
@@ -28,7 +29,7 @@ export const router = createBrowserRouter([
       { path: "/", element: <Home /> },
       { path: "/aboutus", element: <AboutUs /> },
       { path: "/login", element: <SignIn /> },
-      { path: "/contact", element: <ContactUs /> },
+      { path: "/contactus", element: <ContactUs /> },
       { path: "/rating", element: <Rating /> }, // Use lowercase for consistency
       { path: "/signup", element: <SignUp /> },
       {
@@ -47,7 +48,7 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
         children: [
-          { path: "/dashboard", element: <Dashboard /> }, // Adjusted path
+          { path: "/dashboard/dashboards", element: <Dashboard /> }, // Adjusted path
           { path: "/dashboard/history", element: <EventHistory /> },
           { path: "/dashboard/user", element: <UserDashboard /> },
           { path: "/dashboard/rating", element: <Rating /> }, // Use lowercase
@@ -58,7 +59,7 @@ export const router = createBrowserRouter([
         element: <Guides />,
         children: [
           { path: "/guides/introduction", element: <Introduction /> },
-          { path: "/guides/contact", element: <Contact /> },
+          { path: "/guides/contact", element: <Contact></Contact>},
           { path: "/guides/useLinkUp", element: <UseLinkUp /> },
           { path: "/guides/features", element: <Features /> },
           { path: "/guides/faqs", element: <Faqs /> }, // Consistent casing
