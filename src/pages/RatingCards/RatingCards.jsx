@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axiosClient from "../../Axios/Axios";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 // ReviewCard Component
 const ReviewCard = ({ reviewer, role, rating, photoURL, reviewText }) => {
@@ -57,7 +57,7 @@ const ReviewCards = () => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await axiosClient.get("/reviews"); // Your API endpoint
+        const response = await useAxiosPublic.get("/reviews"); // Your API endpoint
         setReviews(response.data);
       } catch (err) {
         console.error("Error fetching reviews: ", err);

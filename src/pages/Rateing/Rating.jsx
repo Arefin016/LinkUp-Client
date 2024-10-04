@@ -3,8 +3,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { FaStar, FaStarHalfAlt } from "react-icons/fa";
 import { AiOutlineStar } from "react-icons/ai";
 import "@fortawesome/fontawesome-free/css/all.css"; // FontAwesome for other icons
-import axiosClient from "../../Axios/Axios";
 import { AuthContext } from "../../providers/AuthProvider";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const StarRating = ({ rating }) => {
   const fullStars = Math.floor(rating);
@@ -57,7 +57,7 @@ const Rating = () => {
   
       try {
         // Send review data securely to backend
-        const response = await axiosClient.post("/reviews", newReview);
+        const response = await useAxiosPublic.post("/reviews", newReview);
         console.log(response);
   
         // Handle response and update state with new review
@@ -79,7 +79,7 @@ const Rating = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axiosClient.get("/reviews"); // Your API endpoint
+        const response = await useAxiosPublic.get("/reviews"); // Your API endpoint
         setReviews(response.data);
       } catch (err) {
         console.error("Error fetching events: ", err);
