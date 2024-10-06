@@ -1,69 +1,69 @@
-import { Link, useNavigate } from "react-router-dom"
-
-import SignIn from "../../../public/SignIn.json"
-import Lottie from "lottie-react"
-import { useForm } from "react-hook-form"
-import { useContext } from "react"
-import { AuthContext } from "../../providers/AuthProvider"
-import Swal from "sweetalert2"
-import SocialLogin from "../../components/SocialLogin/SocialLogin"
-import useAxiosPublic from "../../hooks/useAxiosPublic"
+import { Link, useNavigate } from "react-router-dom";
+import SignIn from "../../../public/SignIn.json";
+import Lottie from "lottie-react";
+import { useForm } from "react-hook-form";
+import { useContext } from "react";
+import { AuthContext } from "../../providers/AuthProvider";
+import Swal from "sweetalert2";
+import SocialLogin from "../../components/SocialLogin/SocialLogin";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const SignUp = () => {
-  const axiosPublic = useAxiosPublic()
+  const axiosPublic = useAxiosPublic();
 
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm()
+  } = useForm();
 
-  const { createUser, updateUserProfile } = useContext(AuthContext)
-  const navigate = useNavigate()
+  const { createUser, updateUserProfile } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  const onSubmit = (data) => {
-    console.log(data)
-    createUser(data.email, data.password).then((result) => {
-      const loggedUser = result.user
-      console.log(loggedUser)
-      updateUserProfile(data.name, data.photoURL)
-        .then(() => {
-          // crete user entry in the database
-          const userInfo = {
-            name: data.name,
-            email: data.email,
-          }
-          axiosPublic.post("/users", userInfo).then((res) => {
-            if (res.data.insertedId) {
-              console.log("user added to the database")
-              reset()
-              Swal.fire({
-                position: "top",
-                icon: "success",
-                title: "User Created Successfully",
-                showConfirmButton: false,
-                timer: 1500,
-              })
-              navigate("/")
-            }
-          })
-        })
-        .catch((error) => console.log(error))
-    })
-  }
+  const onSubmit = async (data) => {
+    try {
+      console.log(data);
+      const result = await createUser(data.email, data.password);
+      const loggedUser = result.user;
+      console.log(loggedUser);
+
+      await updateUserProfile(data.name, data.photoURL);
+
+      // Create user entry in the database
+      const userInfo = {
+        name: data.name,
+        email: data.email,
+      };
+      const res = await axiosPublic.post("/users", userInfo);
+
+      if (res.data.insertedId) {
+        console.log("User added to the database");
+        reset();
+        Swal.fire({
+          position: "top",
+          icon: "success",
+          title: "User Created Successfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        navigate("/"); // Navigate to home after successful sign-up
+      }
+    } catch (error) {
+      console.error("Error during sign-up:", error);
+    }
+  };
 
   return (
     <div className="hero min-h-screen bg-base-200">
       <div className="hero-content flex-col lg:flex-row">
         <div className="w-1/2 mr-12">
-          <Lottie animationData={SignIn}></Lottie>
+          <Lottie animationData={SignIn} />
         </div>
         <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
           <form onSubmit={handleSubmit(onSubmit)} className="card-body">
-            <h1 className="text-3xl text-center font-bold">
-              Sign Up To Link Up
-            </h1>
+            <h1 className="text-3xl text-center font-bold">Sign Up To Link Up</h1>
+            {/* Name Input */}
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Name</span>
@@ -75,25 +75,23 @@ const SignUp = () => {
                 name="name"
                 className="input input-bordered"
               />
-              {errors.name && (
-                <span className="text-red-600">Name is required</span>
-              )}
+              {errors.name && <span className="text-red-600">Name is required</span>}
             </div>
+            {/* Photo URL Input */}
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Photo URL</span>
               </label>
               <input
-                type="name"
+                type="text"
                 {...register("photoURL", { required: true })}
-                placeholder="Your Name"
+                placeholder="Your Photo URL"
                 name="photoURL"
                 className="input input-bordered"
               />
-              {errors.photoURL && (
-                <span className="text-red-600">photoURL is required</span>
-              )}
+              {errors.photoURL && <span className="text-red-600">Photo URL is required</span>}
             </div>
+            {/* Email Input */}
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Email</span>
@@ -105,10 +103,9 @@ const SignUp = () => {
                 name="email"
                 className="input input-bordered"
               />
-              {errors.email && (
-                <span className="text-red-600">Email is required</span>
-              )}
+              {errors.email && <span className="text-red-600">Email is required</span>}
             </div>
+            {/* Password Input */}
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Password</span>
@@ -129,19 +126,14 @@ const SignUp = () => {
                 <span className="text-red-600">Password is required</span>
               )}
               {errors.password?.type === "minLength" && (
-                <span className="text-red-600">
-                  Password must be 6 characters
-                </span>
+                <span className="text-red-600">Password must be at least 6 characters</span>
               )}
               {errors.password?.type === "maxLength" && (
-                <span className="text-red-600">
-                  Password must be less than 20 characters
-                </span>
+                <span className="text-red-600">Password must be less than 20 characters</span>
               )}
               {errors.password?.type === "pattern" && (
                 <span className="text-red-600">
-                  Password must have one uppercase, one lowercase, one number
-                  and one special characters
+                  Password must have one uppercase letter, one lowercase letter, one number, and one special character
                 </span>
               )}
               <label className="label">
@@ -150,12 +142,9 @@ const SignUp = () => {
                 </a>
               </label>
             </div>
+            {/* Submit Button */}
             <div className="form-control mt-6">
-              <input
-                type="submit"
-                value="Sign Up"
-                className="btn btn-primary"
-              />
+              <input type="submit" value="Sign Up" className="btn btn-primary" />
             </div>
           </form>
           <p className="my-4 text-center">
@@ -164,11 +153,12 @@ const SignUp = () => {
               LOGIN
             </Link>
           </p>
-          <SocialLogin></SocialLogin>
+          
+          <SocialLogin />
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SignUp
+export default SignUp;
