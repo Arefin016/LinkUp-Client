@@ -68,7 +68,7 @@ const axiosPublic = useAxiosPublic();
 
   return (
     <div className="flex dark:text-white items-center justify-center p-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <div className="flex gap-6">
         {reviews.slice(-6).map((review) => (
           <ReviewCard
             key={review.id}
