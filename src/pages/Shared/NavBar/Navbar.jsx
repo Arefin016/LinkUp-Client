@@ -15,7 +15,7 @@ const Navbar = () => {
     document.querySelector("html").setAttribute("data-theme", savedTheme);
   }, []);
 
-  const handleThemeChange = (e) => {
+  const handleTheme = (e) => {
     const selectedTheme = e.target.checked ? "dark" : "light";
     setTheme(selectedTheme);
     localStorage.setItem("theme", selectedTheme);
@@ -94,12 +94,12 @@ const Navbar = () => {
         onClick={toggleDropdown}
       />
       {isDropdownOpen && (
-        <div ref={dropdownRef} className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50">
-          <div className="flex justify-between items-center p-2">
-            <div className="text-gray-700">{user?.displayName || "No user"}</div>
-            <button onClick={toggleDropdown} className="text-gray-500 hover:text-gray-700">
-              ✖️ 
-            </button>
+        <div
+          ref={dropdownRef}
+          className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50"
+        >
+          <div className="py-2 px-4 text-gray-700">
+            {user?.displayName || "No user"}
           </div>
           <hr />
           <button
@@ -166,7 +166,7 @@ const Navbar = () => {
       <div className="navbar-end flex items-center gap-x-3">
         {userProfile}
         <input
-          onChange={handleThemeChange}
+          onChange={handleTheme}
           type="checkbox"
           className="toggle theme-controller mx-6"
           checked={theme === "dark"}
