@@ -122,7 +122,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <div className="navbar bg-white justify-between px-6 py-4 shadow-lg transition duration-300 ease-in-out hover:shadow-xl">
+    <div className="navbar sticky top-0 z-50 bg-white  justify-between px-6 py-4 shadow-lg transition duration-300 ease-in-out hover:shadow-xl">
       <div className="navbar-start">
         <div className="dropdown lg:hidden">
           <div tabIndex={0} role="button" className="btn btn-ghost">

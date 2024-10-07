@@ -7,10 +7,8 @@ import { Typewriter } from "react-simple-typewriter";
 
 const Banner = () => {
   return (
-    <div className="relative w-full py-8 px-4  mt-8">
-      
+    <div className="relative w-full  px-4  ">
       <div className="w-full mx-auto my-8 flex flex-col md:flex-row justify-between">
-        
         <div className="w-full md:w-1/3 text-left mb-8 md:mb-0">
           <h2 className="text-4xl lg:text-5xl md:text-5xl font-extrabold leading-tight">
             <Typewriter
@@ -25,7 +23,8 @@ const Banner = () => {
             <br />
             <h1 className="font-right font-extrabold lg:text-6xl text-4xl text-shadow-purple transition duration-300 ease-in-out transform hover:scale-105 hover:rotate-1">
               <span className="text-emerald-500">L</span>
-              <span className="bg-gradient-to-r from-emerald-500 to-purple-500 bg-clip-text text-transparent">inkUp
+              <span className="bg-gradient-to-r from-emerald-500 to-purple-500 bg-clip-text text-transparent">
+                inkUp
               </span>
             </h1>
           </h2>
@@ -97,41 +96,59 @@ const Banner = () => {
         </div>
       </div>
 
-      {/* Features Section */}
       <div className="mx-auto text-center mb-24">
-        <h3 className="text-3xl font-bold">We make it easy to get started</h3>
+        <h3 className="text-3xl font-bold text-gray-800">
+          We make it easy to get started
+        </h3>
         <div className="mt-10 flex justify-center gap-8 flex-wrap">
-          <div className="shadow-2xl w-80 h-52 p-5 text-left bg-white rounded-lg">
-            <img
-              src="https://images.ctfassets.net/k0lk9kiuza3o/2lyAPMRxz8pdvkah5K6NFp/14203e7358e18e312b30c9674d8e72f1/icon-checkmark.svg"
-              alt="Checkmark"
-              className="w-8 h-8"
-            />
-            <h6 className="mt-4 text-lg font-semibold">Create simple rules</h6>
-            <p className="mt-3 text-gray-600">
+          {/* Card 1 */}
+          <div className="shadow-lg w-80 h-56 p-5 text-left bg-white rounded-lg transition-transform duration-300 transform hover:scale-105 hover:shadow-xl border border-blue-200">
+            <div className="flex items-center justify-center bg-blue-100 w-12 h-12 rounded-full mb-4">
+              <img
+                src="https://images.ctfassets.net/k0lk9kiuza3o/2lyAPMRxz8pdvkah5K6NFp/14203e7358e18e312b30c9674d8e72f1/icon-checkmark.svg"
+                alt="Checkmark"
+                className="w-8 h-8"
+              />
+            </div>
+            <h6 className="mt-4 text-lg font-semibold text-blue-600">
+              Create simple rules
+            </h6>
+            <p className="mt-3 text-gray-700">
               Let Calendly know your availability preferences and it'll do the
               work for you.
             </p>
           </div>
-          <div className="shadow-2xl w-80 h-52 p-5 text-left bg-white rounded-lg">
-            <img
-              src="https://images.ctfassets.net/k0lk9kiuza3o/2lyAPMRxz8pdvkah5K6NFp/14203e7358e18e312b30c9674d8e72f1/icon-checkmark.svg"
-              alt="Checkmark"
-              className="w-8 h-8"
-            />
-            <h6 className="mt-4 text-lg font-semibold">Share your link</h6>
-            <p className="mt-3 text-gray-600">
+
+          {/* Card 2 */}
+          <div className="shadow-lg w-80 h-56 p-5 text-left bg-white rounded-lg transition-transform duration-300 transform hover:scale-105 hover:shadow-xl border border-blue-200">
+            <div className="flex items-center justify-center bg-blue-100 w-12 h-12 rounded-full mb-4">
+              <img
+                src="https://images.ctfassets.net/k0lk9kiuza3o/2lyAPMRxz8pdvkah5K6NFp/14203e7358e18e312b30c9674d8e72f1/icon-checkmark.svg"
+                alt="Checkmark"
+                className="w-8 h-8"
+              />
+            </div>
+            <h6 className="mt-4 text-lg font-semibold text-blue-600">
+              Share your link
+            </h6>
+            <p className="mt-3 text-gray-700">
               Send guests your Calendly link or embed it on your website.
             </p>
           </div>
-          <div className="shadow-2xl w-80 h-52 p-5 text-left bg-white rounded-lg">
-            <img
-              src="https://images.ctfassets.net/k0lk9kiuza3o/2lyAPMRxz8pdvkah5K6NFp/14203e7358e18e312b30c9674d8e72f1/icon-checkmark.svg"
-              alt="Checkmark"
-              className="w-8 h-8"
-            />
-            <h6 className="mt-4 text-lg font-semibold">Get booked</h6>
-            <p className="mt-3 text-gray-600">
+
+          {/* Card 3 */}
+          <div className="shadow-lg w-80 h-56 p-5 text-left bg-white rounded-lg transition-transform duration-300 transform hover:scale-105 hover:shadow-xl border border-blue-200">
+            <div className="flex items-center justify-center bg-blue-100 w-12 h-12 rounded-full mb-4">
+              <img
+                src="https://images.ctfassets.net/k0lk9kiuza3o/2lyAPMRxz8pdvkah5K6NFp/14203e7358e18e312b30c9674d8e72f1/icon-checkmark.svg"
+                alt="Checkmark"
+                className="w-8 h-8"
+              />
+            </div>
+            <h6 className="mt-4 text-lg font-semibold text-blue-600">
+              Get booked
+            </h6>
+            <p className="mt-3 text-gray-700">
               They pick a time and the event is added to your calendar.
             </p>
           </div>
@@ -140,13 +157,14 @@ const Banner = () => {
 
       {/* Meeting Types Section */}
       <div className="w-4/5 mx-auto text-center mb-32">
-        <h5 className="mb-6 text-3xl font-bold">
+        <h5 className="mb-6 text-4xl font-bold dark:text-white">
           Scheduling for any meeting type
         </h5>
         <div className="flex flex-wrap justify-center gap-5 text-left">
-          <div className="shadow-2xl w-80 h-56 p-5 bg-white rounded-lg">
+          {/* One-on-One Meeting Card */}
+          <div className="shadow-2xl w-80 h-56 p-5 bg-gradient-to-r from-blue-200 to-blue-300 rounded-lg transition-transform duration-300 transform hover:scale-105 hover:shadow-xl border-2 border-blue-400">
             <h6 className="text-xl font-semibold mb-2">One-on-One Meetings</h6>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-gray-700">
               Let your clients and colleagues select open meeting times on your
               calendar with ease.
             </p>
@@ -154,13 +172,18 @@ const Banner = () => {
               Learn more <ChevronRightIcon className="ml-1" />
             </a>
           </div>
-          <div className="shadow-2xl w-80 h-56 p-5 bg-white rounded-lg">
+
+          {/* Group Meeting Card */}
+          <div className="shadow-2xl w-80 h-56 p-5 bg-gradient-to-r from-green-200 to-green-300 rounded-lg transition-transform duration-300 transform hover:scale-105 hover:shadow-xl border-2 border-green-400">
             <h6 className="text-xl font-semibold mb-2">Group Meetings</h6>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-gray-700">
               Book events for multiple attendees and make sure everyone has a
               voice.
             </p>
-            <a href="#" className="text-blue-600 inline-flex items-center mt-2">
+            <a
+              href="#"
+              className="text-green-600 inline-flex items-center mt-2"
+            >
               Learn more <ChevronRightIcon className="ml-1" />
             </a>
           </div>

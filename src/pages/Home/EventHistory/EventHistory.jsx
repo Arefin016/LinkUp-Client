@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"; // Import axiosPublic directly
-import zoomLogo from "../../../assets/Zoom.png"; // Zoom logo in public folder
-import googleMeetLogo from "../../../assets/meet.png"; // Google Meet logo in public folder
+import zoomLogo from "../../../assets/Zoom.png"; 
+import googleMeetLogo from "../../../assets/meet.png"; 
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
 const EventHistory = () => {
