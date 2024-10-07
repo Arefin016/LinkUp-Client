@@ -7,6 +7,8 @@ const ReviewCard = ({ reviewer, role, rating, photoURL, reviewText }) => {
     const fullStars = Math.floor(rating);
     const halfStar = rating % 1 !== 0;
 
+
+    
     return (
       <>
         {[...Array(fullStars)].map((_, index) => (
