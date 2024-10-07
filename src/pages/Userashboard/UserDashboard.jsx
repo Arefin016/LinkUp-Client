@@ -46,7 +46,12 @@ const UserDashboard = () => {
   // }
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
+    <div
+      data-aos="fade-down"
+      data-aos-easing="linear"
+      data-aos-duration="1500"
+      className="p-6 bg-gray-100 min-h-screen"
+    >
       {/* -------------------*************************----------------
         
         This is part has been complete Arefin
