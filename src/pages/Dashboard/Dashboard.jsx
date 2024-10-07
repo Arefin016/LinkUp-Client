@@ -1,25 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { FaUsers } from "react-icons/fa6";
-import { CiBookmark, CiBookmarkCheck, CiBookmarkRemove } from "react-icons/ci";
-import useAxiosUsers from "../../hooks/useAxiosUsers"; // Import your axios hook
+import React, { useEffect, useState } from "react"
+import { FaUsers } from "react-icons/fa6"
+import { CiBookmark, CiBookmarkCheck, CiBookmarkRemove } from "react-icons/ci"
+import useAxiosUsers from "../../hooks/useAxiosUsers" // Import your axios hook
 
 const Dashboard = () => {
-  const axiosPublic = useAxiosUsers();
-  const [users, setUsers] = useState([]);
+  const axiosPublic = useAxiosUsers()
+  const [users, setUsers] = useState([])
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        console.log("Fetching users from:", axiosPublic.defaults.baseURL + "/users");
-        const res = await axiosPublic.get('/users');
-        setUsers(res.data);
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchUsers = async () => {
+  //     try {
+  //       console.log("Fetching users from:", axiosPublic.defaults.baseURL + "/users");
+  //       const res = await axiosPublic.get('/users');
+  //       setUsers(res.data);
+  //     } catch (error) {
+  //       console.error("Error fetching users:", error);
+  //     }
+  //   };
 
-    fetchUsers();
-  }, [axiosPublic]);
+  //   fetchUsers();
+  // }, [axiosPublic]);
 
   return (
     <div className="ml-4 md:ml-8">
@@ -64,9 +64,11 @@ const Dashboard = () => {
       </div>
 
       <div className="mt-8">
-        <p className="my-3 font-semibold text-xl md:text-2xl">Recently Visited Clients</p>
+        <p className="my-3 font-semibold text-xl md:text-2xl">
+          Recently Visited Clients
+        </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-          {users.map(user => (
+          {users.map((user) => (
             <div key={user._id} className="bg-white rounded-lg p-5 shadow-md">
               <div className="rounded-full overflow-hidden w-24 h-24 mx-auto mb-4">
                 <img
@@ -75,14 +77,18 @@ const Dashboard = () => {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <h2 className="text-lg font-semibold text-gray-800 mb-2 text-center">{user.name}</h2>
-              <p className="text-sm text-gray-500 mb-2 text-center">{user.email}</p>
+              <h2 className="text-lg font-semibold text-gray-800 mb-2 text-center">
+                {user.name}
+              </h2>
+              <p className="text-sm text-gray-500 mb-2 text-center">
+                {user.email}
+              </p>
             </div>
           ))}
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Dashboard;
+export default Dashboard

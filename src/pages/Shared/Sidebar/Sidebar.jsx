@@ -1,9 +1,22 @@
-import React from "react";
-import { FaUser, FaUsers, FaHistory } from "react-icons/fa"; // Use 'react-icons/fa' instead of 'fa6'
-import { FcRating } from "react-icons/fc";
-import { Link, NavLink } from "react-router-dom";
+import React from "react"
+import { FaUsers, FaHistory, FaHome } from "react-icons/fa" // Use 'react-icons/fa' instead of 'fa6'
+import {
+  FcBookmark,
+  FcContacts,
+  FcGallery,
+  FcHome,
+  FcRating,
+  FcUnlock,
+} from "react-icons/fc"
+import { Link, NavLink } from "react-router-dom"
+import useAuth from "../../../hooks/useAuth"
 
 const Sidebar = () => {
+  const { user } = useAuth()
+
+  //TODO:
+  const isAdmin = true
+
   return (
     <aside className="flex side flex-col w-64 h-screen px-5 py-8 overflow-y-auto bg-white border-r rtl:border-r-0 rtl:border-l dark:bg-gray-900 dark:border-gray-700">
       <div className="flex flex-col justify-between flex-1 mt-6">
@@ -31,53 +44,166 @@ const Sidebar = () => {
               placeholder="Search"
             />
           </div>
+          {/*This is Divider  */}
+          <div className="divider"></div>
 
+          {isAdmin ? (
+            <>
+              <NavLink
+                to="/dashboard/dashboards"
+                className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-orange-600"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  className="w-5 h-5"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5m.75-9l3-3 2.148 2.148A12.061 12.061 0 0116.5 7.605"
+                  />
+                </svg>
+
+                <span className="mx-2 text-sm font-medium">
+                  Admin Dashboard
+                </span>
+              </NavLink>
+
+              <NavLink
+                to="/dashboard/user"
+                className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-300 hover:bg-gray-100  dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-orange-600"
+              >
+                <FaHome />
+                <span className="mx-2 text-sm font-medium">Admin Home</span>
+              </NavLink>
+
+              {/* Updated history route with FaHistory icon */}
+              <NavLink
+                to="/dashboard/history"
+                className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-300 hover:bg-gray-100  dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-orange-600"
+              >
+                <FaHistory /> {/* History icon */}
+                <span className="mx-2 text-sm font-medium">Event History</span>
+              </NavLink>
+              {/* review section */}
+              <NavLink
+                to="/dashboard/Rating"
+                className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-300 hover:bg-gray-100  dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-orange-600"
+              >
+                <FcBookmark /> {/* rating icon */}
+                <span className="mx-2 text-sm font-medium">
+                  Manage Bookings
+                </span>
+              </NavLink>
+
+              {/* All Users */}
+              <NavLink
+                to="/dashboard/users"
+                className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-300 hover:bg-gray-100  dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-orange-600"
+              >
+                <FaUsers /> {/* rating icon */}
+                <span className="mx-2 text-sm font-medium">All Users</span>
+              </NavLink>
+
+              {/* ADD Review & rating */}
+              <NavLink
+                to="/dashboard/Rating"
+                className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-300 hover:bg-gray-100  dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-orange-600"
+              >
+                <FcRating /> {/* rating icon */}
+                <span className="mx-2 text-sm font-medium">
+                  ADD Review & rating
+                </span>
+              </NavLink>
+            </>
+          ) : (
+            <>
+              <NavLink
+                to="/dashboard/dashboards"
+                className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-orange-600"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  className="w-5 h-5"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5m.75-9l3-3 2.148 2.148A12.061 12.061 0 0116.5 7.605"
+                  />
+                </svg>
+
+                <span className="mx-2 text-sm font-medium">Dashboard</span>
+              </NavLink>
+
+              <NavLink
+                to="/dashboard/user"
+                className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-300 hover:bg-gray-100  dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-orange-600"
+              >
+                <FaUsers />
+                <span className="mx-2 text-sm font-medium">Users</span>
+              </NavLink>
+
+              {/* Updated history route with FaHistory icon */}
+              <NavLink
+                to="/dashboard/history"
+                className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-300 hover:bg-gray-100  dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-orange-600"
+              >
+                <FaHistory /> {/* History icon */}
+                <span className="mx-2 text-sm font-medium">Event History</span>
+              </NavLink>
+              {/* review section */}
+              <NavLink
+                to="/dashboard/Rating"
+                className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-300 hover:bg-gray-100  dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-orange-600"
+              >
+                <FcRating /> {/* rating icon */}
+                <span className="mx-2 text-sm font-medium">
+                  ADD Review & rating
+                </span>
+              </NavLink>
+            </>
+          )}
+        </nav>
+        {/* this is the common navlink  */}
+        <nav className="flex-1 -mx-3 space-y-3 ">
+          {/*This is Divider  */}
+          <div className="divider"></div>
+          {/* This is the home route start */}
           <NavLink
-            to="/dashboard/dashboards"
-            className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-orange-600"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              className="w-5 h-5"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5m.75-9l3-3 2.148 2.148A12.061 12.061 0 0116.5 7.605"
-              />
-            </svg>
-
-            <span className="mx-2 text-sm font-medium">Dashboard</span>
-          </NavLink>
-
-          <NavLink
-            to="/dashboard/user"
+            to="/"
             className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-300 hover:bg-gray-100  dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-orange-600"
           >
-            <FaUsers />
-            <span className="mx-2 text-sm font-medium">Users</span>
+            <FcHome /> {/* Home icon */}
+            <span className="mx-2 text-sm font-medium">Home</span>
           </NavLink>
-
-          {/* Updated history route with FaHistory icon */}
+          {/*This is the home route end  */}
+          {/* This is the Contact route start */}
           <NavLink
-            to="/dashboard/history"
+            to="/contactus"
             className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-300 hover:bg-gray-100  dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-orange-600"
           >
-            <FaHistory /> {/* History icon */}
-            <span className="mx-2 text-sm font-medium">Event History</span>
+            <FcContacts /> {/* Home icon */}
+            <span className="mx-2 text-sm font-medium">Contact</span>
           </NavLink>
-          {/* review section */}
+          {/*This is the Contact route end  */}
+          {/* This is the Guides route start */}
           <NavLink
-            to="/dashboard/Rating"
+            to="/guides"
             className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-300 hover:bg-gray-100  dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-orange-600"
           >
-            <FcRating /> {/* rating icon */}
-            <span className="mx-2 text-sm font-medium">ADD Review & rating</span>
+            <FcGallery /> {/* Home icon */}
+            <span className="mx-2 text-sm font-medium">Guides</span>
           </NavLink>
+          {/*This is the Guides route end  */}
         </nav>
 
         <div className="mt-6">
@@ -102,11 +228,11 @@ const Sidebar = () => {
             <a href="#" className="flex items-center gap-x-2">
               <img
                 className="object-cover rounded-full h-7 w-7"
-                src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&h=634&q=80"
-                alt="avatar"
+                src={user?.photoURL}
+                alt="No Image"
               />
               <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
-                John Doe
+                {user?.displayName}
               </span>
             </a>
 
