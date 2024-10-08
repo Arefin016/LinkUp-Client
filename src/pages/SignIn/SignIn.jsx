@@ -29,7 +29,7 @@ const SignIn = () => {
         showConfirmButton: false,
         timer: 1500,
       })
-      navigate(from, { replace: true }) // Navigates to the desired route after login
+      navigate(from, { replace: true }) 
     })
   }
 

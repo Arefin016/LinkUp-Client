@@ -1,57 +1,49 @@
-import React, { useEffect, useState } from "react"
-import useAxiosUsers from "../../hooks/useAxiosUsers" // Assuming this hook provides an Axios instance
+import "aos/dist/aos.css";
+import useAuth from "../../hooks/useAuth";
+import "animate.css";
 
 const UserDashboard = () => {
-  const axiosUser = useAxiosUsers() // Axios instance from custom hook
-  const [loading, setLoading] = useState(true)
-  const [users, setUsers] = useState([])
-  const [error, setError] = useState(null) // For error handling
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const res = await axiosUser.get("/users")
-        setUsers(res.data)
-        setLoading(false) // Stop loading after data is fetched
-      } catch (error) {
-        console.error("Error fetching users:", error)
-        setError("Failed to fetch users")
-        setLoading(false) // Stop loading in case of error
-      }
-    }
-
-    fetchUsers()
-  }, [axiosUser]) // axiosUser is now used instead of axiosPublic
-
-  if (loading) {
-    return <p>Loading users...</p>
-  }
-
-  if (error) {
-    return <p>{error}</p>
-  }
+  
+  const { user } = useAuth();
+  console.log(user?.photoURL); // Check if photoURL is defined
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
-      <h1 className="text-3xl font-bold mb-4">User Dashboard</h1>
-      {users.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {users.map((user) => (
-            <div key={user.id} className="p-4 bg-white rounded shadow-md">
-              <h2 className="text-xl font-semibold">{user.name}</h2>
-              <p>
-                <strong>Email:</strong> {user.email}
-              </p>
-
-              {/* Add more user information as needed */}
-            </div>
-          ))}
+    <div
+      data-aos="fade-down"
+      data-aos-easing="linear"
+      data-aos-duration="1500"
+      className="p-6 bg-gray-100 min-h-screen"
+    >
+      <h2 className="text-3xl animate__rubberBand text-center items-center justify-center">
+        <span className="md:text-5xl text-5xl mt-5 font-bold  text-[#0B3558] animate__rubberBand">
+          Welcome to Our LinkUP!!!!!!
+        </span>
+      </h2>
+      
+      <div className="card card-side bg-base-100 shadow-xl mt-10 flex flex-col md:flex-row">
+        <figure>
+          {user?.photoURL ? (
+            <img src={user.photoURL} alt="User Profile" className="w-32 h-32 rounded-full object-cover" />
+          ) : (
+            <img src="/path-to-placeholder-image.png" alt="Default User" className="w-32 h-32 rounded-full object-cover" />
+          )}
+        </figure>
+        
+        <div className="card-body">
+          <h2 className="card-title text-3xl font-bold">
+            Name: {user?.displayName}
+          </h2>
+          <p className="text-2xl font-medium mt-5">Email: {user?.email}</p>
+          <p className="text-2xl font-medium">
+            Phone Number: {user?.phoneNumber ? user.phoneNumber : "Not Provided"}
+          </p>
+          <div className="card-actions">
+            <button className="btn btn-accent">Update</button>
+          </div>
         </div>
-      ) : (
-        <p>No users found.</p>
-      )}
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default UserDashboard
+export default UserDashboard;

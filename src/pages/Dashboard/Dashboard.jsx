@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { FaUsers } from "react-icons/fa6";
 import { CiBookmark, CiBookmarkCheck, CiBookmarkRemove } from "react-icons/ci";
-import useAxiosUsers from "../../hooks/useAxiosUsers"; // Import your axios hook
+import useAxiosUsers from "../../hooks/useAxiosUsers"; 
 
 const Dashboard = () => {
   const axiosPublic = useAxiosUsers();
   const [users, setUsers] = useState([]);
-
+ 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         console.log("Fetching users from:", axiosPublic.defaults.baseURL + "/users");
         const res = await axiosPublic.get('/users');
+        console.log("Users fetched:", res.data);  // Log fetched data to verify structure
         setUsers(res.data);
       } catch (error) {
         console.error("Error fetching users:", error);
@@ -70,7 +71,7 @@ const Dashboard = () => {
             <div key={user._id} className="bg-white rounded-lg p-5 shadow-md">
               <div className="rounded-full overflow-hidden w-24 h-24 mx-auto mb-4">
                 <img
-                  src={user.img}
+                  src={user.photoURL ? user.photoURL : "/path-to-placeholder-image.png"}
                   alt={user.name}
                   className="w-full h-full object-cover"
                 />

@@ -101,94 +101,91 @@ const Banner = () => {
           We make it easy to get started
         </h3>
         <div className="mt-10 flex justify-center gap-8 flex-wrap">
-          {/* Card 1 */}
-          <div className="shadow-lg w-80 h-56 p-5 text-left bg-white rounded-lg transition-transform duration-300 transform hover:scale-105 hover:shadow-xl border border-blue-200">
-            <div className="flex items-center justify-center bg-blue-100 w-12 h-12 rounded-full mb-4">
-              <img
-                src="https://images.ctfassets.net/k0lk9kiuza3o/2lyAPMRxz8pdvkah5K6NFp/14203e7358e18e312b30c9674d8e72f1/icon-checkmark.svg"
-                alt="Checkmark"
-                className="w-8 h-8"
-              />
-            </div>
-            <h6 className="mt-4 text-lg font-semibold text-blue-600">
-              Create simple rules
-            </h6>
-            <p className="mt-3 text-gray-700">
-              Let Calendly know your availability preferences and it'll do the
-              work for you.
-            </p>
-          </div>
+  {/* Card 1 */}
+  <div className="shadow-lg w-80 h-64 p-6 text-left bg-gradient-to-br from-blue-100 to-white rounded-xl transition-transform duration-300 transform hover:scale-105 hover:shadow-2xl border border-transparent hover:border-blue-300">
+    <div className="flex items-center justify-center bg-gradient-to-r from-blue-400 to-blue-600 w-14 h-14 rounded-full mb-5">
+      <img
+        src="https://images.ctfassets.net/k0lk9kiuza3o/2lyAPMRxz8pdvkah5K6NFp/14203e7358e18e312b30c9674d8e72f1/icon-checkmark.svg"
+        alt="Checkmark"
+        className="w-8 h-8"
+      />
+    </div>
+    <h6 className="mt-4 text-xl font-semibold text-blue-700">
+      Create Simple Rules
+    </h6>
+    <p className="mt-3 text-gray-600">
+      Let Calendly know your availability preferences and it'll do the work for
+      you.
+    </p>
+  </div>
 
-          {/* Card 2 */}
-          <div className="shadow-lg w-80 h-56 p-5 text-left bg-white rounded-lg transition-transform duration-300 transform hover:scale-105 hover:shadow-xl border border-blue-200">
-            <div className="flex items-center justify-center bg-blue-100 w-12 h-12 rounded-full mb-4">
-              <img
-                src="https://images.ctfassets.net/k0lk9kiuza3o/2lyAPMRxz8pdvkah5K6NFp/14203e7358e18e312b30c9674d8e72f1/icon-checkmark.svg"
-                alt="Checkmark"
-                className="w-8 h-8"
-              />
-            </div>
-            <h6 className="mt-4 text-lg font-semibold text-blue-600">
-              Share your link
-            </h6>
-            <p className="mt-3 text-gray-700">
-              Send guests your Calendly link or embed it on your website.
-            </p>
-          </div>
+  {/* Card 2 */}
+  <div className="shadow-lg w-80 h-64 p-6 text-left bg-gradient-to-br from-blue-100 to-white rounded-xl transition-transform duration-300 transform hover:scale-105 hover:shadow-2xl border border-transparent hover:border-blue-300">
+    <div className="flex items-center justify-center bg-gradient-to-r from-blue-400 to-blue-600 w-14 h-14 rounded-full mb-5">
+      <img
+        src="https://images.ctfassets.net/k0lk9kiuza3o/2lyAPMRxz8pdvkah5K6NFp/14203e7358e18e312b30c9674d8e72f1/icon-checkmark.svg"
+        alt="Checkmark"
+        className="w-8 h-8"
+      />
+    </div>
+    <h6 className="mt-4 text-xl font-semibold text-blue-700">
+      Share Your Link
+    </h6>
+    <p className="mt-3 text-gray-600">
+      Send guests your Calendly link or embed it on your website.
+    </p>
+  </div>
 
-          {/* Card 3 */}
-          <div className="shadow-lg w-80 h-56 p-5 text-left bg-white rounded-lg transition-transform duration-300 transform hover:scale-105 hover:shadow-xl border border-blue-200">
-            <div className="flex items-center justify-center bg-blue-100 w-12 h-12 rounded-full mb-4">
-              <img
-                src="https://images.ctfassets.net/k0lk9kiuza3o/2lyAPMRxz8pdvkah5K6NFp/14203e7358e18e312b30c9674d8e72f1/icon-checkmark.svg"
-                alt="Checkmark"
-                className="w-8 h-8"
-              />
-            </div>
-            <h6 className="mt-4 text-lg font-semibold text-blue-600">
-              Get booked
-            </h6>
-            <p className="mt-3 text-gray-700">
-              They pick a time and the event is added to your calendar.
-            </p>
-          </div>
-        </div>
+  {/* Card 3 */}
+  <div className="shadow-lg w-80 h-64 p-6 text-left bg-gradient-to-br from-blue-100 to-white rounded-xl transition-transform duration-300 transform hover:scale-105 hover:shadow-2xl border border-transparent hover:border-blue-300">
+    <div className="flex items-center justify-center bg-gradient-to-r from-blue-400 to-blue-600 w-14 h-14 rounded-full mb-5">
+      <img
+        src="https://images.ctfassets.net/k0lk9kiuza3o/2lyAPMRxz8pdvkah5K6NFp/14203e7358e18e312b30c9674d8e72f1/icon-checkmark.svg"
+        alt="Checkmark"
+        className="w-8 h-8"
+      />
+    </div>
+    <h6 className="mt-4 text-xl font-semibold text-blue-700">
+      Get Booked
+    </h6>
+    <p className="mt-3 text-gray-600">
+      They pick a time and the event is added to your calendar.
+    </p>
+  </div>
+</div>
+
       </div>
 
       {/* Meeting Types Section */}
       <div className="w-4/5 mx-auto text-center mb-32">
-        <h5 className="mb-6 text-4xl font-bold dark:text-white">
-          Scheduling for any meeting type
-        </h5>
-        <div className="flex flex-wrap justify-center gap-5 text-left">
-          {/* One-on-One Meeting Card */}
-          <div className="shadow-2xl w-80 h-56 p-5 bg-gradient-to-r from-blue-200 to-blue-300 rounded-lg transition-transform duration-300 transform hover:scale-105 hover:shadow-xl border-2 border-blue-400">
-            <h6 className="text-xl font-semibold mb-2">One-on-One Meetings</h6>
-            <p className="text-sm text-gray-700">
-              Let your clients and colleagues select open meeting times on your
-              calendar with ease.
-            </p>
-            <a href="#" className="text-blue-600 inline-flex items-center mt-2">
-              Learn more <ChevronRightIcon className="ml-1" />
-            </a>
-          </div>
+  <h5 className="mb-6 text-4xl font-bold dark:text-white">
+    Scheduling for any meeting type
+  </h5>
+  <div className="flex flex-wrap justify-center gap-8 text-left">
+    {/* One-on-One Meeting Card */}
+    <div className="shadow-2xl w-80 h-56 p-6 bg-gradient-to-r from-blue-100 to-white rounded-lg transition-transform duration-300 transform hover:scale-105 hover:shadow-3xl border-2 border-blue-400">
+      <h6 className="text-2xl font-semibold mb-3 text-blue-800">One-on-One Meetings</h6>
+      <p className="text-base text-gray-700 mb-4">
+        Let your clients and colleagues select open meeting times on your calendar with ease.
+      </p>
+      <a href="#" className="text-blue-700 font-medium inline-flex items-center">
+        Learn more <ChevronRightIcon className="ml-1 w-5 h-5" />
+      </a>
+    </div>
 
-          {/* Group Meeting Card */}
-          <div className="shadow-2xl w-80 h-56 p-5 bg-gradient-to-r from-green-200 to-green-300 rounded-lg transition-transform duration-300 transform hover:scale-105 hover:shadow-xl border-2 border-green-400">
-            <h6 className="text-xl font-semibold mb-2">Group Meetings</h6>
-            <p className="text-sm text-gray-700">
-              Book events for multiple attendees and make sure everyone has a
-              voice.
-            </p>
-            <a
-              href="#"
-              className="text-green-600 inline-flex items-center mt-2"
-            >
-              Learn more <ChevronRightIcon className="ml-1" />
-            </a>
-          </div>
-        </div>
-      </div>
+    {/* Group Meeting Card */}
+    <div className="shadow-2xl w-80 h-56 p-6 bg-gradient-to-r from-blue-100 to-white rounded-lg transition-transform duration-300 transform hover:scale-105 hover:shadow-3xl border-2 border-green-400">
+      <h6 className="text-2xl font-semibold mb-3 text-green-800">Group Meetings</h6>
+      <p className="text-base text-gray-700 mb-4">
+        Book events for multiple attendees and make sure everyone has a voice.
+      </p>
+      <a href="#" className="text-green-700 font-medium inline-flex items-center">
+        Learn more <ChevronRightIcon className="ml-1 w-5 h-5" />
+      </a>
+    </div>
+  </div>
+</div>
+
     </div>
   );
 };
