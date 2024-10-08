@@ -6,16 +6,16 @@ import {
   FcGallery,
   FcHome,
   FcRating,
-  FcUnlock,
 } from "react-icons/fc"
 import { Link, NavLink } from "react-router-dom"
 import useAuth from "../../../hooks/useAuth"
+import useAdmin from "../../../hooks/useAdmin"
 
 const Sidebar = () => {
   const { user } = useAuth()
 
   //TODO:
-  const isAdmin = true
+  const [isAdmin] = useAdmin()
 
   return (
     <aside className="flex side flex-col w-64 h-screen px-5 py-8 overflow-y-auto bg-white border-r rtl:border-r-0 rtl:border-l dark:bg-gray-900 dark:border-gray-700">
