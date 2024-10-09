@@ -67,14 +67,18 @@ export const router = createBrowserRouter([
       </PrivateRoute>
     ),
     children: [
-      {
-        path: "/dashboard/dashboards",
-        element: <UserDashboard></UserDashboard>,
-      }, // Adjusted path
+      { path: "/dashboard/userDashboard", element: <UserDashboard /> },
       { path: "/dashboard/history", element: <EventHistory /> },
-      { path: "/dashboard/user", element: <UserDashboard /> },
       { path: "/dashboard/rating", element: <Rating /> }, // Use lowercase
       // admin routes
+      {
+        path: "/dashboard/adminDashboard",
+        element: (
+          <AdminRoute>
+            <AdminDashboard></AdminDashboard>
+          </AdminRoute>
+        ),
+      },
       {
         path: "/dashboard/users",
         element: (
@@ -88,14 +92,6 @@ export const router = createBrowserRouter([
         element: (
           <AdminRoute>
             <ManageBooking></ManageBooking>
-          </AdminRoute>
-        ),
-      },
-      {
-        path: "/dashboard/adminDashboard",
-        element: (
-          <AdminRoute>
-            <AdminDashboard></AdminDashboard>
           </AdminRoute>
         ),
       },

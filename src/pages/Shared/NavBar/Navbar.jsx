@@ -1,45 +1,45 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
-import { Link, NavLink } from "react-router-dom";
-import { AuthContext } from "../../../providers/AuthProvider"; // Adjust path based on your file structure
-import "./navbar.css";
+import React, { useContext, useEffect, useState, useRef } from "react"
+import { Link, NavLink } from "react-router-dom"
+import { AuthContext } from "../../../providers/AuthProvider" // Adjust path based on your file structure
+import "./navbar.css"
 
 const Navbar = () => {
-  const { user, logOut } = useContext(AuthContext);
-  const [theme, setTheme] = useState("light");
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null); // Create a ref for the dropdown
+  const { user, logOut } = useContext(AuthContext)
+  const [theme, setTheme] = useState("light")
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const dropdownRef = useRef(null) // Create a ref for the dropdown
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") || "light";
-    setTheme(savedTheme);
-    document.querySelector("html").setAttribute("data-theme", savedTheme);
-  }, []);
+    const savedTheme = localStorage.getItem("theme") || "light"
+    setTheme(savedTheme)
+    document.querySelector("html").setAttribute("data-theme", savedTheme)
+  }, [])
 
   const handleTheme = (e) => {
-    const selectedTheme = e.target.checked ? "dark" : "light";
-    setTheme(selectedTheme);
-    localStorage.setItem("theme", selectedTheme);
-    document.querySelector("html").setAttribute("data-theme", selectedTheme);
-  };
+    const selectedTheme = e.target.checked ? "dark" : "light"
+    setTheme(selectedTheme)
+    localStorage.setItem("theme", selectedTheme)
+    document.querySelector("html").setAttribute("data-theme", selectedTheme)
+  }
 
   const handleLogout = () => {
     logOut()
       .then(() => {
-        console.log("User logged out successfully");
+        console.log("User logged out successfully")
       })
-      .catch((error) => console.error("Logout failed: ", error));
-  };
+      .catch((error) => console.error("Logout failed: ", error))
+  }
 
   const toggleDropdown = () => {
-    setIsDropdownOpen((prev) => !prev);
-  };
+    setIsDropdownOpen((prev) => !prev)
+  }
 
   const closeDropdown = (e) => {
     // Check if the click is outside the dropdown
     if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-      setIsDropdownOpen(false);
+      setIsDropdownOpen(false)
     }
-  };
+  }
 
   const links = (
     <>
@@ -64,7 +64,7 @@ const Navbar = () => {
         </NavLink>
       </li>
       <li>
-        <NavLink className="nav-link" to="/dashboard/dashboards">
+        <NavLink className="nav-link" to="/dashboard">
           Dashboard
         </NavLink>
       </li>
@@ -83,12 +83,14 @@ const Navbar = () => {
         </>
       )}
     </>
-  );
+  )
 
   const userProfile = user ? (
     <div className="relative">
       <img
-        src={user?.photoURL || "https://i.ibb.co/5nqdd5h/profile-pic-linkup.jpg"}
+        src={
+          user?.photoURL || "https://i.ibb.co/5nqdd5h/profile-pic-linkup.jpg"
+        }
         alt="Profile"
         className="w-10 h-10 rounded-full cursor-pointer border-2 border-emerald-500 transition duration-200 hover:scale-110"
         onClick={toggleDropdown}
@@ -111,15 +113,15 @@ const Navbar = () => {
         </div>
       )}
     </div>
-  ) : null;
+  ) : null
 
   // Add event listener to handle clicks outside the dropdown
   useEffect(() => {
-    document.addEventListener("mousedown", closeDropdown);
+    document.addEventListener("mousedown", closeDropdown)
     return () => {
-      document.removeEventListener("mousedown", closeDropdown);
-    };
-  }, []);
+      document.removeEventListener("mousedown", closeDropdown)
+    }
+  }, [])
 
   return (
     <div className="navbar sticky top-0 z-50 bg-white  justify-between px-6 py-4 shadow-lg transition duration-300 ease-in-out hover:shadow-xl">
@@ -173,7 +175,7 @@ const Navbar = () => {
         />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar
