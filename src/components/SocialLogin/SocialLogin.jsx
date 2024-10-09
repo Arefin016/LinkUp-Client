@@ -1,7 +1,7 @@
 import { FcGoogle } from "react-icons/fc";
 import useAuth from "../../hooks/useAuth";
-import { useNavigate } from "react-router-dom";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
+import { useNavigate } from "react-router-dom";
 
 const SocialLogin = () => {
   const { googleSignIn } = useAuth();
@@ -13,19 +13,12 @@ const SocialLogin = () => {
       .then((result) => {
         console.log(result.user);
         const userInfo = {
-          email: result?.user?.email,
-          name: result?.user?.displayName,
-          photoURL: result?.user?.photoURL, // Adding photoURL if needed
+          email: result.user?.email,
+          name: result.user?.displayName,
         };
-
-        // Send user info to the database
         axiosPublic.post("/users", userInfo).then((res) => {
           console.log(res.data);
-
-          // Navigate to home page after successful login
           navigate("/");
-        }).catch((error) => {
-          console.error("Error saving user to database:", error);
         });
       })
       .catch((error) => {

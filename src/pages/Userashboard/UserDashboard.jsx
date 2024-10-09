@@ -1,32 +1,25 @@
-import "aos/dist/aos.css";
-import useAuth from "../../hooks/useAuth";
-import "animate.css";
+import "aos/dist/aos.css" // You can also use <link> for styles
+import useAuth from "../../hooks/useAuth"
+import "animate.css"
 
 const UserDashboard = () => {
-  
-  const { user } = useAuth();
-  console.log(user?.photoURL); // Check if photoURL is defined
+  const { user } = useAuth()
 
   return (
     <div
       data-aos="fade-down"
       data-aos-easing="linear"
       data-aos-duration="1500"
-      className="p-6 bg-gray-100 min-h-screen"
+      className="p-6 min-h-screen"
     >
       <h2 className="text-3xl animate__rubberBand text-center items-center justify-center">
         <span className="md:text-5xl text-5xl mt-5 font-bold  text-[#0B3558] animate__rubberBand">
           Welcome to Our LinkUP!!!!!!
         </span>
       </h2>
-      
-      <div className="card card-side bg-base-100 shadow-xl mt-10 flex flex-col md:flex-row">
+      <div className="card card-side bg-base-100 shadow-2xl mt-10 flex flex-col md:flex-row">
         <figure>
-          {user?.photoURL ? (
-            <img src={user.photoURL} alt="User Profile" className="w-32 h-32 rounded-full object-cover" />
-          ) : (
-            <img src="/path-to-placeholder-image.png" alt="Default User" className="w-32 h-32 rounded-full object-cover" />
-          )}
+          <img src={user?.photoURL} alt="No Image" />
         </figure>
         
         <div className="card-body">
