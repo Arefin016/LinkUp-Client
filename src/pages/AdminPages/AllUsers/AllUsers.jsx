@@ -1,15 +1,16 @@
-import { useQuery } from "@tanstack/react-query"
-import useAxiosSecure from "../../../hooks/useAxiosSecure"
+import { useQuery } from "@tanstack/react-query";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const AllUsers = () => {
-  const axiosSecure = useAxiosSecure()
+  const axiosSecure = useAxiosSecure();
   const { data: users = [] } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/users")
-      return res.data
+      const res = await axiosSecure.get("/users");
+      return res.data;
     },
-  })
+  });
+
   return (
     <div>
       <div className="mx-auto p-4">
@@ -25,26 +26,26 @@ const AllUsers = () => {
           {/* head */}
           <thead>
             <tr>
-              <th></th>
+              <th>#</th>
               <th>Name</th>
-              <th>Job</th>
-              <th>Favorite Color</th>
+              <th>Email</th>
+              <th>Role</th>
             </tr>
           </thead>
           <tbody>
-            {users.map((user) => (
+            {users.map((user, index) => (
               <tr key={user._id}>
-                <th>1</th>
-                <td>Cy Ganderton</td>
-                <td>Quality Control Specialist</td>
-                <td>Blue</td>
+                <th>{index + 1}</th>
+                <td>{user.name}</td>
+                <td>{user.email}</td>
+                <td>{user.role ? user.role : "User"}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AllUsers
+export default AllUsers;

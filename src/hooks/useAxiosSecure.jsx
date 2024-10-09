@@ -1,7 +1,7 @@
 import axios from "axios"
 
 export const axiosSecure = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: "https://link-up-shaharul.vercel.app",
 })
 const useAxiosSecure = () => {
   return axiosSecure
