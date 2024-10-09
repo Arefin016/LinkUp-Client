@@ -2,9 +2,11 @@ import React, { useContext, useEffect, useState, useRef } from "react"
 import { Link, NavLink } from "react-router-dom"
 import { AuthContext } from "../../../providers/AuthProvider" // Adjust path based on your file structure
 import "./navbar.css"
+import useAdmin from "../../../hooks/useAdmin"
 
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext)
+  const [isAdmin] = useAdmin()
   const [theme, setTheme] = useState("light")
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const dropdownRef = useRef(null) // Create a ref for the dropdown
@@ -63,11 +65,20 @@ const Navbar = () => {
           Guides
         </NavLink>
       </li>
-      <li>
-        <NavLink className="nav-link" to="/dashboard">
-          Dashboard
-        </NavLink>
-      </li>
+      {user && isAdmin && (
+        <li>
+          <NavLink className="nav-link" to="/dashboard/adminDashboard">
+            Dashboard
+          </NavLink>
+        </li>
+      )}
+      {user && !isAdmin && (
+        <li>
+          <NavLink className="nav-link" to="/dashboard/userDashboard">
+            Dashboard
+          </NavLink>
+        </li>
+      )}
       {!user && (
         <>
           <li>

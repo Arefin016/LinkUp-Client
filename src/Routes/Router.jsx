@@ -24,6 +24,7 @@ import AllUsers from "../pages/AdminPages/AllUsers/AllUsers"
 import ManageBooking from "../pages/AdminPages/ManageBooking/ManageBooking"
 import AdminRoute from "./AdminRoute"
 import AdminDashboard from "../pages/AdminPages/AdminDashboard/AdminDashboard"
+import AdminHome from "../pages/AdminPages/AdminHome/AdminHome"
 
 export const router = createBrowserRouter([
   {
@@ -80,7 +81,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "/dashboard/users",
+        path: "/dashboard/allUser",
         element: (
           <AdminRoute>
             <AllUsers />
@@ -92,6 +93,14 @@ export const router = createBrowserRouter([
         element: (
           <AdminRoute>
             <ManageBooking></ManageBooking>
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "/dashboard/adminHome",
+        element: (
+          <AdminRoute>
+            <AdminHome></AdminHome>
           </AdminRoute>
         ),
       },

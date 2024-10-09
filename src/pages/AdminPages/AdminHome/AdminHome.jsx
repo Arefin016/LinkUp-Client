@@ -1,10 +1,9 @@
-import "aos/dist/aos.css" // You can also use <link> for styles
-import useAuth from "../../hooks/useAuth"
+import "aos/dist/aos.css"
 import "animate.css"
+import useAuth from "../../../hooks/useAuth"
 
-const UserDashboard = () => {
+const AdminHome = () => {
   const { user } = useAuth()
-
   return (
     <div
       data-aos="fade-down"
@@ -39,4 +38,4 @@ const UserDashboard = () => {
   )
 }
 
-export default UserDashboard
+export default AdminHome

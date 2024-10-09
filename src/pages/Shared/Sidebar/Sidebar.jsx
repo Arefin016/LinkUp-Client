@@ -75,7 +75,7 @@ const Sidebar = () => {
               </NavLink>
               {/* Admin User */}
               <NavLink
-                to="/dashboard/user"
+                to="/dashboard/adminHome"
                 className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-300 hover:bg-gray-100  dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-orange-600"
               >
                 <FaHome />
@@ -95,7 +95,7 @@ const Sidebar = () => {
 
               {/* All Users */}
               <NavLink
-                to="/dashboard/users"
+                to="/dashboard/allUser"
                 className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-300 hover:bg-gray-100  dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-orange-600"
               >
                 <FaUsers /> {/* rating icon */}
@@ -121,7 +121,7 @@ const Sidebar = () => {
                 className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-300 hover:bg-gray-100  dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-orange-600"
               >
                 <FaUsers />
-                <span className="mx-2 text-sm font-medium">Users</span>
+                <span className="mx-2 text-sm font-medium">User Home</span>
               </NavLink>
 
               {/* review section */}
