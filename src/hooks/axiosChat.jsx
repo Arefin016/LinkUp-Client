@@ -1,27 +1,28 @@
 
 import axios from 'axios';
 
+// Configure your Axios instance
+const axiosInstance = axios.create({
+  baseURL: 'https://link-up-shaharul.vercel.app', 
+});
 
-const API_BASE_URL = 'https://link-up-shaharul.vercel.app'; 
-
-// Function to fetch all messages
+// Fetch messages from the server
 export const fetchMessages = async () => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/messages`);
-    return response.data;
+    const response = await axiosInstance.get('/chat'); 
+    return response.data; 
   } catch (error) {
     console.error('Error fetching messages:', error);
-    throw error; 
+    return []; 
   }
 };
 
-// Function to send a new message
+// Send a message to the server
 export const sendMessage = async (message) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/messages`, message);
-    return response.data;
+    await axiosInstance.post('/chat', message); // Adjust the endpoint
   } catch (error) {
     console.error('Error sending message:', error);
-    throw error; 
   }
 };
+

@@ -16,12 +16,12 @@ const ChatBox = () => {
 
     getMessages();
 
-    // Listen for incoming messages from the server
+   
     socket.on('newMessage', (message) => {
       setMessages((prevMessages) => [...prevMessages, message]);
     });
 
-    // Clean up the listener on component unmount
+  
     return () => {
       socket.off('newMessage');
     };
@@ -29,7 +29,7 @@ const ChatBox = () => {
 
   const sendMessage = async () => {
     if (messageInput.trim()) {
-      const message = { sender: 'User', text: messageInput }; 
+      const message = { sender: 'User', text: messageInput };
       socket.emit('sendMessage', message); 
       setMessageInput('');
 
@@ -44,37 +44,41 @@ const ChatBox = () => {
   return (
     <div className="chat-box flex flex-col h-full max-w-lg mx-auto shadow-lg rounded-lg border border-gray-300 bg-white">
       <div className="messages flex-grow p-4 space-y-3 overflow-y-auto max-h-80">
-        {messages.map((msg, index) => (
-          <div key={index} className={`flex items-start ${msg.sender === 'User' ? 'justify-end' : 'justify-start'}`}>
-            {msg.sender !== 'User' && (
-              <div className="avatar w-8 h-8 mr-2">
-                <img
-                  className="rounded-full"
-                  src={`https://ui-avatars.com/api/?name=${msg.sender}`}
-                  alt={msg.sender}
-                />
+        {messages.length === 0 ? (
+          <div className="text-center text-gray-500">No messages yet.</div>
+        ) : (
+          messages.map((msg, index) => (
+            <div key={index} className={`flex items-start ${msg.sender === 'User' ? 'justify-end' : 'justify-start'}`}>
+              {msg.sender !== 'User' && (
+                <div className="avatar w-8 h-8 mr-2">
+                  <img
+                    className="rounded-full"
+                    src={`https://ui-avatars.com/api/?name=${msg.sender}`}
+                    alt={msg.sender}
+                  />
+                </div>
+              )}
+              <div
+                className={`message p-3 rounded-xl ${
+                  msg.sender === 'User'
+                    ? 'bg-blue-500 text-white rounded-br-none'
+                    : 'bg-gray-200 text-black rounded-bl-none'
+                } max-w-xs`}
+              >
+                <span>{msg.text}</span>
               </div>
-            )}
-            <div
-              className={`message p-3 rounded-xl ${
-                msg.sender === 'User'
-                  ? 'bg-blue-500 text-white rounded-br-none'
-                  : 'bg-gray-200 text-black rounded-bl-none'
-              } max-w-xs`}
-            >
-              <span>{msg.text}</span>
+              {msg.sender === 'User' && (
+                <div className="avatar w-8 h-8 ml-2">
+                  <img
+                    className="rounded-full"
+                    src={`https://ui-avatars.com/api/?name=${msg.sender}`}
+                    alt={msg.sender}
+                  />
+                </div>
+              )}
             </div>
-            {msg.sender === 'User' && (
-              <div className="avatar w-8 h-8 ml-2">
-                <img
-                  className="rounded-full"
-                  src={`https://ui-avatars.com/api/?name=${msg.sender}`}
-                  alt={msg.sender}
-                />
-              </div>
-            )}
-          </div>
-        ))}
+          ))
+        )}
       </div>
 
       {/* Sticky input box */}
