@@ -21,6 +21,9 @@ import Faqs from "../pages/Faqs/Faqs"
 import BestUse from "../pages/BestUse/BestUse"
 import Contact from "./../pages/Contact/Contact"
 import AllUsers from "../pages/AdminPages/AllUsers/AllUsers"
+import ManageBooking from "../pages/AdminPages/ManageBooking/ManageBooking"
+import AdminRoute from "./AdminRoute"
+import AdminDashboard from "../pages/AdminPages/AdminDashboard/AdminDashboard"
 
 export const router = createBrowserRouter([
   {
@@ -64,12 +67,38 @@ export const router = createBrowserRouter([
       </PrivateRoute>
     ),
     children: [
-      { path: "/dashboard/dashboards", element: <Dashboard /> }, // Adjusted path
+      {
+        path: "/dashboard/dashboards",
+        element: <UserDashboard></UserDashboard>,
+      }, // Adjusted path
       { path: "/dashboard/history", element: <EventHistory /> },
       { path: "/dashboard/user", element: <UserDashboard /> },
       { path: "/dashboard/rating", element: <Rating /> }, // Use lowercase
       // admin routes
-      { path: "/dashboard/users", element: <AllUsers /> },
+      {
+        path: "/dashboard/users",
+        element: (
+          <AdminRoute>
+            <AllUsers />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "/dashboard/manageBooking",
+        element: (
+          <AdminRoute>
+            <ManageBooking></ManageBooking>
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "/dashboard/adminDashboard",
+        element: (
+          <AdminRoute>
+            <AdminDashboard></AdminDashboard>
+          </AdminRoute>
+        ),
+      },
     ],
   },
 ])
