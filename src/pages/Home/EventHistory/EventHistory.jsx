@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"; // Import axiosPublic directly
-import zoomLogo from "../../../assets/Zoom.png"; 
+import zoomLogo from "../../../assets/Zoom.jpg"; 
 import googleMeetLogo from "../../../assets/meet.png"; 
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
@@ -93,17 +93,17 @@ const EventHistory = () => {
               className="bg-white rounded-lg shadow-lg p-6 flex flex-col justify-between"
             >
               <div className="flex items-start">
-                <img
-                  src={
-                    event.meetingType === "zoom"
-                      ? zoomLogo
-                      : event.meetingType === "meet"
-                      ? googleMeetLogo
-                      : "https://via.placeholder.com/50"
-                  }
-                  alt={event.title}
-                  className="w-12 h-12 rounded-full mr-4"
-                />
+              <img
+  src={
+    event.meetingType === "zoom"
+      ? zoomLogo
+      : event.meetingType === "meet"
+      ? googleMeetLogo
+      : "https://via.placeholder.com/50"
+  }
+  alt={event.title}
+  className="w-16 h-16 object-cover rounded-full border-2 border-gray-300 shadow-lg mr-4"
+/>
                 <div className="flex-1">
                   <h3 className="text-2xl font-semibold">{event.title}</h3>
                   <p className="text-gray-600 mt-2">
@@ -115,7 +115,8 @@ const EventHistory = () => {
                     {new Date(event.end).toLocaleString()}
                   </p>
                   <p className="text-gray-600 mt-4">{event.description}</p>
-                </div>
+                </div> 
+                <p className="text-gray-600 mt-4">{event.link}</p>
               </div>
 
               <div className="mt-6 flex justify-end space-x-3">

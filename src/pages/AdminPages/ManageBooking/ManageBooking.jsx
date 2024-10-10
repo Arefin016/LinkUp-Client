@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react" // Import axiosPublic directly
-import zoomLogo from "../../../assets/Zoom.png"
+import zoomLogo from "../../../assets/Zoom.jpg"
 import googleMeetLogo from "../../../assets/meet.png"
 import useAxiosPublic from "../../../hooks/useAxiosPublic"
 
