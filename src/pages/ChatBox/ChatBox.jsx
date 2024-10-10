@@ -31,8 +31,8 @@ const ChatBox = ({ currentUser }) => {
     getMessages();
 
     socket.on('newMessage', (message) => {
-      setMessages((prevMessages) => [...prevMessages, message]); // Ensure state update with spread operator
-      scrollToBottom(); // Scroll to the latest message when a new message arrives
+      setMessages((prevMessages) => [...prevMessages, message]); 
+      scrollToBottom(); 
     });
 
     return () => {
