@@ -10,6 +10,7 @@ const EventHistory = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
 
   const axiosPublic = useAxiosPublic();
+  console.log(events)
 
   // Fetch event data when the component mounts
   useEffect(() => {
@@ -117,6 +118,9 @@ const EventHistory = () => {
                   <p className="text-gray-600 mt-4">{event.description}</p>
                 </div>
               </div>
+              {event.link?<div>
+                {event.meetingType ==='zoom'?'Zoom Link':'Meet Link'}: <a href={event.link} className="cursor-pointer" target="_blank">Click</a>
+              </div>:''}
 
               <div className="mt-6 flex justify-end space-x-3">
                 <button
