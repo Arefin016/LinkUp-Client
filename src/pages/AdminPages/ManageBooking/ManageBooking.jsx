@@ -23,12 +23,10 @@ const ManageBooking = () => {
     }
 
     fetchEvents()
-  }, []) // No need for axiosPublic as a dependency here
-
-  // Handle opening the update modal
+  }, []) 
   const openUpdateModal = (event) => {
-    setSelectedEvent(event) // Store the event to be updated
-    setIsModalOpen(true) // Open the modal
+    setSelectedEvent(event) 
+    setIsModalOpen(true) 
   }
 
   // Handle closing the modal

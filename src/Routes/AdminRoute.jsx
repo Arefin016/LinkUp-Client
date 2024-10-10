@@ -4,8 +4,8 @@ import useAuth from "../hooks/useAuth"
 
 const AdminRoute = ({ children }) => {
   // Correctly destructuring children
-  const { user, loading } = useAuth() // Assuming useAuth returns an array
-  const [isAdmin, isAdminLoading] = useAdmin() // Assuming useAdmin returns an array
+  const { user, loading } = useAuth() 
+  const [isAdmin, isAdminLoading] = useAdmin() 
   const location = useLocation()
 
   if (loading || isAdminLoading) {
