@@ -1,6 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import io from 'socket.io-client';
 import { fetchMessages, sendMessage as postMessage } from '../../hooks/axiosChat';
+import smoothscroll from 'smoothscroll-polyfill'; // Import the smoothscroll polyfill
+
+// Kick off the polyfill to ensure smooth scrolling works across all browsers
+smoothscroll.polyfill();
 
 const socket = io('https://link-up-shaharul.vercel.app');
 
@@ -20,7 +24,7 @@ const ChatBox = ({ currentUser }) => {
       try {
         const initialMessages = await fetchMessages();
         setMessages(initialMessages);
-        scrollToBottom();
+        scrollToBottom(); // Scroll after messages are loaded
         setLoading(false); // Stop loading after messages are fetched
       } catch (error) {
         console.error('Error fetching messages:', error);
@@ -31,8 +35,8 @@ const ChatBox = ({ currentUser }) => {
     getMessages();
 
     socket.on('newMessage', (message) => {
-      setMessages((prevMessages) => [...prevMessages, message]); 
-      scrollToBottom(); 
+      setMessages((prevMessages) => [...prevMessages, message]);
+      scrollToBottom(); // Scroll to the latest message when a new message arrives
     });
 
     return () => {
@@ -40,10 +44,14 @@ const ChatBox = ({ currentUser }) => {
     };
   }, []);
 
+  // Function to scroll to the last message
   const scrollToBottom = () => {
-    messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (messageEndRef.current) {
+      messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
+  // Send message function
   const sendMessage = async () => {
     if (messageInput.trim()) {
       setIsSending(true);
@@ -53,11 +61,11 @@ const ChatBox = ({ currentUser }) => {
 
       // Immediately update local state to show the message without waiting for server confirmation
       setMessages((prevMessages) => [...prevMessages, message]); // Add message locally
-      scrollToBottom();
+      scrollToBottom(); // Scroll after sending a message
 
       try {
         await postMessage(message);
-        setTimeout(() => setIsSending(false), 2);
+        setTimeout(() => setIsSending(false), 200); // Simulate sending delay
       } catch (error) {
         console.error('Error sending message:', error);
         setIsSending(false);
@@ -71,7 +79,7 @@ const ChatBox = ({ currentUser }) => {
       {loading ? (
         <div className="p-4 text-center text-gray-500">Loading messages...</div>
       ) : (
-        <div className="messages flex-grow p-4 space-y-3 overflow-y-auto max-h-80">
+        <div className="messages flex-grow p-4 space-y-3 overflow-y-auto max-h-80 scroll-smooth">
           {messages.length === 0 ? (
             <div className="text-center text-gray-500">No messages yet.</div>
           ) : (
