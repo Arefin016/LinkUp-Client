@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import './ChatBox.css'; // Ensure you have the CSS for styling
 
 const ChatBox = () => {
-  
   const [messages, setMessages] = useState(() => {
     const savedMessages = localStorage.getItem('chatMessages');
     return savedMessages ? JSON.parse(savedMessages) : [];
@@ -11,7 +10,6 @@ const ChatBox = () => {
   const [messageInput, setMessageInput] = useState('');
   const messageEndRef = useRef(null);
 
-  
   const sendMessage = () => {
     if (messageInput.trim() !== '') {
       const newMessage = {
@@ -22,13 +20,10 @@ const ChatBox = () => {
 
       const updatedMessages = [...messages, newMessage];
 
-      
       setMessages(updatedMessages);
       localStorage.setItem('chatMessages', JSON.stringify(updatedMessages));
 
-           setMessageInput('');
-
-      
+      setMessageInput('');
       scrollToBottom();
     }
   };
@@ -41,7 +36,7 @@ const ChatBox = () => {
   };
 
   useEffect(() => {
-    scrollToBottom(); 
+    scrollToBottom();
   }, [messages]);
 
   // Function to simulate receiving a message
