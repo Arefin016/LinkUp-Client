@@ -4,7 +4,7 @@ import zoomLogo from "../../../assets/Zoom.jpg";
 import googleMeetLogo from "../../../assets/meet.png"; 
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
-const EventHistory = () => {
+const ManageBooking = () => {
   const [events, setEvents] = useState([]);
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -69,7 +69,7 @@ const EventHistory = () => {
 
   // Cancel (delete) an event with SweetAlert2 confirmation
   const handleCancel = async (id) => {
-    Swal.fire({
+    const result = await Swal.fire({
       title: 'Are you sure?',
       text: 'Do you really want to cancel this event?',
       icon: 'warning',
@@ -77,7 +77,7 @@ const EventHistory = () => {
       confirmButtonText: 'Yes, cancel it!',
       cancelButtonText: 'No, keep it',
     });
-  
+
     if (result.isConfirmed) {
       try {
         await axiosPublic.delete(`/events/${id}`);
@@ -89,7 +89,6 @@ const EventHistory = () => {
       }
     }
   };
-  
 
   return (
     <div className="event-history-container mx-auto mt-10 p-4">
@@ -191,9 +190,9 @@ const EventHistory = () => {
             <div className="mb-4">
               <label className="block font-medium">Start Date</label>
               <input
-                type="date"
+                type="datetime-local"
                 name="start"
-                value={selectedEvent.start.substring(0, 10)}
+                value={new Date(selectedEvent.start).toISOString().substring(0, 16)}
                 onChange={handleInputChange}
                 className="w-full border border-gray-300 p-2 rounded-lg"
               />
@@ -201,9 +200,9 @@ const EventHistory = () => {
             <div className="mb-4">
               <label className="block font-medium">End Date</label>
               <input
-                type="date"
+                type="datetime-local"
                 name="end"
-                value={selectedEvent.end.substring(0, 10)}
+                value={new Date(selectedEvent.end).toISOString().substring(0, 16)}
                 onChange={handleInputChange}
                 className="w-full border border-gray-300 p-2 rounded-lg"
               />
@@ -229,4 +228,4 @@ const EventHistory = () => {
   );
 };
 
-export default EventHistory;
+export default ManageBooking;
