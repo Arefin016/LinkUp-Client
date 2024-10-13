@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react"; // Import axiosPublic directly
+import React, { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 import zoomLogo from "../../../assets/Zoom.jpg"; 
 import googleMeetLogo from "../../../assets/meet.png"; 
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
@@ -23,12 +24,12 @@ const EventHistory = () => {
     };
 
     fetchEvents();
-  }, []); // No need for axiosPublic as a dependency here
+  }, []);
 
   // Handle opening the update modal
   const openUpdateModal = (event) => {
-    setSelectedEvent(event); // Store the event to be updated
-    setIsModalOpen(true); // Open the modal
+    setSelectedEvent(event);
+    setIsModalOpen(true);
   };
 
   // Handle closing the modal
@@ -66,17 +67,29 @@ const EventHistory = () => {
     }));
   };
 
-  // Cancel (delete) an event
+  // Cancel (delete) an event with SweetAlert2 confirmation
   const handleCancel = async (id) => {
-    if (window.confirm("Are you sure you want to cancel this event?")) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you really want to cancel this event?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, cancel it!',
+      cancelButtonText: 'No, keep it',
+    });
+  
+    if (result.isConfirmed) {
       try {
         await axiosPublic.delete(`/events/${id}`);
         setEvents(events.filter((event) => event._id !== id));
+        Swal.fire('Cancelled!', 'Your event has been cancelled.', 'success');
       } catch (err) {
         setError(err.message);
+        Swal.fire('Error!', 'Failed to cancel the event.', 'error');
       }
     }
   };
+  
 
   return (
     <div className="event-history-container mx-auto mt-10 p-4">
@@ -93,17 +106,17 @@ const EventHistory = () => {
               className="bg-white rounded-lg shadow-lg p-6 flex flex-col justify-between"
             >
               <div className="flex items-start">
-              <img
-  src={
-    event.meetingType === "zoom"
-      ? zoomLogo
-      : event.meetingType === "meet"
-      ? googleMeetLogo
-      : "https://via.placeholder.com/50"
-  }
-  alt={event.title}
-  className="w-16 h-16 object-cover rounded-full border-2 border-gray-300 shadow-lg mr-4"
-/>
+                <img
+                  src={
+                    event.meetingType === "zoom"
+                      ? zoomLogo
+                      : event.meetingType === "meet"
+                      ? googleMeetLogo
+                      : "https://via.placeholder.com/50"
+                  }
+                  alt={event.title}
+                  className="w-12 h-12 rounded-full mr-4"
+                />
                 <div className="flex-1">
                   <h3 className="text-2xl font-semibold">{event.title}</h3>
                   <p className="text-gray-600 mt-2">
@@ -115,9 +128,23 @@ const EventHistory = () => {
                     {new Date(event.end).toLocaleString()}
                   </p>
                   <p className="text-gray-600 mt-4">{event.description}</p>
-                </div> 
-                <p className="text-gray-600 mt-4">{event.link}</p>
+                </div>
               </div>
+              {event.link ? (
+                <div>
+                  {event.meetingType === 'zoom' ? 'Zoom Link' : 'Meet Link'}:{" "}
+                  <a
+                    href={event.link}
+                    className="cursor-pointer"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Click
+                  </a>
+                </div>
+              ) : (
+                ""
+              )}
 
               <div className="mt-6 flex justify-end space-x-3">
                 <button
@@ -166,7 +193,7 @@ const EventHistory = () => {
               <input
                 type="date"
                 name="start"
-                value={selectedEvent.start.substring(0, 10)} // Extract only date part
+                value={selectedEvent.start.substring(0, 10)}
                 onChange={handleInputChange}
                 className="w-full border border-gray-300 p-2 rounded-lg"
               />

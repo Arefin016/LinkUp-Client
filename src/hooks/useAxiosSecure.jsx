@@ -1,6 +1,6 @@
+import { useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 import useAuth from "./useAuth";
 
 export const axiosSecure = axios.create({
@@ -12,38 +12,43 @@ const useAxiosSecure = () => {
   const { logOut } = useAuth();
 
   useEffect(() => {
-    // Request interceptor to add authorization header for every secure call to the API
+    // Add request interceptor
     const requestInterceptor = axiosSecure.interceptors.request.use(
-      (config) => {
+      function (config) {
         const token = localStorage.getItem("access-token");
-        config.headers.authorization = `Bearer ${token}`;
+        if (token) {
+          config.headers.authorization = `Bearer ${token}`;
+        }
         return config;
       },
-      (error) => {
-        // Do something with request error
+      function (error) {
         return Promise.reject(error);
       }
     );
 
-    // Response interceptor to handle 401 and 403 status codes
+    // Add response interceptor
     const responseInterceptor = axiosSecure.interceptors.response.use(
-      (response) => response,
+      (response) => {
+        return response;
+      },
       async (error) => {
         const status = error.response?.status;
+
         if (status === 401 || status === 403) {
           await logOut();
-          navigate("/login"); // Call navigate inside useEffect
+          navigate("/login");
         }
+
         return Promise.reject(error);
       }
     );
 
-    // Cleanup the interceptors when the component using the hook is unmounted
+    // Clean up interceptors when component is unmounted
     return () => {
       axiosSecure.interceptors.request.eject(requestInterceptor);
       axiosSecure.interceptors.response.eject(responseInterceptor);
     };
-  }, [logOut, navigate]); // Depend on logOut and navigate
+  }, [logOut, navigate]);
 
   return axiosSecure;
 };

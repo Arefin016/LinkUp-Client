@@ -1,43 +1,46 @@
-import React, { useEffect, useState } from "react" // Import axiosPublic directly
-import zoomLogo from "../../../assets/Zoom.jpg"
-import googleMeetLogo from "../../../assets/meet.png"
-import useAxiosPublic from "../../../hooks/useAxiosPublic"
+import React, { useEffect, useState } from "react";
+import Swal from "sweetalert2";
+import zoomLogo from "../../../assets/Zoom.jpg"; 
+import googleMeetLogo from "../../../assets/meet.png"; 
+import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
-const ManageBooking = () => {
-  const [events, setEvents] = useState([])
-  const [error, setError] = useState(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [selectedEvent, setSelectedEvent] = useState(null)
+const EventHistory = () => {
+  const [events, setEvents] = useState([]);
+  const [error, setError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
-  const axiosPublic = useAxiosPublic()
+  const axiosPublic = useAxiosPublic();
 
   // Fetch event data when the component mounts
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axiosPublic.get("/events")
-        setEvents(response.data)
+        const response = await axiosPublic.get("/events");
+        setEvents(response.data);
       } catch (err) {
-        setError(err.message)
+        setError(err.message);
       }
-    }
+    };
 
-    fetchEvents()
-  }, []) 
+    fetchEvents();
+  }, []);
+
+  // Handle opening the update modal
   const openUpdateModal = (event) => {
-    setSelectedEvent(event) 
-    setIsModalOpen(true) 
-  }
+    setSelectedEvent(event);
+    setIsModalOpen(true);
+  };
 
   // Handle closing the modal
   const closeModal = () => {
-    setIsModalOpen(false)
-    setSelectedEvent(null)
-  }
+    setIsModalOpen(false);
+    setSelectedEvent(null);
+  };
 
   // Update an event
   const handleUpdate = async () => {
-    const { _id, title, description, start, end } = selectedEvent
+    const { _id, title, description, start, end } = selectedEvent;
 
     try {
       const response = await axiosPublic.put(`/events/${_id}`, {
@@ -45,39 +48,52 @@ const ManageBooking = () => {
         description,
         start: new Date(start),
         end: new Date(end),
-      })
+      });
       setEvents(
         events.map((event) => (event._id === _id ? response.data : event))
-      )
-      closeModal() // Close modal after successful update
+      );
+      closeModal(); // Close modal after successful update
     } catch (err) {
-      setError(err.message)
+      setError(err.message);
     }
-  }
+  };
 
   // Handle input changes in the modal
   const handleInputChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setSelectedEvent((prevEvent) => ({
       ...prevEvent,
       [name]: value,
-    }))
-  }
+    }));
+  };
 
-  // Cancel (delete) an event
+  // Cancel (delete) an event with SweetAlert2 confirmation
   const handleCancel = async (id) => {
-    if (window.confirm("Are you sure you want to cancel this event?")) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you really want to cancel this event?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, cancel it!',
+      cancelButtonText: 'No, keep it',
+    });
+  
+    if (result.isConfirmed) {
       try {
-        await axiosPublic.delete(`/events/${id}`)
-        setEvents(events.filter((event) => event._id !== id))
+        await axiosPublic.delete(`/events/${id}`);
+        setEvents(events.filter((event) => event._id !== id));
+        Swal.fire('Cancelled!', 'Your event has been cancelled.', 'success');
       } catch (err) {
-        setError(err.message)
+        setError(err.message);
+        Swal.fire('Error!', 'Failed to cancel the event.', 'error');
       }
     }
-  }
+  };
+  
+
   return (
     <div className="event-history-container mx-auto mt-10 p-4">
-      <h2 className="text-4xl font-bold text-center mb-6">Manage Bookings</h2>
+      <h2 className="text-4xl font-bold text-center mb-6">Event History</h2>
       {error ? (
         <p className="text-red-500 text-center">
           Failed to load events: {error}
@@ -108,11 +124,27 @@ const ManageBooking = () => {
                     {new Date(event.start).toLocaleString()}
                   </p>
                   <p className="text-gray-600 mt-2">
-                    <strong>End:</strong> {new Date(event.end).toLocaleString()}
+                    <strong>End:</strong>{" "}
+                    {new Date(event.end).toLocaleString()}
                   </p>
                   <p className="text-gray-600 mt-4">{event.description}</p>
                 </div>
               </div>
+              {event.link ? (
+                <div>
+                  {event.meetingType === 'zoom' ? 'Zoom Link' : 'Meet Link'}:{" "}
+                  <a
+                    href={event.link}
+                    className="cursor-pointer"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Click
+                  </a>
+                </div>
+              ) : (
+                ""
+              )}
 
               <div className="mt-6 flex justify-end space-x-3">
                 <button
@@ -161,7 +193,7 @@ const ManageBooking = () => {
               <input
                 type="date"
                 name="start"
-                value={selectedEvent.start.substring(0, 10)} // Extract only date part
+                value={selectedEvent.start.substring(0, 10)}
                 onChange={handleInputChange}
                 className="w-full border border-gray-300 p-2 rounded-lg"
               />
@@ -194,7 +226,7 @@ const ManageBooking = () => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default ManageBooking
+export default EventHistory;
