@@ -1,13 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
 import io from 'socket.io-client';
 import { fetchMessages, sendMessage as postMessage } from '../../hooks/axiosChat';
-import smoothscroll from 'smoothscroll-polyfill'; // Import the smoothscroll polyfill
+import smoothscroll from 'smoothscroll-polyfill'; // Polyfill for smooth scrolling
 
-// Kick off the polyfill to ensure smooth scrolling works across all browsers
-smoothscroll.polyfill();
+smoothscroll.polyfill(); // Ensure smooth scrolling works in all browsers
 
 // Connect to your Socket.io server
-const socket = io('https://link-up-shaharul.vercel.app');
+const socket = io('https://link-up-shaharul.vercel.app'); // Update to your Socket.io URL
 
 const ChatBox = ({ currentUser }) => {
   const [messages, setMessages] = useState([]);
@@ -25,7 +24,7 @@ const ChatBox = ({ currentUser }) => {
       try {
         const initialMessages = await fetchMessages();
         setMessages(initialMessages);
-        scrollToBottom(); // Scroll after messages are loaded
+        scrollToBottom(); // Scroll to the bottom after messages are loaded
         setLoading(false); // Stop loading after messages are fetched
       } catch (error) {
         console.error('Error fetching messages:', error);
@@ -35,47 +34,42 @@ const ChatBox = ({ currentUser }) => {
 
     getMessages();
 
+    // Listen for new messages from other users
     socket.on('newMessage', (message) => {
-      // Notification for other users
-      if (message.sender !== user.name) {
-        showNotification(message);
-      }
-      
+      // Add the message and scroll to the bottom
       setMessages((prevMessages) => [...prevMessages, message]);
-      scrollToBottom(); // Scroll after receiving new message
+      scrollToBottom(); 
     });
 
     return () => {
-      socket.off('newMessage');
+      socket.off('newMessage'); // Clean up the listener
     };
-  }, [user.name]);
+  }, []);
 
-  
   const scrollToBottom = () => {
     setTimeout(() => {
       if (messageEndRef.current) {
         messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
       }
-    }, 100); 
+    }, 100); // Add a slight delay to ensure smooth scrolling
   };
 
-  // Function to send a message
   const sendMessage = async () => {
     if (messageInput.trim()) {
       setIsSending(true);
       const message = { sender: user.name, text: messageInput, avatar: user.avatar };
 
-      // Emit the message to Socket.io
+      // Emit the message to the Socket.io server
       socket.emit('sendMessage', message);
       setMessageInput(''); // Clear the input field
 
-      // Update the message locally for immediate feedback
+      // Add the message to the local state to show it immediately
       setMessages((prevMessages) => [...prevMessages, message]);
-      scrollToBottom(); 
+      scrollToBottom();
 
       try {
-        await postMessage(message);
-        setTimeout(() => setIsSending(false), 200); 
+        await postMessage(message); // Send message to the server
+        setTimeout(() => setIsSending(false), 200); // Simulate sending delay
       } catch (error) {
         console.error('Error sending message:', error);
         setIsSending(false);
@@ -83,12 +77,11 @@ const ChatBox = ({ currentUser }) => {
     }
   };
 
-  // Browser notification for incoming messages
   const showNotification = (message) => {
     if (Notification.permission === 'granted') {
       new Notification(message.sender, {
         body: message.text,
-        icon: message.avatar || 'https://ui-avatars.com/api/?name=ChatUser'
+        icon: message.avatar || 'https://ui-avatars.com/api/?name=ChatUser',
       });
     } else if (Notification.permission !== 'denied') {
       Notification.requestPermission();
@@ -106,7 +99,13 @@ const ChatBox = ({ currentUser }) => {
             <div className="text-center text-gray-500">No messages yet.</div>
           ) : (
             messages.map((msg, index) => (
-              <div key={index} className={`flex items-start ${msg.sender === user.name ? 'justify-end' : 'justify-start'}`}>
+              <div
+                key={index}
+                className={`flex items-start ${
+                  msg.sender === user.name ? 'justify-end' : 'justify-start'
+                }`}
+              >
+                {/* Avatar of the sender */}
                 {msg.sender !== user.name && (
                   <div className="avatar w-8 h-8 mr-2">
                     <img
@@ -116,6 +115,7 @@ const ChatBox = ({ currentUser }) => {
                     />
                   </div>
                 )}
+                {/* Message bubble */}
                 <div
                   className={`message p-3 rounded-xl ${
                     msg.sender === user.name
@@ -125,6 +125,7 @@ const ChatBox = ({ currentUser }) => {
                 >
                   <span>{msg.text}</span>
                 </div>
+                {/* Avatar for the current user */}
                 {msg.sender === user.name && (
                   <div className="avatar w-8 h-8 ml-2">
                     <img
