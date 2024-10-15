@@ -42,19 +42,21 @@ const ChatBox = ({ currentUser }) => {
       }
       
       setMessages((prevMessages) => [...prevMessages, message]);
-      scrollToBottom();
+      scrollToBottom(); // Scroll after receiving new message
     });
 
     return () => {
       socket.off('newMessage');
     };
-  }, []);
+  }, [user.name]);
 
-  // Scroll to the last message
+  
   const scrollToBottom = () => {
-    if (messageEndRef.current) {
-      messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
+    setTimeout(() => {
+      if (messageEndRef.current) {
+        messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100); 
   };
 
   // Function to send a message
@@ -69,11 +71,11 @@ const ChatBox = ({ currentUser }) => {
 
       // Update the message locally for immediate feedback
       setMessages((prevMessages) => [...prevMessages, message]);
-      scrollToBottom();
+      scrollToBottom(); 
 
       try {
         await postMessage(message);
-        setTimeout(() => setIsSending(false), 200); // Simulate sending delay
+        setTimeout(() => setIsSending(false), 200); 
       } catch (error) {
         console.error('Error sending message:', error);
         setIsSending(false);
