@@ -28,7 +28,7 @@ const Dash = () => {
         <Sidebar />
       </div>
 
-      {/* Content Area */}
+   
       <div
         className={`flex-1 p-4 ${isSidebarOpen ? "hidden md:block" : "block"}`}
       >

@@ -8,8 +8,8 @@ const AllUsers = () => {
   const { data: users = [], refetch } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/users")
-      return res.data
+      const res = await axiosSecure.get("/users");
+      return res.data;
     },
   })
 
@@ -108,7 +108,7 @@ const AllUsers = () => {
         </table>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AllUsers
+export default AllUsers;

@@ -58,7 +58,7 @@ const Dashboard = () => {
             <div key={user._id} className="bg-white rounded-lg p-5 shadow-md">
               <div className="rounded-full overflow-hidden w-24 h-24 mx-auto mb-4">
                 <img
-                  src={user.img}
+                  src={user.photoURL ? user.photoURL : "/path-to-placeholder-image.png"}
                   alt={user.name}
                   className="w-full h-full object-cover"
                 />

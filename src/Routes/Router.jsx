@@ -4,12 +4,12 @@ import SignIn from "../pages/SignIn/SignIn"
 import SignUp from "../pages/SignUp/SignUp"
 import Home from "../pages/Home/Home/Home"
 import Main from "../Layout/Main"
-import EventHistory from "../pages/Home/EventHistory/EventHistory"
+
 import MyCalender from "../pages/Home/MyCelender/MyCalendar"
 import PrivateRoute from "./PrivateRoute"
 import ContactUs from "../pages/ContactUs/ContactUs"
 import Rating from "../pages/Rateing/Rating" // Correct the import path here
-import Dashboard from "../pages/Dashboard/Dashboard"
+// import Dashboard from "../pages/Dashboard/Dashboard"
 import UserDashboard from "../pages/Userashboard/UserDashboard" // Correct import
 import Dash from "../Layout/Dash"
 import Guides from "../pages/Guides/Guides"
@@ -25,6 +25,7 @@ import ManageBooking from "../pages/AdminPages/ManageBooking/ManageBooking"
 import AdminRoute from "./AdminRoute"
 import AdminDashboard from "../pages/AdminPages/AdminDashboard/AdminDashboard"
 import AdminHome from "../pages/AdminPages/AdminHome/AdminHome"
+import ChatBox from "../pages/ChatBox/ChatBox"
 
 export const router = createBrowserRouter([
   {
@@ -44,6 +45,14 @@ export const router = createBrowserRouter([
             <MyCalender />
           </PrivateRoute>
         ),
+      },
+      { path: "/chat",
+        element: (
+          <PrivateRoute>
+            <ChatBox></ChatBox>
+          </PrivateRoute>
+        ),
+        
       },
       {
         path: "/guides",
@@ -69,7 +78,7 @@ export const router = createBrowserRouter([
     ),
     children: [
       { path: "/dashboard/userDashboard", element: <UserDashboard /> },
-      { path: "/dashboard/history", element: <EventHistory /> },
+      
       { path: "/dashboard/rating", element: <Rating /> }, // Use lowercase
       // admin routes
       {
@@ -82,10 +91,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/dashboard/allUser",
-        element: (
-          <AdminRoute>
-            <AllUsers />
-          </AdminRoute>
+        element: ( 
+           <AdminRoute>
+          <AllUsers />
+           </AdminRoute> 
+          
         ),
       },
       {

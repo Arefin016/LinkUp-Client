@@ -8,6 +8,7 @@ import Modal from "react-modal"
 import Swal from "sweetalert2"
 import { AuthContext } from "../../../providers/AuthProvider"
 import useAxiosPublic from "../../../hooks/useAxiosPublic"
+import emailjs from "emailjs-com"
 
 // Setup the date localization
 const locales = {
@@ -29,7 +30,7 @@ const initialEvents = [
     allDay: false,
     start: new Date(2024, 8, 18, 10, 0), // September 18, 2024, at 10:00 AM
     end: new Date(2024, 8, 18, 12, 0), // September 18, 2024, at 12:00 PM
-    meetingType: "", // Add meetingType property
+    meetingType: "",
   },
 ]
 
@@ -51,28 +52,35 @@ const modalStyles = {
     backgroundColor: "white",
     border: "none",
     borderRadius: "8px",
-    zIndex: "1001", // Ensure the modal has a high z-index
+    zIndex: "1001",
   },
   overlay: {
     backgroundColor: "rgba(0, 0, 0, 0.5)",
-    zIndex: "1000", // Overlay also needs a high z-index
+    zIndex: "1000",
   },
 }
 
 const MyCalendar = () => {
-  const { user } = useContext(AuthContext) // Use AuthContext to get the logged-in user's info
+  const { user } = useContext(AuthContext)
+  const [link, setLink] = useState(
+    "https://us05web.zoom.us/j/87070806836?pwd=fLYbzd8fSsnnCZdmpfsbukUzzI54al.1"
+  )
   const [myEvents, setMyEvents] = useState(initialEvents)
+  const [meetLink, setMeetLink] = useState(
+    "https://meet.google.com/pcw-vhgs-bpz"
+  )
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [newEvent, setNewEvent] = useState({
     title: "",
     startDate: "",
     endDate: "",
     description: "",
-    meetingType: "", // Add meetingType to the new event state
+    meetingType: "",
+    link: link,
   })
   const [selectedSlot, setSelectedSlot] = useState(null)
 
-  const axiosInstance = useAxiosPublic() // Initialize axios instance here
+  const axiosInstance = useAxiosPublic()
 
   // Function to handle adding new events
   const handleSelectSlot = ({ start, end }) => {
@@ -80,21 +88,57 @@ const MyCalendar = () => {
     setModalIsOpen(true)
   }
 
+  // Function to send email using EmailJS
+  const sendEmail = (eventDetails) => {
+    const emailParams = {
+      event_title: eventDetails.title,
+      event_start: eventDetails.start,
+      event_end: eventDetails.end,
+      event_description: eventDetails.description,
+      recipient_email: user?.email,
+      userName: user?.displayName,
+      link: eventDetails.meetingType === "meet" ? meetLink : link,
+      type: eventDetails.meetingType,
+    }
+
+    emailjs
+      .send(
+        "service_xqyql81", // Your EmailJS Service ID
+        "template_9ugi12d", // Your EmailJS Template ID
+        emailParams,
+        "vz_mcsgnNSq-e__68" // Your EmailJS User ID
+      )
+      .then(
+        (result) => {
+          console.log("Email sent successfully:", result.text)
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Please Check Your Email",
+            showConfirmButton: false,
+            timer: 1500,
+          })
+        },
+        (error) => {
+          console.error("Error sending email:", error)
+        }
+      )
+  }
+
   // Function to send event data to the backend
   const addEventToBackend = async (eventDetails) => {
+    const updateEvents = {
+      ...eventDetails,
+      link: eventDetails.meetingType === "meet" ? meetLink : link,
+    }
+
     try {
       const response = await axiosInstance.post(
         "http://localhost:5000/add-event",
-        eventDetails
+        updateEvents
       )
       console.log("Event added to backend:", response.data)
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "Event added successfully!",
-        showConfirmButton: false,
-        timer: 1500,
-      })
+      console.log(eventDetails)
     } catch (error) {
       console.error("Error adding event to backend:", error)
       Swal.fire({
@@ -109,8 +153,7 @@ const MyCalendar = () => {
   const handleSubmit = async () => {
     const { title, startDate, endDate, description, meetingType } = newEvent
 
-    // Validate that all fields are filled and dates are correct
-    if (!title || !startDate || !endDate || !description) {
+    if (!title || !startDate || !endDate || !description || !meetingType) {
       Swal.fire({
         icon: "warning",
         title: "Incomplete Information",
@@ -133,16 +176,15 @@ const MyCalendar = () => {
       start: new Date(startDate),
       end: new Date(endDate),
       description,
-      meetingType, // Add meetingType to event data
+      meetingType,
     }
 
-    // Add the new event to the local state
     setMyEvents([...myEvents, newEventData])
 
-    // Send event data to the backend
     await addEventToBackend(newEventData)
 
-    // Clear the input fields after submission
+    sendEmail(newEventData)
+
     setNewEvent({
       title: "",
       startDate: "",
@@ -198,7 +240,7 @@ const MyCalendar = () => {
             views={["month", "week", "day", "agenda"]}
             defaultView="month"
             className="text-xs md:text-sm text-center font-bold"
-            eventPropGetter={eventPropGetter} // Set event colors
+            eventPropGetter={eventPropGetter}
           />
         </div>
 
@@ -250,9 +292,9 @@ const MyCalendar = () => {
                 onChange={handleChange}
                 className="w-full p-2 border rounded text-center"
                 placeholder="Enter event description"
-              ></textarea>
+                rows="3"
+              />
             </div>
-            {/* Dropdown for meeting type */}
             <div>
               <label className="block text-gray-700">Meeting Type</label>
               <select
@@ -261,25 +303,17 @@ const MyCalendar = () => {
                 onChange={handleChange}
                 className="w-full p-2 border rounded text-center"
               >
-                <option value="">Select meeting type</option>
+                <option value="">Select Meeting Type</option>
                 <option value="zoom">Zoom</option>
                 <option value="meet">Google Meet</option>
               </select>
             </div>
-            <div className="flex justify-end space-x-4">
-              <button
-                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-                onClick={() => setModalIsOpen(false)}
-              >
-                Cancel
-              </button>
-              <button
-                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                onClick={handleSubmit}
-              >
-                Add Event
-              </button>
-            </div>
+            <button
+              onClick={handleSubmit}
+              className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 rounded"
+            >
+              Add Event
+            </button>
           </div>
         </Modal>
       </div>

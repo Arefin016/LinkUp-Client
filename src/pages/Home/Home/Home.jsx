@@ -1,12 +1,18 @@
-import ReviewCards from "../../RatingCards/RatingCards"
-import Banner from "../Banner/Banner"
-import SolutionsSection from "../SolutionsSection/SolutionsSection"
+import React, { useState } from 'react';
+
+import ReviewCards from "../../RatingCards/RatingCards";
+import Banner from "../Banner/Banner";
+import SolutionsSection from "../SolutionsSection/SolutionsSection";
 
 const Home = () => {
+  
+
   return (
     <div>
       <Banner />
-      <SolutionsSection></SolutionsSection>
+      <SolutionsSection />
+      
+       
       <div className="overflow-hidden w-full">
         <h2 className="md:text-5xl text-5xl mt-5 font-bold text-[#0B3558] text-center">
           Customer Feedback
@@ -16,7 +22,7 @@ const Home = () => {
         </marquee>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
