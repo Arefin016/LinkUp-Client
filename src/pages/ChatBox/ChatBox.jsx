@@ -1,93 +1,161 @@
-import React, { useState, useEffect, useRef } from 'react';
-import './ChatBox.css'; // Ensure you have the CSS for styling
+import React, { useEffect, useState, useRef } from 'react';
+import io from 'socket.io-client';
+import { fetchMessages, sendMessage as postMessage } from '../../hooks/axiosChat';
+import smoothscroll from 'smoothscroll-polyfill'; // Import the smoothscroll polyfill
 
-const ChatBox = () => {
-  const [messages, setMessages] = useState(() => {
-    const savedMessages = localStorage.getItem('chatMessages');
-    return savedMessages ? JSON.parse(savedMessages) : [];
-  });
+// Kick off the polyfill to ensure smooth scrolling works across all browsers
+smoothscroll.polyfill();
 
+// Connect to your Socket.io server
+const socket = io('https://link-up-shaharul.vercel.app');
+
+const ChatBox = ({ currentUser }) => {
+  const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState('');
+  const [isSending, setIsSending] = useState(false);
+  const [loading, setLoading] = useState(true);
   const messageEndRef = useRef(null);
 
-  const sendMessage = () => {
-    if (messageInput.trim() !== '') {
-      const newMessage = {
-        text: messageInput,
-        sender: 'You',
-        timestamp: new Date().toLocaleTimeString(),
-      };
+  // Default fallback for currentUser
+  const defaultUser = { name: 'Anonymous', avatar: 'https://ui-avatars.com/api/?name=Anonymous' };
+  const user = currentUser || defaultUser;
 
-      const updatedMessages = [...messages, newMessage];
+  useEffect(() => {
+    const getMessages = async () => {
+      try {
+        const initialMessages = await fetchMessages();
+        setMessages(initialMessages);
+        scrollToBottom(); // Scroll after messages are loaded
+        setLoading(false); // Stop loading after messages are fetched
+      } catch (error) {
+        console.error('Error fetching messages:', error);
+        setLoading(false);
+      }
+    };
 
-      setMessages(updatedMessages);
-      localStorage.setItem('chatMessages', JSON.stringify(updatedMessages));
+    getMessages();
 
-      setMessageInput('');
+    socket.on('newMessage', (message) => {
+      // Notification for other users
+      if (message.sender !== user.name) {
+        showNotification(message);
+      }
+      
+      setMessages((prevMessages) => [...prevMessages, message]);
       scrollToBottom();
-    }
-  };
+    });
 
-  // Scroll to the bottom of the message list
+    return () => {
+      socket.off('newMessage');
+    };
+  }, []);
+
+  // Scroll to the last message
   const scrollToBottom = () => {
     if (messageEndRef.current) {
       messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+  // Function to send a message
+  const sendMessage = async () => {
+    if (messageInput.trim()) {
+      setIsSending(true);
+      const message = { sender: user.name, text: messageInput, avatar: user.avatar };
 
-  // Function to simulate receiving a message
-  const receiveMessage = () => {
-    const newMessage = {
-      text: "Hello! This is a simulated response.",
-      sender: 'Friend',
-      timestamp: new Date().toLocaleTimeString(),
-    };
+      // Emit the message to Socket.io
+      socket.emit('sendMessage', message);
+      setMessageInput(''); // Clear the input field
 
-    const updatedMessages = [...messages, newMessage];
+      // Update the message locally for immediate feedback
+      setMessages((prevMessages) => [...prevMessages, message]);
+      scrollToBottom();
 
-    // Save the new message to state and localStorage
-    setMessages(updatedMessages);
-    localStorage.setItem('chatMessages', JSON.stringify(updatedMessages));
+      try {
+        await postMessage(message);
+        setTimeout(() => setIsSending(false), 200); // Simulate sending delay
+      } catch (error) {
+        console.error('Error sending message:', error);
+        setIsSending(false);
+      }
+    }
+  };
 
-    scrollToBottom();
+  // Browser notification for incoming messages
+  const showNotification = (message) => {
+    if (Notification.permission === 'granted') {
+      new Notification(message.sender, {
+        body: message.text,
+        icon: message.avatar || 'https://ui-avatars.com/api/?name=ChatUser'
+      });
+    } else if (Notification.permission !== 'denied') {
+      Notification.requestPermission();
+    }
   };
 
   return (
-    <div className="chatbox-container">
-      {/* Chat header */}
-      <div className="chatbox-header">
-        <h2>Chat with Friend</h2>
-        <button onClick={receiveMessage} className="receive-btn">Simulate Response</button>
-      </div>
+    <div className="chat-box flex flex-col h-full max-w-lg mx-auto shadow-lg rounded-lg border border-gray-300 bg-white">
+      {/* Message Loading Skeleton */}
+      {loading ? (
+        <div className="p-4 text-center text-gray-500">Loading messages...</div>
+      ) : (
+        <div className="messages flex-grow p-4 space-y-3 overflow-y-auto max-h-80 scroll-smooth">
+          {messages.length === 0 ? (
+            <div className="text-center text-gray-500">No messages yet.</div>
+          ) : (
+            messages.map((msg, index) => (
+              <div key={index} className={`flex items-start ${msg.sender === user.name ? 'justify-end' : 'justify-start'}`}>
+                {msg.sender !== user.name && (
+                  <div className="avatar w-8 h-8 mr-2">
+                    <img
+                      className="rounded-full"
+                      src={msg.avatar || `https://ui-avatars.com/api/?name=${msg.sender}`}
+                      alt={msg.sender}
+                    />
+                  </div>
+                )}
+                <div
+                  className={`message p-3 rounded-xl ${
+                    msg.sender === user.name
+                      ? 'bg-blue-500 text-white rounded-br-none'
+                      : 'bg-gray-200 text-black rounded-bl-none'
+                  } max-w-xs`}
+                >
+                  <span>{msg.text}</span>
+                </div>
+                {msg.sender === user.name && (
+                  <div className="avatar w-8 h-8 ml-2">
+                    <img
+                      className="rounded-full"
+                      src={user.avatar || `https://ui-avatars.com/api/?name=${user.name}`}
+                      alt={user.name}
+                    />
+                  </div>
+                )}
+              </div>
+            ))
+          )}
+          <div ref={messageEndRef} /> {/* Auto-scroll target */}
+        </div>
+      )}
 
-      {/* Message list */}
-      <div className="message-list">
-        {messages.map((msg, index) => (
-          <div key={index} className={`message ${msg.sender === 'You' ? 'sent' : 'received'}`}>
-            <span className="message-sender">{msg.sender}</span>
-            <p className="message-text">{msg.text}</p>
-            <span className="message-timestamp">{msg.timestamp}</span>
-          </div>
-        ))}
-        {/* Scroll target */}
-        <div ref={messageEndRef} />
-      </div>
-
-      {/* Message input */}
-      <div className="message-input-container">
+      {/* Input box for typing messages */}
+      <div className="input-box p-3 border-t border-gray-300 flex items-center">
         <input
           type="text"
+          className="flex-grow p-2 border border-gray-300 rounded-full focus:outline-none focus:ring focus:ring-blue-300"
           value={messageInput}
           onChange={(e) => setMessageInput(e.target.value)}
-          placeholder="Type a message..."
-          className="message-input"
           onKeyPress={(e) => (e.key === 'Enter' ? sendMessage() : null)}
+          placeholder="Type a message..."
         />
-        <button onClick={sendMessage} className="send-btn">Send</button>
+        <button
+          className="ml-2 bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition duration-200"
+          onClick={sendMessage}
+          disabled={isSending}
+        >
+          {isSending ? 'Sending...' : 'Send'}
+        </button>
       </div>
     </div>
   );
