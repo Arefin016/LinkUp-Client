@@ -6,18 +6,19 @@ import smoothscroll from 'smoothscroll-polyfill'; // Import the smoothscroll pol
 // Kick off the polyfill to ensure smooth scrolling works across all browsers
 smoothscroll.polyfill();
 
+// Connect to your Socket.io server
 const socket = io('https://link-up-shaharul.vercel.app');
 
 const ChatBox = ({ currentUser }) => {
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState('');
-  const [isSending, setIsSending] = useState(false); // Loader state
-  const [loading, setLoading] = useState(true); // Loading state for messages
-  const messageEndRef = useRef(null); // Reference to the last message
+  const [isSending, setIsSending] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const messageEndRef = useRef(null);
 
-  // Provide default fallback for currentUser
+  // Default fallback for currentUser
   const defaultUser = { name: 'Anonymous', avatar: 'https://ui-avatars.com/api/?name=Anonymous' };
-  const user = currentUser || defaultUser; // Use currentUser if available, else fallback to defaultUser
+  const user = currentUser || defaultUser;
 
   useEffect(() => {
     const getMessages = async () => {
@@ -35,41 +36,62 @@ const ChatBox = ({ currentUser }) => {
     getMessages();
 
     socket.on('newMessage', (message) => {
+      // Notification for other users
+      if (message.sender !== user.name) {
+        showNotification(message);
+      }
+      
       setMessages((prevMessages) => [...prevMessages, message]);
-      scrollToBottom(); 
+      scrollToBottom(); // Scroll after receiving new message
     });
 
     return () => {
       socket.off('newMessage');
     };
-  }, []);
+  }, [user.name]);
 
-  // Function to scroll to the last message
+  
   const scrollToBottom = () => {
-    if (messageEndRef.current) {
-      messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
+    setTimeout(() => {
+      if (messageEndRef.current) {
+        messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100); 
   };
 
-  // Send message function
+  // Function to send a message
   const sendMessage = async () => {
     if (messageInput.trim()) {
       setIsSending(true);
-      const message = { sender: user.name, text: messageInput, avatar: user.avatar }; // Include user name and avatar
-      socket.emit('sendMessage', message);
-      setMessageInput('');
+      const message = { sender: user.name, text: messageInput, avatar: user.avatar };
 
-      // Immediately update local state to show the message without waiting for server confirmation
-      setMessages((prevMessages) => [...prevMessages, message]); // Add message locally
-      scrollToBottom(); // Scroll after sending a message
+      // Emit the message to Socket.io
+      socket.emit('sendMessage', message);
+      setMessageInput(''); // Clear the input field
+
+      // Update the message locally for immediate feedback
+      setMessages((prevMessages) => [...prevMessages, message]);
+      scrollToBottom(); 
 
       try {
         await postMessage(message);
-        setTimeout(() => setIsSending(false), 200); // Simulate sending delay
+        setTimeout(() => setIsSending(false), 200); 
       } catch (error) {
         console.error('Error sending message:', error);
         setIsSending(false);
       }
+    }
+  };
+
+  // Browser notification for incoming messages
+  const showNotification = (message) => {
+    if (Notification.permission === 'granted') {
+      new Notification(message.sender, {
+        body: message.text,
+        icon: message.avatar || 'https://ui-avatars.com/api/?name=ChatUser'
+      });
+    } else if (Notification.permission !== 'denied') {
+      Notification.requestPermission();
     }
   };
 
@@ -119,7 +141,7 @@ const ChatBox = ({ currentUser }) => {
         </div>
       )}
 
-      {/* Sticky input box */}
+      {/* Input box for typing messages */}
       <div className="input-box p-3 border-t border-gray-300 flex items-center">
         <input
           type="text"
