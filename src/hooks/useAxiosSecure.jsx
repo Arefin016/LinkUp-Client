@@ -34,9 +34,6 @@ const useAxiosSecure = () => {
       async (error) => {
         const status = error.response?.status;
 
-<<<<<<< HEAD
-export default useAxiosSecure
-=======
         if (status === 401 || status === 403) {
           await logOut();
           navigate("/login");
@@ -57,4 +54,3 @@ export default useAxiosSecure
 };
 
 export default useAxiosSecure;
->>>>>>> e90a3fdd6afc0c4a4fcd0572b9e944991f462f8e
