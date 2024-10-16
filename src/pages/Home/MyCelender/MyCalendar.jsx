@@ -1,19 +1,19 @@
-import React, { useState, useContext } from "react";
-import { Calendar } from "react-big-calendar";
-import "react-big-calendar/lib/css/react-big-calendar.css";
-import { format, parse, startOfWeek, getDay } from "date-fns";
-import { dateFnsLocalizer } from "react-big-calendar";
-import enUS from "date-fns/locale/en-US";
-import Modal from "react-modal";
-import Swal from "sweetalert2";
-import { AuthContext } from "../../../providers/AuthProvider";
-import useAxiosPublic from "../../../hooks/useAxiosPublic";
-import emailjs from 'emailjs-com';
+import React, { useState, useContext } from "react"
+import { Calendar } from "react-big-calendar"
+import "react-big-calendar/lib/css/react-big-calendar.css"
+import { format, parse, startOfWeek, getDay } from "date-fns"
+import { dateFnsLocalizer } from "react-big-calendar"
+import enUS from "date-fns/locale/en-US"
+import Modal from "react-modal"
+import Swal from "sweetalert2"
+import { AuthContext } from "../../../providers/AuthProvider"
+import useAxiosPublic from "../../../hooks/useAxiosPublic"
+import emailjs from "emailjs-com"
 
 // Setup the date localization
 const locales = {
   "en-US": enUS,
-};
+}
 
 const localizer = dateFnsLocalizer({
   format,
@@ -21,7 +21,7 @@ const localizer = dateFnsLocalizer({
   startOfWeek,
   getDay,
   locales,
-});
+})
 
 // Initial events to display
 const initialEvents = [
@@ -32,7 +32,7 @@ const initialEvents = [
     end: new Date(2024, 8, 18, 12, 0), // September 18, 2024, at 12:00 PM
     meetingType: "",
   },
-];
+]
 
 // Updated modal styles for responsiveness and centering
 const modalStyles = {
@@ -58,33 +58,35 @@ const modalStyles = {
     backgroundColor: "rgba(0, 0, 0, 0.5)",
     zIndex: "1000",
   },
-};
-
+}
 
 const MyCalendar = () => {
-  const { user } = useContext(AuthContext);
-  const [link, setLink] = useState('https://us05web.zoom.us/j/87070806836?pwd=fLYbzd8fSsnnCZdmpfsbukUzzI54al.1');
-  const [myEvents, setMyEvents] = useState(initialEvents);
-  const [meetLink,setMeetLink]=useState('https://meet.google.com/pcw-vhgs-bpz')
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const { user } = useContext(AuthContext)
+  const [link, setLink] = useState(
+    "https://us05web.zoom.us/j/87070806836?pwd=fLYbzd8fSsnnCZdmpfsbukUzzI54al.1"
+  )
+  const [myEvents, setMyEvents] = useState(initialEvents)
+  const [meetLink, setMeetLink] = useState(
+    "https://meet.google.com/pcw-vhgs-bpz"
+  )
+  const [modalIsOpen, setModalIsOpen] = useState(false)
   const [newEvent, setNewEvent] = useState({
     title: "",
     startDate: "",
     endDate: "",
     description: "",
     meetingType: "",
-    link:link
-  });
-  const [selectedSlot, setSelectedSlot] = useState(null);
-  
+    link: link,
+  })
+  const [selectedSlot, setSelectedSlot] = useState(null)
 
-  const axiosInstance = useAxiosPublic();
+  const axiosInstance = useAxiosPublic()
 
   // Function to handle adding new events
   const handleSelectSlot = ({ start, end }) => {
-    setSelectedSlot({ start, end });
-    setModalIsOpen(true);
-  };
+    setSelectedSlot({ start, end })
+    setModalIsOpen(true)
+  }
 
   // Function to send email using EmailJS
   const sendEmail = (eventDetails) => {
@@ -95,67 +97,69 @@ const MyCalendar = () => {
       event_description: eventDetails.description,
       recipient_email: user?.email,
       userName: user?.displayName,
-      link: eventDetails.meetingType==='meet'?meetLink:link,
+      link: eventDetails.meetingType === "meet" ? meetLink : link,
       type: eventDetails.meetingType,
-    };
+    }
 
-    emailjs.send(
-      "service_xqyql81", // Your EmailJS Service ID
-      "template_9ugi12d", // Your EmailJS Template ID
-      emailParams,
-      "vz_mcsgnNSq-e__68" // Your EmailJS User ID
-    )
-    .then(
-      (result) => {
-        console.log("Email sent successfully:", result.text);
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Please Check Your Email",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      },
-      (error) => {
-        console.error("Error sending email:", error);
-      }
-    );
-  };
+    emailjs
+      .send(
+        "service_xqyql81", // Your EmailJS Service ID
+        "template_9ugi12d", // Your EmailJS Template ID
+        emailParams,
+        "vz_mcsgnNSq-e__68" // Your EmailJS User ID
+      )
+      .then(
+        (result) => {
+          console.log("Email sent successfully:", result.text)
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Please Check Your Email",
+            showConfirmButton: false,
+            timer: 1500,
+          })
+        },
+        (error) => {
+          console.error("Error sending email:", error)
+        }
+      )
+  }
 
   // Function to send event data to the backend
   const addEventToBackend = async (eventDetails) => {
-    const updateEvents={...eventDetails,link: eventDetails.meetingType==='meet'?meetLink:link}
-    
+    const updateEvents = {
+      ...eventDetails,
+      link: eventDetails.meetingType === "meet" ? meetLink : link,
+    }
+
     try {
       const response = await axiosInstance.post(
-        "https://link-up-shaharul.vercel.app/add-event",
+        "https://link-up-shaharul-api.vercel.app/add-event",
         updateEvents
-      );
-      console.log("Event added to backend:", response.data);
+      )
+      console.log("Event added to backend:", response.data)
       console.log(eventDetails)
-  
     } catch (error) {
-      console.error("Error adding event to backend:", error);
+      console.error("Error adding event to backend:", error)
       Swal.fire({
         icon: "error",
         title: "Oops...",
         text: "Something went wrong while adding the event!",
-      });
+      })
     }
-  };
+  }
 
   // Function to handle event creation
   const handleSubmit = async () => {
-    const { title, startDate, endDate, description, meetingType } = newEvent;
+    const { title, startDate, endDate, description, meetingType } = newEvent
 
-    
     if (!title || !startDate || !endDate || !description || !meetingType) {
       Swal.fire({
         icon: "warning",
         title: "Incomplete Information",
         text: "Please fill out all the fields.",
-      });
-      return;
+      })
+      return
     }
 
     if (new Date(startDate) >= new Date(endDate)) {
@@ -163,8 +167,8 @@ const MyCalendar = () => {
         icon: "warning",
         title: "Invalid Dates",
         text: "End date must be later than start date.",
-      });
-      return;
+      })
+      return
     }
 
     const newEventData = {
@@ -173,54 +177,50 @@ const MyCalendar = () => {
       end: new Date(endDate),
       description,
       meetingType,
-    };
+    }
 
-   
-    setMyEvents([...myEvents, newEventData]);
+    setMyEvents([...myEvents, newEventData])
 
-  
-    await addEventToBackend(newEventData);
+    await addEventToBackend(newEventData)
 
-  
-    sendEmail(newEventData);
+    sendEmail(newEventData)
 
-   
     setNewEvent({
       title: "",
       startDate: "",
       endDate: "",
       description: "",
       meetingType: "",
-    });
+    })
 
     // Close the modal
-    setModalIsOpen(false);
-  };
+    setModalIsOpen(false)
+  }
 
   // Function to handle input changes
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     setNewEvent((prevEvent) => ({
       ...prevEvent,
       [name]: value,
-    }));
-  };
+    }))
+  }
 
   // Event color differentiation
   const eventPropGetter = (event) => {
-    let backgroundColor;
+    let backgroundColor
     switch (event.meetingType) {
       case "zoom":
-        backgroundColor = "lightblue"; // Example color for Zoom
-        break;
+        backgroundColor = "lightblue" // Example color for Zoom
+        break
       case "meet":
-        backgroundColor = "lightgreen"; // Example color for Google Meet
-        break;
+        backgroundColor = "lightgreen" // Example color for Google Meet
+        break
       default:
-        backgroundColor = "lightgray"; // Default color
+        backgroundColor = "lightgray" // Default color
     }
-    return { style: { backgroundColor } };
-  };
+    return { style: { backgroundColor } }
+  }
 
   return (
     <>
@@ -318,7 +318,7 @@ const MyCalendar = () => {
         </Modal>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default MyCalendar;
+export default MyCalendar

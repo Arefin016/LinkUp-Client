@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "axios"
 
 const useAxiosPublic = () => {
   const axiosInstance = axios.create({
@@ -11,4 +11,4 @@ const useAxiosPublic = () => {
   return axiosInstance;
 };
 
-export default useAxiosPublic;
+export default useAxiosPublic
