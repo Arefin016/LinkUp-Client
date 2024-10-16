@@ -134,7 +134,7 @@ const MyCalendar = () => {
 
     try {
       const response = await axiosInstance.post(
-        "https://link-up-shaharul-api.vercel.app/add-event",
+        "https://link-up-shaharul.vercel.app/add-event",
         updateEvents
       )
       console.log("Event added to backend:", response.data)

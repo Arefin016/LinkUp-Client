@@ -2,7 +2,7 @@ import axios from "axios"
 
 // Configure your Axios instance
 const axiosInstance = axios.create({
-  baseURL: "https://link-up-shaharul-api.vercel.app",
+  baseURL: "https://link-up-shaharul.vercel.app",
 })
 
 // Fetch messages from the server

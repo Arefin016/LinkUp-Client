@@ -10,7 +10,7 @@ import smoothscroll from "smoothscroll-polyfill" // Import the smoothscroll poly
 smoothscroll.polyfill()
 
 // Connect to your Socket.io server
-const socket = io("https://link-up-shaharul-api.vercel.app")
+const socket = io("https://link-up-shaharul.vercel.app")
 
 const ChatBox = ({ currentUser }) => {
   const [messages, setMessages] = useState([])
