@@ -52,7 +52,15 @@ const SignUp = () => {
         navigate("/");
       }
     } catch (error) {
-      console.error("Error during sign-up:", error);
+      if (error.code === "auth/email-already-in-use") {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "This email is already in use!",
+        });
+      } else {
+        console.error("Error during sign-up:", error);
+      }
     }
   };
 
