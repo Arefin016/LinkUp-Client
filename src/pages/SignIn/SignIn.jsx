@@ -1,65 +1,45 @@
 import Lottie from "lottie-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import SignUp from "../../../public/SignIn.json";
-import { useContext } from "react";
+import { useContext, useState } from "react"; // Add useState here
 import { AuthContext } from "../../providers/AuthProvider";
 import Swal from "sweetalert2";
 import SocialLogin from "../../components/SocialLogin/SocialLogin";
-import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const SignIn = () => {
-  const axiosPublic = useAxiosPublic();
   const { signIn } = useContext(AuthContext);
   const navigate = useNavigate();
-  const location = useLocation(); // Destructure useLocation here
+  const location = useLocation();
+  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
 
   const from = location.state?.from?.pathname || "/";
 
-  const handleLogin = async (event) => {
-    event.preventDefault(); // Prevent form from refreshing the page
+  const handleLogin = (event) => {
+    event.preventDefault();
     const form = event.target;
     const email = form.email.value;
     const password = form.password.value;
-    console.log(email, password);
 
-    try {
-      // Sign in the user with email and password
-      const result = await signIn(email, password); // Await the signIn promise
-      const user = result.user;
-      console.log(user);
-
-      // Prepare the updated user object
-      const updated = {
-        email: user.email,
-        img: user.photoURL,
-        date: new Date().toLocaleString(),
-        role: 'user',
-      };
-
-      // Update the user in your database
-      const res = await axiosPublic.put(`/user/${user.email}`, updated); // Await the Axios request
-      console.log(res.data, 'Response data');
-
-      // Show success alert
-      Swal.fire({
-        position: "top",
-        icon: "success",
-        title: "User Login Successfully",
-        showConfirmButton: false,
-        timer: 1500,
+    signIn(email, password)
+      .then((result) => {
+        const user = result.user;
+        Swal.fire({
+          position: "top",
+          icon: "success",
+          title: "User Login Successfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        navigate(from, { replace: true });
+      })
+      .catch((error) => {
+        console.error("Login error:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Login Failed",
+          text: error.message,
+        });
       });
-
-      navigate(from, { replace: true }); // Navigate to the desired route after login
-    } catch (error) {
-      console.error("Login failed:", error);
-      Swal.fire({
-        position: "top",
-        icon: "error",
-        title: "Login failed",
-        text: error.message,
-        showConfirmButton: true,
-      });
-    }
   };
 
   return (
@@ -73,6 +53,7 @@ const SignIn = () => {
             <h1 className="text-3xl text-center font-bold">
               Sign In To Link Up
             </h1>
+            {/* Email Input */}
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Email</span>
@@ -85,18 +66,31 @@ const SignIn = () => {
                 required
               />
             </div>
+
+            {/* Password Input with Show Password feature */}
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Password</span>
               </label>
-              <input
-                type="password"
-                placeholder="Your Password"
-                name="password"
-                className="input input-bordered"
-                required
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Your Password"
+                  name="password"
+                  className="input input-bordered w-full"
+                  required
+                />
+                <button
+                  type="button"
+                  className="absolute right-2 top-2 text-gray-500"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? "🙈" : "👁️"}
+                </button>
+              </div>
             </div>
+
+            {/* Submit Button */}
             <div className="form-control mt-6">
               <input
                 type="submit"
@@ -105,12 +99,15 @@ const SignIn = () => {
               />
             </div>
           </form>
+
           <p className="mb-4 text-center">
             Please register at first. Go to{" "}
             <Link className="text-blue-600 font-bold" to="/signUp">
               SIGN UP
             </Link>
           </p>
+
+          {/* Social Login Component */}
           <SocialLogin></SocialLogin>
         </div>
       </div>
