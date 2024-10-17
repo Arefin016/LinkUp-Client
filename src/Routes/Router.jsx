@@ -116,6 +116,15 @@ export const router = createBrowserRouter([
         ),
       },
     
+      {
+        path: "/dashboard/notePad",
+        element: (
+          
+            <NotePad></NotePad>
+          
+        ),
+      },
+    
     ],
   },
 ])
