@@ -158,7 +158,7 @@ const SolutionsSection = ({ capture_2, capture_3, capture_4 }) => {
             Let clients schedule meetings instantly with real-time availability, reducing no-shows and improving engagement.
           </p>
         </div>
-        <div className="w-full lg:w-[40%] mb-5 lg:mb-0" data-aos="zoom-in">
+        <div className="w-full lg:w-[60%] mb-5 lg:mb-0" data-aos="zoom-in">
           <img src={img_3} alt="On-Demand Scheduling Image" className="w-full" />
         </div>
       </div>

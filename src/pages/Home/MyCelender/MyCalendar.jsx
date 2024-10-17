@@ -1,14 +1,14 @@
-import React, { useState, useContext } from "react";
-import { Calendar } from "react-big-calendar";
-import "react-big-calendar/lib/css/react-big-calendar.css";
-import { format, parse, startOfWeek, getDay } from "date-fns";
-import { dateFnsLocalizer } from "react-big-calendar";
-import enUS from "date-fns/locale/en-US";
-import Modal from "react-modal";
-import Swal from "sweetalert2";
-import { AuthContext } from "../../../providers/AuthProvider";
-import useAxiosPublic from "../../../hooks/useAxiosPublic";
-import emailjs from 'emailjs-com';
+import React, { useState, useContext } from "react"
+import { Calendar } from "react-big-calendar"
+import "react-big-calendar/lib/css/react-big-calendar.css"
+import { format, parse, startOfWeek, getDay } from "date-fns"
+import { dateFnsLocalizer } from "react-big-calendar"
+import enUS from "date-fns/locale/en-US"
+import Modal from "react-modal"
+import Swal from "sweetalert2"
+import { AuthContext } from "../../../providers/AuthProvider"
+import useAxiosPublic from "../../../hooks/useAxiosPublic"
+import emailjs from "emailjs-com"
 
 // Setup the date localization
 const locales = {
@@ -61,28 +61,33 @@ const modalStyles = {
 };
 
 const MyCalendar = () => {
-  const { user } = useContext(AuthContext);
-  const [link, setLink] = useState('https://us05web.zoom.us/j/89672803624?pwd=32MIAtWaT5JaUW7BD8gsf5bf54Mlpa.1');
-  const [myEvents, setMyEvents] = useState(initialEvents);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const { user } = useContext(AuthContext)
+  const [link, setLink] = useState(
+    "https://us05web.zoom.us/j/87070806836?pwd=fLYbzd8fSsnnCZdmpfsbukUzzI54al.1"
+  )
+  const [myEvents, setMyEvents] = useState(initialEvents)
+  const [meetLink, setMeetLink] = useState(
+    "https://meet.google.com/pcw-vhgs-bpz"
+  )
+  const [modalIsOpen, setModalIsOpen] = useState(false)
   const [newEvent, setNewEvent] = useState({
     title: "",
     startDate: "",
     endDate: "",
     description: "",
     meetingType: "",
-    link:link
-  });
-  const [selectedSlot, setSelectedSlot] = useState(null);
-  
+    link: link,
+  })
+  const [selectedSlot, setSelectedSlot] = useState(null)
 
-  const axiosInstance = useAxiosPublic();
+  const axiosInstance = useAxiosPublic()
 
   // Function to handle adding new events
   const handleSelectSlot = ({ start, end }) => {
     setSelectedSlot({ start, end });
     setModalIsOpen(true);
   };
+
 
   // Function to send email using EmailJS
   const sendEmail = (eventDetails) => {
@@ -93,45 +98,48 @@ const MyCalendar = () => {
       event_description: eventDetails.description,
       recipient_email: user?.email,
       userName: user?.displayName,
-      link: link,
+      link: eventDetails.meetingType === "meet" ? meetLink : link,
       type: eventDetails.meetingType,
-    };
+    }
 
-    emailjs.send(
-      "service_xqyql81", // Your EmailJS Service ID
-      "template_9ugi12d", // Your EmailJS Template ID
-      emailParams,
-      "vz_mcsgnNSq-e__68" // Your EmailJS User ID
-    )
-    .then(
-      (result) => {
-        console.log("Email sent successfully:", result.text);
-        Swal.fire({
-          position: "top-end",
-          icon: "success",
-          title: "Please Check Your Email",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      },
-      (error) => {
-        console.error("Error sending email:", error);
-      }
-    );
-  };
+    emailjs
+      .send(
+        "service_xqyql81", // Your EmailJS Service ID
+        "template_9ugi12d", // Your EmailJS Template ID
+        emailParams,
+        "vz_mcsgnNSq-e__68" // Your EmailJS User ID
+      )
+      .then(
+        (result) => {
+          console.log("Email sent successfully:", result.text)
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Please Check Your Email",
+            showConfirmButton: false,
+            timer: 1500,
+          })
+        },
+        (error) => {
+          console.error("Error sending email:", error)
+        }
+      )
+  }
 
   // Function to send event data to the backend
   const addEventToBackend = async (eventDetails) => {
-    const updateEvents={...eventDetails,link:link}
-    
+    const updateEvents = {
+      ...eventDetails,
+      link: eventDetails.meetingType === "meet" ? meetLink : link,
+    }
+
     try {
       const response = await axiosInstance.post(
         "https://link-up-shaharul.vercel.app/add-event",
         updateEvents
-      );
-      console.log("Event added to backend:", response.data);
+      )
+      console.log("Event added to backend:", response.data)
       console.log(eventDetails)
-  
     } catch (error) {
       console.error("Error adding event to backend:", error);
       Swal.fire({
@@ -146,7 +154,6 @@ const MyCalendar = () => {
   const handleSubmit = async () => {
     const { title, startDate, endDate, description, meetingType } = newEvent;
 
-    // Validate that all fields are filled and dates are correct
     if (!title || !startDate || !endDate || !description || !meetingType) {
       Swal.fire({
         icon: "warning",
@@ -171,18 +178,14 @@ const MyCalendar = () => {
       end: new Date(endDate),
       description,
       meetingType,
-    };
+    }
 
-    // Add the new event to the local state
-    setMyEvents([...myEvents, newEventData]);
+    setMyEvents([...myEvents, newEventData])
 
-    // Send event data to the backend
-    await addEventToBackend(newEventData);
+    await addEventToBackend(newEventData)
 
-    // Send email after adding event
-    sendEmail(newEventData);
+    sendEmail(newEventData)
 
-    // Clear the input fields after submission
     setNewEvent({
       title: "",
       startDate: "",

@@ -1,10 +1,9 @@
-import "aos/dist/aos.css" // You can also use <link> for styles
-import useAuth from "../../hooks/useAuth"
+import "aos/dist/aos.css"
 import "animate.css"
+import useAuth from "../../../hooks/useAuth"
 
-const UserDashboard = () => {
+const AdminHome = () => {
   const { user } = useAuth()
-
   return (
     <div
       data-aos="fade-down"
@@ -21,14 +20,14 @@ const UserDashboard = () => {
         <figure>
           <img src={user?.photoURL} alt="No Image" />
         </figure>
-        
         <div className="card-body">
           <h2 className="card-title text-3xl font-bold">
             Name: {user?.displayName}
           </h2>
           <p className="text-2xl font-medium mt-5">Email: {user?.email}</p>
           <p className="text-2xl font-medium">
-            Phone Number: {user?.phoneNumber ? user.phoneNumber : "Not Provided"}
+            Phone Number:{" "}
+            {user?.phoneNumber ? user.phoneNumber : "Not Provided"}
           </p>
           <div className="card-actions">
             <button className="btn btn-accent">Update</button>
@@ -36,7 +35,7 @@ const UserDashboard = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default UserDashboard;
+export default AdminHome

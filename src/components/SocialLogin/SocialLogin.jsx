@@ -7,29 +7,23 @@ const SocialLogin = () => {
   const { googleSignIn } = useAuth();
   const axiosPublic = useAxiosPublic();
   const navigate = useNavigate();
-  const from = location.state?.from?.pathname || "/"
 
   const handleGoogleSignIn = async () => {
     try {
-      // Perform Google sign-in
       const result = await googleSignIn();
-      const user = result.user;
-      console.log("Google user:", user);
-
-      // Prepare user info to post to backend
+      console.log(result.user); // Make sure result.user is logged
       const userInfo = {
-        email: user?.email,
-        name: user?.displayName,
+        email: result.user?.email,
+        name: result.user?.displayName,
       };
 
-      // Post user data to the backend
       const res = await axiosPublic.post("/users", userInfo);
-      console.log("User posted:", res.data);
+      console.log(res.data); // Log the response data
 
-      // Navigate to home page after successful sign-in and user post
-      navigate("/");
+      // Navigate after the data is successfully posted
+      navigate("/", { replace: true }); // replace: true prevents going back to login after navigation
     } catch (error) {
-      console.error("Error during Google Sign-In or user posting:", error);
+      console.error("Google Sign-In failed", error);
     }
   };
 
@@ -39,9 +33,9 @@ const SocialLogin = () => {
       <div className="w-full">
         <button
           onClick={handleGoogleSignIn}
-          className="btn btn-md w-[83%] ml-[32px] mb-5 flex items-center gap-2"
+          className="btn btn-md w-[83%] ml-[32px] mb-5"
         >
-          <FcGoogle />
+          <FcGoogle className="" />
           Google
         </button>
       </div>
