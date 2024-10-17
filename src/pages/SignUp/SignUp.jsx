@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import SignIn from "../../../public/SignIn.json";
 import Lottie from "lottie-react";
 import { useForm } from "react-hook-form";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../providers/AuthProvider";
 import Swal from "sweetalert2";
 import SocialLogin from "../../components/SocialLogin/SocialLogin";
@@ -10,6 +10,8 @@ import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const SignUp = () => {
   const axiosPublic = useAxiosPublic();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const {
     register,
@@ -22,19 +24,15 @@ const SignUp = () => {
   const { createUser, updateUserProfile } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  // Watch the password field to validate confirm password
   const password = watch("password");
 
   const onSubmit = async (data) => {
     try {
-      console.log(data);
       const result = await createUser(data.email, data.password);
       const loggedUser = result.user;
-      console.log(loggedUser);
 
       await updateUserProfile(data.name, data.photoURL);
 
-      // Create user entry in the database
       const userInfo = {
         name: data.name,
         email: data.email,
@@ -43,7 +41,6 @@ const SignUp = () => {
       const res = await axiosPublic.post("/users", userInfo);
 
       if (res.data.insertedId) {
-        console.log("User added to the database");
         reset();
         Swal.fire({
           position: "top",
@@ -52,7 +49,7 @@ const SignUp = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        navigate("/"); // Navigate to home after successful sign-up
+        navigate("/");
       }
     } catch (error) {
       console.error("Error during sign-up:", error);
@@ -68,6 +65,7 @@ const SignUp = () => {
         <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
           <form onSubmit={handleSubmit(onSubmit)} className="card-body">
             <h1 className="text-3xl text-center font-bold">Sign Up To Link Up</h1>
+
             {/* Name Input */}
             <div className="form-control">
               <label className="label">
@@ -101,17 +99,26 @@ const SignUp = () => {
               <label className="label">
                 <span className="label-text">Password</span>
               </label>
-              <input
-                type="password"
-                {...register("password", {
-                  required: true,
-                  maxLength: 20,
-                  minLength: 6,
-                  pattern: /(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z])/,
-                })}
-                placeholder="Your Password"
-                className="input input-bordered"
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  {...register("password", {
+                    required: true,
+                    maxLength: 20,
+                    minLength: 6,
+                    pattern: /(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z])/,
+                  })}
+                  placeholder="Your Password"
+                  className="input input-bordered w-full"
+                />
+                <button
+                  type="button"
+                  className="absolute right-2 top-2 text-gray-500"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? "🙈" : "👁️"}
+                </button>
+              </div>
               {errors.password?.type === "required" && (
                 <span className="text-red-600">Password is required</span>
               )}
@@ -133,15 +140,24 @@ const SignUp = () => {
               <label className="label">
                 <span className="label-text">Confirm Password</span>
               </label>
-              <input
-                type="password"
-                {...register("confirmPassword", {
-                  required: true,
-                  validate: (value) => value === password || "Passwords do not match",
-                })}
-                placeholder="Confirm Your Password"
-                className="input input-bordered"
-              />
+              <div className="relative">
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  {...register("confirmPassword", {
+                    required: true,
+                    validate: (value) => value === password || "Passwords do not match",
+                  })}
+                  placeholder="Confirm Your Password"
+                  className="input input-bordered w-full"
+                />
+                <button
+                  type="button"
+                  className="absolute right-2 top-2 text-gray-500"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                >
+                  {showConfirmPassword ? "🙈" : "👁️"}
+                </button>
+              </div>
               {errors.confirmPassword && (
                 <span className="text-red-600">{errors.confirmPassword.message}</span>
               )}
