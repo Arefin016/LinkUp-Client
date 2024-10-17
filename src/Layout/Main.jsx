@@ -1,3 +1,4 @@
+import React from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "../pages/Shared/NavBar/Navbar";
 import Footer from "../pages/Shared/Footer/Footer";
@@ -10,9 +11,10 @@ const Main = () => {
 
   return (
     <div>
-      {noHeaderFooter || <Navbar></Navbar>}
-      <Outlet></Outlet>
-      {noHeaderFooter || <Footer></Footer>}
+     
+      {noHeaderFooter || <Navbar />}
+      <Outlet />
+      {noHeaderFooter || <Footer />}
     </div>
   );
 };

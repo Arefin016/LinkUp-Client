@@ -1,44 +1,31 @@
-import { FcGoogle } from "react-icons/fc"
-import useAuth from "../../hooks/useAuth"
-import useAxiosPublic from "../../hooks/useAxiosPublic"
-import { useNavigate } from "react-router-dom"
+import { FcGoogle } from "react-icons/fc";
+import useAuth from "../../hooks/useAuth";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
+import { useNavigate } from "react-router-dom";
 
 const SocialLogin = () => {
-  const { googleSignIn } = useAuth()
-  const axiosPublic = useAxiosPublic()
-  const navigate = useNavigate()
+  const { googleSignIn } = useAuth();
+  const axiosPublic = useAxiosPublic();
+  const navigate = useNavigate();
 
-  const handleGoogleSignIn = async () => { // Make the function async
+  const handleGoogleSignIn = async () => {
     try {
-      const result = await googleSignIn(); // Await the Google sign-in
-      const user=result.user;
-      
+      const result = await googleSignIn();
+      console.log(result.user); // Make sure result.user is logged
       const userInfo = {
         email: result.user?.email,
         name: result.user?.displayName,
-        img: result.user?.photoURL,
-        date: new Date().toLocaleString(),
-        role: 'user'
       };
-  
-      const res = await axiosPublic.post("/users", userInfo); // Await the Axios post request
-      console.log(res.data, 'Data');
-  
-      const updated = {
-        email: user.email,
-        img: user.photoURL,
-        date: new Date().toLocaleString(),
-        role: 'user',
-      };
-      const updateResponse = await axiosPublic.put(`/user/${userInfo.email}`, updated); // Await the Axios put request
-      console.log(updateResponse.data, 'Response data');
-  
-      navigate("/"); // Navigate after successful requests
+
+      const res = await axiosPublic.post("/users", userInfo);
+      console.log(res.data); // Log the response data
+
+      // Navigate after the data is successfully posted
+      navigate("/", { replace: true }); // replace: true prevents going back to login after navigation
     } catch (error) {
-      console.error('Error during sign-in or API requests:', error);
+      console.error("Google Sign-In failed", error);
     }
   };
-  
 
   return (
     <div className="w-full">
@@ -53,7 +40,7 @@ const SocialLogin = () => {
         </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SocialLogin
+export default SocialLogin;
