@@ -16,10 +16,14 @@ const SignUp = () => {
     handleSubmit,
     reset,
     formState: { errors },
+    watch,
   } = useForm();
 
   const { createUser, updateUserProfile } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  // Watch the password field to validate confirm password
+  const password = watch("password");
 
   const onSubmit = async (data) => {
     try {
@@ -70,16 +74,15 @@ const SignUp = () => {
                 <span className="label-text">Name</span>
               </label>
               <input
-                type="name"
+                type="text"
                 {...register("name", { required: true })}
                 placeholder="Your Name"
-                name="name"
                 className="input input-bordered"
               />
               {errors.name && <span className="text-red-600">Name is required</span>}
             </div>
-            {/* Photo URL Input */}
-            
+
+            {/* Email Input */}
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Email</span>
@@ -88,11 +91,11 @@ const SignUp = () => {
                 type="email"
                 {...register("email", { required: true })}
                 placeholder="Your Email"
-                name="email"
                 className="input input-bordered"
               />
               {errors.email && <span className="text-red-600">Email is required</span>}
             </div>
+
             {/* Password Input */}
             <div className="form-control">
               <label className="label">
@@ -107,7 +110,6 @@ const SignUp = () => {
                   pattern: /(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z])/,
                 })}
                 placeholder="Your Password"
-                name="password"
                 className="input input-bordered"
               />
               {errors.password?.type === "required" && (
@@ -124,24 +126,40 @@ const SignUp = () => {
                   Password must have one uppercase letter, one lowercase letter, one number, and one special character
                 </span>
               )}
-              <label className="label">
-                <a href="#" className="label-text-alt link link-hover">
-                  Forgot password?
-                </a>
-              </label>
             </div>
+
+            {/* Confirm Password Input */}
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Confirm Password</span>
+              </label>
+              <input
+                type="password"
+                {...register("confirmPassword", {
+                  required: true,
+                  validate: (value) => value === password || "Passwords do not match",
+                })}
+                placeholder="Confirm Your Password"
+                className="input input-bordered"
+              />
+              {errors.confirmPassword && (
+                <span className="text-red-600">{errors.confirmPassword.message}</span>
+              )}
+            </div>
+
             {/* Submit Button */}
             <div className="form-control mt-6">
               <input type="submit" value="Sign Up" className="btn btn-primary" />
             </div>
           </form>
+
           <p className="my-4 text-center">
             Already registered? Go to{" "}
             <Link className="text-blue-600 font-bold" to="/login">
               LOGIN
             </Link>
           </p>
-          
+
           <SocialLogin />
         </div>
       </div>
