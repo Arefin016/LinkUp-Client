@@ -6,13 +6,7 @@ import useAdmin from "../../../hooks/useAdmin"
 
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext)
-<<<<<<< HEAD
-
-  // theme
-
-=======
   const [isAdmin] = useAdmin()
->>>>>>> 5c44eeae7ea12501cb924dcf2009455e04d233b8
   const [theme, setTheme] = useState("light")
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const dropdownRef = useRef(null) // Create a ref for the dropdown
