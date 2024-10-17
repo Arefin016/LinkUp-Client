@@ -26,6 +26,7 @@ import AdminRoute from "./AdminRoute"
 import AdminDashboard from "../pages/AdminPages/AdminDashboard/AdminDashboard"
 import AdminHome from "../pages/AdminPages/AdminHome/AdminHome"
 import ChatBox from "../pages/ChatBox/ChatBox"
+import NotePad from "../pages/AdminPages/AdminHome/NotePad/NotePad"
 
 export const router = createBrowserRouter([
   {
@@ -114,6 +115,7 @@ export const router = createBrowserRouter([
           </AdminRoute>
         ),
       },
+    
     ],
   },
 ])

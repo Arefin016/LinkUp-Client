@@ -1,5 +1,5 @@
 import React from "react"
-import { FaUsers, FaHistory, FaHome } from "react-icons/fa" // Use 'react-icons/fa' instead of 'fa6'
+import { FaUsers,  FaHome } from "react-icons/fa" 
 import {
   FcBookmark,
   FcContacts,
@@ -7,6 +7,7 @@ import {
   FcHome,
   FcRating,
 } from "react-icons/fc"
+// import { MdOutlineNoteAlt } from "react-icons/md";
 import { Link, NavLink } from "react-router-dom"
 import useAuth from "../../../hooks/useAuth"
 import useAdmin from "../../../hooks/useAdmin"
@@ -134,6 +135,7 @@ const Sidebar = () => {
                   ADD Review & rating
                 </span>
               </NavLink>
+              
             </>
           )}
         </nav>
@@ -171,7 +173,7 @@ const Sidebar = () => {
         </nav>
 
         <div className="mt-6">
-          
+
 
           <div className="flex items-center justify-between mt-6">
             <a href="#" className="flex items-center gap-x-2">
