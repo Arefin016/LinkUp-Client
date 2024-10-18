@@ -1,19 +1,19 @@
-import React, { useState, useContext } from "react"
-import { Calendar } from "react-big-calendar"
-import "react-big-calendar/lib/css/react-big-calendar.css"
-import { format, parse, startOfWeek, getDay } from "date-fns"
-import { dateFnsLocalizer } from "react-big-calendar"
-import enUS from "date-fns/locale/en-US"
-import Modal from "react-modal"
-import Swal from "sweetalert2"
-import { AuthContext } from "../../../providers/AuthProvider"
-import useAxiosPublic from "../../../hooks/useAxiosPublic"
-import emailjs from "emailjs-com"
+import React, { useState, useContext } from "react";
+import { Calendar } from "react-big-calendar";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import { format, parse, startOfWeek, getDay } from "date-fns";
+import { dateFnsLocalizer } from "react-big-calendar";
+import enUS from "date-fns/locale/en-US";
+import Modal from "react-modal";
+import Swal from "sweetalert2";
+import { AuthContext } from "../../../providers/AuthProvider";
+import useAxiosPublic from "../../../hooks/useAxiosPublic";
+import emailjs from "emailjs-com";
 
 // Setup the date localization
 const locales = {
   "en-US": enUS,
-}
+};
 
 const localizer = dateFnsLocalizer({
   format,
@@ -21,7 +21,7 @@ const localizer = dateFnsLocalizer({
   startOfWeek,
   getDay,
   locales,
-})
+});
 
 // Initial events to display
 const initialEvents = [
@@ -32,7 +32,7 @@ const initialEvents = [
     end: new Date(2024, 8, 18, 12, 0), // September 18, 2024, at 12:00 PM
     meetingType: "",
   },
-]
+];
 
 // Updated modal styles for responsiveness and centering
 const modalStyles = {
@@ -58,18 +58,18 @@ const modalStyles = {
     backgroundColor: "rgba(0, 0, 0, 0.5)",
     zIndex: "1000",
   },
-}
+};
 
 const MyCalendar = () => {
-  const { user } = useContext(AuthContext)
+  const { user } = useContext(AuthContext);
   const [link, setLink] = useState(
     "https://us05web.zoom.us/j/87070806836?pwd=fLYbzd8fSsnnCZdmpfsbukUzzI54al.1"
-  )
-  const [myEvents, setMyEvents] = useState(initialEvents)
+  );
+  const [myEvents, setMyEvents] = useState(initialEvents);
   const [meetLink, setMeetLink] = useState(
     "https://meet.google.com/pcw-vhgs-bpz"
-  )
-  const [modalIsOpen, setModalIsOpen] = useState(false)
+  );
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [newEvent, setNewEvent] = useState({
     title: "",
     startDate: "",
@@ -77,16 +77,16 @@ const MyCalendar = () => {
     description: "",
     meetingType: "",
     link: link,
-  })
-  const [selectedSlot, setSelectedSlot] = useState(null)
+  });
+  const [selectedSlot, setSelectedSlot] = useState(null);
 
-  const axiosInstance = useAxiosPublic()
+  const axiosInstance = useAxiosPublic();
 
   // Function to handle adding new events
   const handleSelectSlot = ({ start, end }) => {
-    setSelectedSlot({ start, end })
-    setModalIsOpen(true)
-  }
+    setSelectedSlot({ start, end });
+    setModalIsOpen(true);
+  };
 
   // Function to send email using EmailJS
   const sendEmail = (eventDetails) => {
@@ -99,7 +99,7 @@ const MyCalendar = () => {
       userName: user?.displayName,
       link: eventDetails.meetingType === "meet" ? meetLink : link,
       type: eventDetails.meetingType,
-    }
+    };
 
     emailjs
       .send(
@@ -110,56 +110,56 @@ const MyCalendar = () => {
       )
       .then(
         (result) => {
-          console.log("Email sent successfully:", result.text)
+          console.log("Email sent successfully:", result.text);
           Swal.fire({
             position: "top-end",
             icon: "success",
             title: "Please Check Your Email",
             showConfirmButton: false,
             timer: 1500,
-          })
+          });
         },
         (error) => {
-          console.error("Error sending email:", error)
+          console.error("Error sending email:", error);
         }
-      )
-  }
+      );
+  };
 
   // Function to send event data to the backend
   const addEventToBackend = async (eventDetails) => {
     const updateEvents = {
       ...eventDetails,
       link: eventDetails.meetingType === "meet" ? meetLink : link,
-    }
+    };
 
     try {
       const response = await axiosInstance.post(
         "https://link-up-shaharul.vercel.app/add-event",
         updateEvents
-      )
-      console.log("Event added to backend:", response.data)
-      console.log(eventDetails)
+      );
+      console.log("Event added to backend:", response.data);
+      console.log(eventDetails);
     } catch (error) {
-      console.error("Error adding event to backend:", error)
+      console.error("Error adding event to backend:", error);
       Swal.fire({
         icon: "error",
         title: "Oops...",
         text: "Something went wrong while adding the event!",
-      })
+      });
     }
-  }
+  };
 
   // Function to handle event creation
   const handleSubmit = async () => {
-    const { title, startDate, endDate, description, meetingType } = newEvent
+    const { title, startDate, endDate, description, meetingType } = newEvent;
 
     if (!title || !startDate || !endDate || !description || !meetingType) {
       Swal.fire({
         icon: "warning",
         title: "Incomplete Information",
         text: "Please fill out all the fields.",
-      })
-      return
+      });
+      return;
     }
 
     if (new Date(startDate) >= new Date(endDate)) {
@@ -167,8 +167,8 @@ const MyCalendar = () => {
         icon: "warning",
         title: "Invalid Dates",
         text: "End date must be later than start date.",
-      })
-      return
+      });
+      return;
     }
 
     const newEventData = {
@@ -177,13 +177,13 @@ const MyCalendar = () => {
       end: new Date(endDate),
       description,
       meetingType,
-    }
+    };
 
-    setMyEvents([...myEvents, newEventData])
+    setMyEvents([...myEvents, newEventData]);
 
-    await addEventToBackend(newEventData)
+    await addEventToBackend(newEventData);
 
-    sendEmail(newEventData)
+    sendEmail(newEventData);
 
     setNewEvent({
       title: "",
@@ -191,36 +191,36 @@ const MyCalendar = () => {
       endDate: "",
       description: "",
       meetingType: "",
-    })
+    });
 
     // Close the modal
-    setModalIsOpen(false)
-  }
+    setModalIsOpen(false);
+  };
 
   // Function to handle input changes
   const handleChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setNewEvent((prevEvent) => ({
       ...prevEvent,
       [name]: value,
-    }))
-  }
+    }));
+  };
 
   // Event color differentiation
   const eventPropGetter = (event) => {
-    let backgroundColor
+    let backgroundColor;
     switch (event.meetingType) {
       case "zoom":
-        backgroundColor = "lightblue" // Example color for Zoom
-        break
+        backgroundColor = "lightblue"; // Example color for Zoom
+        break;
       case "meet":
-        backgroundColor = "lightgreen" // Example color for Google Meet
-        break
+        backgroundColor = "lightgreen"; // Example color for Google Meet
+        break;
       default:
-        backgroundColor = "lightgray" // Default color
+        backgroundColor = "lightgray"; // Default color
     }
-    return { style: { backgroundColor } }
-  }
+    return { style: { backgroundColor } };
+  };
 
   return (
     <>
@@ -290,9 +290,8 @@ const MyCalendar = () => {
                 name="description"
                 value={newEvent.description}
                 onChange={handleChange}
-                className="w-full p-2 border rounded text-center"
+                className="w-full p-2 border rounded"
                 placeholder="Enter event description"
-                rows="3"
               />
             </div>
             <div>
@@ -301,24 +300,26 @@ const MyCalendar = () => {
                 name="meetingType"
                 value={newEvent.meetingType}
                 onChange={handleChange}
-                className="w-full p-2 border rounded text-center"
+                className="w-full p-2 border rounded"
               >
-                <option value="">Select Meeting Type</option>
+                <option value="">Select meeting type</option>
                 <option value="zoom">Zoom</option>
                 <option value="meet">Google Meet</option>
               </select>
             </div>
-            <button
-              onClick={handleSubmit}
-              className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 rounded"
-            >
-              Add Event
-            </button>
+            <div className="text-center">
+              <button
+                onClick={handleSubmit}
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              >
+                Add Event
+              </button>
+            </div>
           </div>
         </Modal>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default MyCalendar
+export default MyCalendar;
