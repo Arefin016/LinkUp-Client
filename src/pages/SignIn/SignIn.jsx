@@ -1,37 +1,46 @@
-import Lottie from "lottie-react"
-import { Link, useLocation, useNavigate } from "react-router-dom"
-import SignUp from "../../../public/SignIn.json"
-import { useContext } from "react"
-import { AuthContext } from "../../providers/AuthProvider"
-import Swal from "sweetalert2"
-import SocialLogin from "../../components/SocialLogin/SocialLogin"
+import Lottie from "lottie-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import SignUp from "../../../public/SignIn.json";
+import { useContext, useState } from "react"; // Add useState here
+import { AuthContext } from "../../providers/AuthProvider";
+import Swal from "sweetalert2";
+import SocialLogin from "../../components/SocialLogin/SocialLogin";
 
 const SignIn = () => {
-  const { signIn } = useContext(AuthContext)
-  const navigate = useNavigate()
-  const location = useLocation() // Destructure useLocation here
+  const { signIn } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
 
-  const from = location.state?.from?.pathname || "/"
+  const from = location.state?.from?.pathname || "/";
 
   const handleLogin = (event) => {
-    event.preventDefault()
-    const form = event.target
-    const email = form.email.value
-    const password = form.password.value
-    console.log(email, password)
-    signIn(email, password).then((result) => {
-      const user = result.user
-      console.log(user)
-      Swal.fire({
-        position: "top",
-        icon: "success",
-        title: "User Login Successfully",
-        showConfirmButton: false,
-        timer: 1500,
+    event.preventDefault();
+    const form = event.target;
+    const email = form.email.value;
+    const password = form.password.value;
+
+    signIn(email, password)
+      .then((result) => {
+        const user = result.user;
+        Swal.fire({
+          position: "top",
+          icon: "success",
+          title: "User Login Successfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        navigate(from, { replace: true });
       })
-      navigate(from, { replace: true }) 
-    })
-  }
+      .catch((error) => {
+        console.error("Login error:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Login Failed",
+          text: error.message,
+        });
+      });
+  };
 
   return (
     <div className="hero min-h-screen bg-base-200">
@@ -44,6 +53,7 @@ const SignIn = () => {
             <h1 className="text-3xl text-center font-bold">
               Sign In To Link Up
             </h1>
+            {/* Email Input */}
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Email</span>
@@ -56,18 +66,31 @@ const SignIn = () => {
                 required
               />
             </div>
+
+            {/* Password Input with Show Password feature */}
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Password</span>
               </label>
-              <input
-                type="password"
-                placeholder="Your Password"
-                name="password"
-                className="input input-bordered"
-                required
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Your Password"
+                  name="password"
+                  className="input input-bordered w-full"
+                  required
+                />
+                <button
+                  type="button"
+                  className="absolute right-2 top-2 text-gray-500"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? "🙈" : "👁️"}
+                </button>
+              </div>
             </div>
+
+            {/* Submit Button */}
             <div className="form-control mt-6">
               <input
                 type="submit"
@@ -76,17 +99,20 @@ const SignIn = () => {
               />
             </div>
           </form>
+
           <p className="mb-4 text-center">
             Please register at first. Go to{" "}
             <Link className="text-blue-600 font-bold" to="/signUp">
               SIGN UP
             </Link>
           </p>
+
+          {/* Social Login Component */}
           <SocialLogin></SocialLogin>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SignIn
+export default SignIn;
