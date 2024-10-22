@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import zoomLogo from "../../../assets/Zoom.jpg"; 
-import googleMeetLogo from "../../../assets/meet.png"; 
+import zoomLogo from "../../../assets/Zoom.jpg";
+import googleMeetLogo from "../../../assets/meet.png";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
-const ManageBooking = () => {
+const ManageBooking = ({ userId }) => { // Accept userId as a prop
   const [events, setEvents] = useState([]);
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,14 +17,16 @@ const ManageBooking = () => {
     const fetchEvents = async () => {
       try {
         const response = await axiosPublic.get("/events");
-        setEvents(response.data);
+        // Filter events by userId
+        const userEvents = response.data.filter(event => event.userId === userId); // Assuming each event has a userId field
+        setEvents(userEvents);
       } catch (err) {
         setError(err.message);
       }
     };
 
     fetchEvents();
-  }, []);
+  }, [userId]); // Add userId to the dependency array
 
   // Handle opening the update modal
   const openUpdateModal = (event) => {
@@ -102,7 +104,7 @@ const ManageBooking = () => {
           {events.map((event) => (
             <div
               key={event._id}
-              className="bg-white rounded-lg shadow-lg p-6 flex flex-col justify-between"
+              className="bg-white rounded-lg shadow-lg p-6 flex flex-col justify-between h-96"
             >
               <div className="flex items-start">
                 <img
@@ -126,11 +128,13 @@ const ManageBooking = () => {
                     <strong>End:</strong>{" "}
                     {new Date(event.end).toLocaleString()}
                   </p>
-                  <p className="text-gray-600 mt-4">{event.description}</p>
+                  <div className="text-gray-600 mt-4 overflow-y-auto max-h-16">
+                    {event.description}
+                  </div>
                 </div>
               </div>
-              {event.link ? (
-                <div>
+              {event.link && (
+                <div className="mt-2 ml-14 mb-5 text-sm text-blue-500">
                   {event.meetingType === 'zoom' ? 'Zoom Link' : 'Meet Link'}:{" "}
                   <a
                     href={event.link}
@@ -141,11 +145,8 @@ const ManageBooking = () => {
                     Click
                   </a>
                 </div>
-              ) : (
-                ""
               )}
-
-              <div className="mt-6 flex justify-end space-x-3">
+              <div className="mt-auto flex justify-end space-x-3">
                 <button
                   className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
                   onClick={() => openUpdateModal(event)}
@@ -163,7 +164,6 @@ const ManageBooking = () => {
           ))}
         </div>
       )}
-
       {isModalOpen && selectedEvent && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">

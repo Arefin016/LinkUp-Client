@@ -14,7 +14,6 @@ const useEvents = () => {
 			return res.data;
 		},
 	});
-
 	return [eventsData, loading, refetch];
 };
 

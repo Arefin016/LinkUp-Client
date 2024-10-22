@@ -1,12 +1,14 @@
 import React from "react"
-import { FaUsers, FaHistory, FaHome } from "react-icons/fa" // Use 'react-icons/fa' instead of 'fa6'
+import { FaUsers, FaHome } from "react-icons/fa"
 import {
   FcBookmark,
   FcContacts,
   FcGallery,
   FcHome,
   FcRating,
+  FcNook,
 } from "react-icons/fc"
+
 import { Link, NavLink } from "react-router-dom"
 import useAuth from "../../../hooks/useAuth"
 import useAdmin from "../../../hooks/useAdmin"
@@ -44,7 +46,7 @@ const Sidebar = () => {
               placeholder="Search"
             />
           </div>
-          {/*This is Divider  */}
+
           <div className="divider"></div>
 
           {isAdmin ? (
@@ -112,6 +114,13 @@ const Sidebar = () => {
                   ADD Review & rating
                 </span>
               </NavLink>
+              <NavLink
+                to="/dashboard/notePad"
+                className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-300 hover:bg-gray-100  dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-orange-600"
+              >
+                <FcNook />
+                <span className="mx-2 text-sm font-medium">Take Your Note</span>
+              </NavLink>
             </>
           ) : (
             <>
@@ -143,6 +152,13 @@ const Sidebar = () => {
                 <span className="mx-2 text-sm font-medium">
                   ADD Review & rating
                 </span>
+              </NavLink>
+              <NavLink
+                to="/dashboard/notePad"
+                className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-300 hover:bg-gray-100  dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-orange-600"
+              >
+                <FcNook />
+                <span className="mx-2 text-sm font-medium">Take Your Note</span>
               </NavLink>
             </>
           )}

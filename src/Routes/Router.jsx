@@ -26,7 +26,6 @@ import AdminRoute from "./AdminRoute"
 import AdminDashboard from "../pages/AdminPages/AdminDashboard/AdminDashboard"
 import AdminHome from "../pages/AdminPages/AdminHome/AdminHome"
 import ChatBox from "../pages/ChatBox/ChatBox"
-import EventHistory from "../pages/EventHistory/EventHistory"
 
 export const router = createBrowserRouter([
   {
@@ -117,6 +116,11 @@ export const router = createBrowserRouter([
             <AdminHome></AdminHome>
           </AdminRoute>
         ),
+      },
+
+      {
+        path: "/dashboard/notePad",
+        element: <NotePad></NotePad>,
       },
     ],
   },
