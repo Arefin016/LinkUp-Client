@@ -1,5 +1,5 @@
 import React from "react"
-import { FaUsers, FaHome } from "react-icons/fa"
+import { FaUsers, FaHome, FaHistory } from "react-icons/fa"
 import {
   FcBookmark,
   FcContacts,

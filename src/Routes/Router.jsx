@@ -25,7 +25,8 @@ import ManageBooking from "../pages/AdminPages/ManageBooking/ManageBooking"
 import AdminRoute from "./AdminRoute"
 import AdminDashboard from "../pages/AdminPages/AdminDashboard/AdminDashboard"
 import AdminHome from "../pages/AdminPages/AdminHome/AdminHome"
-import ChatBox from "../pages/ChatBox/ChatBox"
+
+import NotePad from "../pages/AdminPages/AdminHome/NotePad/NotePad"
 
 export const router = createBrowserRouter([
   {
@@ -46,14 +47,7 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-      {
-        path: "/chat",
-        element: (
-          <PrivateRoute>
-            <ChatBox></ChatBox>
-          </PrivateRoute>
-        ),
-      },
+
       {
         path: "/guides",
         element: <Guides />,
@@ -80,10 +74,6 @@ export const router = createBrowserRouter([
       { path: "/dashboard/userDashboard", element: <UserDashboard /> },
 
       { path: "/dashboard/rating", element: <Rating /> }, // Use lowercase
-      {
-        path: "/dashboard/eventHistory",
-        element: <EventHistory></EventHistory>,
-      }, // Use lowercase
       // admin routes
       {
         path: "/dashboard/adminDashboard",
