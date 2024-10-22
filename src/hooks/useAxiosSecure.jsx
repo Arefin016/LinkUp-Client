@@ -1,56 +1,27 @@
-import { useEffect } from "react"
-import axios from "axios"
-import { useNavigate } from "react-router-dom"
-import useAuth from "./useAuth"
-
-export const axiosSecure = axios.create({
-  baseURL: "https://link-up-shaharul.vercel.app",
-})
+import axios from 'axios';
+import { useEffect } from 'react';
+import useAuth from './useAuth';
 
 const useAxiosSecure = () => {
-  const navigate = useNavigate()
-  const { logOut } = useAuth()
+  const { user } = useAuth();
+
+  const axiosSecure = axios.create({
+    baseURL: 'https://link-up-shaharul.vercel.app', // Replace with your actual base URL
+  });
 
   useEffect(() => {
-    // Add request interceptor
-    const requestInterceptor = axiosSecure.interceptors.request.use(
-      function (config) {
-        const token = localStorage.getItem("access-token")
-        if (token) {
-          config.headers.authorization = `Bearer ${token}`
-        }
-        return config
-      },
-      function (error) {
-        return Promise.reject(error)
+    axiosSecure.interceptors.request.use((config) => {
+      const token = localStorage.getItem('accessToken'); // Get the token from localStorage
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`; // Attach token to the Authorization header
       }
-    )
+      return config;
+    }, (error) => {
+      return Promise.reject(error);
+    });
+  }, [user]);
 
-    // Add response interceptor
-    const responseInterceptor = axiosSecure.interceptors.response.use(
-      (response) => {
-        return response
-      },
-      async (error) => {
-        const status = error.response?.status
+  return axiosSecure;
+};
 
-        if (status === 401 || status === 403) {
-          await logOut()
-          navigate("/")
-        }
-
-        return Promise.reject(error)
-      }
-    )
-
-    // Clean up interceptors when component is unmounted
-    return () => {
-      axiosSecure.interceptors.request.eject(requestInterceptor)
-      axiosSecure.interceptors.response.eject(responseInterceptor)
-    }
-  }, [logOut, navigate])
-
-  return axiosSecure
-}
-
-export default useAxiosSecure
+export default useAxiosSecure;
