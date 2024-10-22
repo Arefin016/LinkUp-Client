@@ -70,6 +70,7 @@ const MyCalendar = () => {
     "https://meet.google.com/pcw-vhgs-bpz"
   );
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [previewModalIsOpen, setPreviewModalIsOpen] = useState(false);
   const [newEvent, setNewEvent] = useState({
     title: "",
     startDate: "",
@@ -138,7 +139,6 @@ const MyCalendar = () => {
         updateEvents
       );
       console.log("Event added to backend:", response.data);
-      console.log(eventDetails);
     } catch (error) {
       console.error("Error adding event to backend:", error);
       Swal.fire({
@@ -150,7 +150,7 @@ const MyCalendar = () => {
   };
 
   // Function to handle event creation
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     const { title, startDate, endDate, description, meetingType } = newEvent;
 
     if (!title || !startDate || !endDate || !description || !meetingType) {
@@ -170,6 +170,14 @@ const MyCalendar = () => {
       });
       return;
     }
+
+    // Open the preview modal
+    setPreviewModalIsOpen(true);
+  };
+
+  // Function to confirm adding the event after preview
+  const confirmAddEvent = async () => {
+    const { title, startDate, endDate, description, meetingType } = newEvent;
 
     const newEventData = {
       title,
@@ -193,8 +201,9 @@ const MyCalendar = () => {
       meetingType: "",
     });
 
-    // Close the modal
+    // Close the modals
     setModalIsOpen(false);
+    setPreviewModalIsOpen(false);
   };
 
   // Function to handle input changes
@@ -204,6 +213,20 @@ const MyCalendar = () => {
       ...prevEvent,
       [name]: value,
     }));
+  };
+
+  // Function to share the event link on social media
+  const shareEventLink = () => {
+    const { title, startDate, endDate } = newEvent;
+    const eventLink = encodeURIComponent(
+      `Check out this event: ${title} on ${startDate} to ${endDate}. Join here: ${link}`
+    );
+    const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${eventLink}`;
+    const whatsappShareUrl = `https://api.whatsapp.com/send?text=${eventLink}`;
+
+    window.open(facebookShareUrl, "_blank");
+    // or use WhatsApp
+    // window.open(whatsappShareUrl, "_blank");
   };
 
   // Event color differentiation
@@ -260,28 +283,30 @@ const MyCalendar = () => {
                 name="title"
                 value={newEvent.title}
                 onChange={handleChange}
-                className="w-full p-2 border rounded text-center"
-                placeholder="Enter event title"
+                className="w-full border border-gray-300 rounded-md p-2"
+                required
               />
             </div>
             <div>
-              <label className="block text-gray-700">Start Date and Time</label>
+              <label className="block text-gray-700">Start Date</label>
               <input
                 type="datetime-local"
                 name="startDate"
                 value={newEvent.startDate}
                 onChange={handleChange}
-                className="w-full p-2 border rounded text-center"
+                className="w-full border border-gray-300 rounded-md p-2"
+                required
               />
             </div>
             <div>
-              <label className="block text-gray-700">End Date and Time</label>
+              <label className="block text-gray-700">End Date</label>
               <input
                 type="datetime-local"
                 name="endDate"
                 value={newEvent.endDate}
                 onChange={handleChange}
-                className="w-full p-2 border rounded text-center"
+                className="w-full border border-gray-300 rounded-md p-2"
+                required
               />
             </div>
             <div>
@@ -290,8 +315,8 @@ const MyCalendar = () => {
                 name="description"
                 value={newEvent.description}
                 onChange={handleChange}
-                className="w-full p-2 border rounded"
-                placeholder="Enter event description"
+                className="w-full border border-gray-300 rounded-md p-2"
+                required
               />
             </div>
             <div>
@@ -300,19 +325,61 @@ const MyCalendar = () => {
                 name="meetingType"
                 value={newEvent.meetingType}
                 onChange={handleChange}
-                className="w-full p-2 border rounded"
+                className="w-full border border-gray-300 rounded-md p-2"
+                required
               >
-                <option value="">Select meeting type</option>
+                <option value="">Select Type</option>
                 <option value="zoom">Zoom</option>
                 <option value="meet">Google Meet</option>
               </select>
             </div>
-            <div className="text-center">
+            <button
+              onClick={handleSubmit}
+              className="w-full bg-blue-500 text-white py-2 rounded-md"
+            >
+              Add Event
+            </button>
+          </div>
+        </Modal>
+
+        {/* Preview Modal */}
+        <Modal
+          isOpen={previewModalIsOpen}
+          onRequestClose={() => setPreviewModalIsOpen(false)}
+          style={modalStyles}
+          ariaHideApp={false}
+        >
+          <h2 className="text-xl font-bold mb-4 text-center">Event Preview</h2>
+          <div className="space-y-4">
+            <p><strong>Title:</strong> {newEvent.title}</p>
+            <p><strong>Start:</strong> {newEvent.startDate}</p>
+            <p><strong>End:</strong> {newEvent.endDate}</p>
+            <p><strong>Description:</strong> {newEvent.description}</p>
+            <p><strong>Meeting Type:</strong> {newEvent.meetingType}</p>
+            <p>
+              <strong>Link:</strong>{" "}
+              <a href={newEvent.link} target="_blank" rel="noopener noreferrer">
+                {newEvent.link}
+              </a>
+            </p>
+            <div className="flex justify-between mt-4">
               <button
-                onClick={handleSubmit}
-                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                onClick={shareEventLink}
+                className="bg-blue-500 text-white py-1 px-2 rounded-md"
               >
-                Add Event
+                Share
+              </button>
+              <button
+                onClick={confirmAddEvent}
+                className="w-full bg-green-500 text-white py-2 rounded-md"
+              >
+                Confirm
+              </button>
+              <button
+                onClick={() => setPreviewModalIsOpen(false)}
+                className="w-full bg-red-500 text-white py-2 rounded-md"
+              >
+                Cancel
               </button>
             </div>
           </div>
