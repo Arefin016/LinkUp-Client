@@ -123,6 +123,16 @@ const Sidebar = () => {
                 <FaUsers />
                 <span className="mx-2 text-sm font-medium">User Home</span>
               </NavLink>
+              {/* User Event History */}
+              <NavLink
+                to="/dashboard/eventHistory"
+                className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-300 hover:bg-gray-100  dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-orange-600"
+              >
+                <FaHistory />
+                <span className="mx-2 text-sm font-medium">
+                  User Event Details
+                </span>
+              </NavLink>
 
               {/* review section */}
               <NavLink
@@ -171,8 +181,6 @@ const Sidebar = () => {
         </nav>
 
         <div className="mt-6">
-          
-
           <div className="flex items-center justify-between mt-6">
             <a href="#" className="flex items-center gap-x-2">
               <img

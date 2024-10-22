@@ -26,6 +26,7 @@ import AdminRoute from "./AdminRoute"
 import AdminDashboard from "../pages/AdminPages/AdminDashboard/AdminDashboard"
 import AdminHome from "../pages/AdminPages/AdminHome/AdminHome"
 import ChatBox from "../pages/ChatBox/ChatBox"
+import EventHistory from "../pages/EventHistory/EventHistory"
 
 export const router = createBrowserRouter([
   {
@@ -46,13 +47,13 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-      { path: "/chat",
+      {
+        path: "/chat",
         element: (
           <PrivateRoute>
             <ChatBox></ChatBox>
           </PrivateRoute>
         ),
-        
       },
       {
         path: "/guides",
@@ -78,8 +79,12 @@ export const router = createBrowserRouter([
     ),
     children: [
       { path: "/dashboard/userDashboard", element: <UserDashboard /> },
-      
+
       { path: "/dashboard/rating", element: <Rating /> }, // Use lowercase
+      {
+        path: "/dashboard/eventHistory",
+        element: <EventHistory></EventHistory>,
+      }, // Use lowercase
       // admin routes
       {
         path: "/dashboard/adminDashboard",
@@ -91,11 +96,10 @@ export const router = createBrowserRouter([
       },
       {
         path: "/dashboard/allUser",
-        element: ( 
-           <AdminRoute>
-          <AllUsers />
-           </AdminRoute> 
-          
+        element: (
+          <AdminRoute>
+            <AllUsers />
+          </AdminRoute>
         ),
       },
       {
