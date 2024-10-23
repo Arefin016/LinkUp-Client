@@ -1,48 +1,51 @@
-import React, { useEffect, useState } from "react";
-import Swal from "sweetalert2";
-import zoomLogo from "../../../assets/Zoom.jpg";
-import googleMeetLogo from "../../../assets/meet.png";
-import useAxiosPublic from "../../../hooks/useAxiosPublic";
+import React, { useEffect, useState } from "react"
+import Swal from "sweetalert2"
+import zoomLogo from "../../../assets/Zoom.jpg"
+import googleMeetLogo from "../../../assets/meet.png"
+import useAxiosPublic from "../../../hooks/useAxiosPublic"
 
-const ManageBooking = ({ userId }) => { // Accept userId as a prop
-  const [events, setEvents] = useState([]);
-  const [error, setError] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedEvent, setSelectedEvent] = useState(null);
+const ManageBooking = ({ userId }) => {
+  // Accept userId as a prop
+  const [events, setEvents] = useState([])
+  const [error, setError] = useState(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [selectedEvent, setSelectedEvent] = useState(null)
 
-  const axiosPublic = useAxiosPublic();
+  const axiosPublic = useAxiosPublic()
 
   // Fetch event data when the component mounts
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axiosPublic.get("/events");
+        const response = await axiosPublic.get("/add-event")
         // Filter events by userId
-        const userEvents = response.data.filter(event => event.userId === userId); // Assuming each event has a userId field
-        setEvents(userEvents);
+        const userEvents = response.data.filter(
+          (event) => event.userId === userId
+        ) // Assuming each event has a userId field
+        setEvents(userEvents)
       } catch (err) {
-        setError(err.message);
+        setError(err.message)
       }
-    };
+    }
 
-    fetchEvents();
-  }, [userId]); // Add userId to the dependency array
+    fetchEvents()
+  }, [userId]) // Add userId to the dependency array
 
   // Handle opening the update modal
   const openUpdateModal = (event) => {
-    setSelectedEvent(event);
-    setIsModalOpen(true);
-  };
+    setSelectedEvent(event)
+    setIsModalOpen(true)
+  }
 
   // Handle closing the modal
   const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedEvent(null);
-  };
+    setIsModalOpen(false)
+    setSelectedEvent(null)
+  }
 
   // Update an event
   const handleUpdate = async () => {
-    const { _id, title, description, start, end } = selectedEvent;
+    const { _id, title, description, start, end } = selectedEvent
 
     try {
       const response = await axiosPublic.put(`/events/${_id}`, {
@@ -50,47 +53,47 @@ const ManageBooking = ({ userId }) => { // Accept userId as a prop
         description,
         start: new Date(start),
         end: new Date(end),
-      });
+      })
       setEvents(
         events.map((event) => (event._id === _id ? response.data : event))
-      );
-      closeModal(); // Close modal after successful update
+      )
+      closeModal() // Close modal after successful update
     } catch (err) {
-      setError(err.message);
+      setError(err.message)
     }
-  };
+  }
 
   // Handle input changes in the modal
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     setSelectedEvent((prevEvent) => ({
       ...prevEvent,
       [name]: value,
-    }));
-  };
+    }))
+  }
 
   // Cancel (delete) an event with SweetAlert2 confirmation
   const handleCancel = async (id) => {
     const result = await Swal.fire({
-      title: 'Are you sure?',
-      text: 'Do you really want to cancel this event?',
-      icon: 'warning',
+      title: "Are you sure?",
+      text: "Do you really want to cancel this event?",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonText: 'Yes, cancel it!',
-      cancelButtonText: 'No, keep it',
-    });
+      confirmButtonText: "Yes, cancel it!",
+      cancelButtonText: "No, keep it",
+    })
 
     if (result.isConfirmed) {
       try {
-        await axiosPublic.delete(`/events/${id}`);
-        setEvents(events.filter((event) => event._id !== id));
-        Swal.fire('Cancelled!', 'Your event has been cancelled.', 'success');
+        await axiosPublic.delete(`/events/${id}`)
+        setEvents(events.filter((event) => event._id !== id))
+        Swal.fire("Cancelled!", "Your event has been cancelled.", "success")
       } catch (err) {
-        setError(err.message);
-        Swal.fire('Error!', 'Failed to cancel the event.', 'error');
+        setError(err.message)
+        Swal.fire("Error!", "Failed to cancel the event.", "error")
       }
     }
-  };
+  }
 
   return (
     <div className="event-history-container mx-auto mt-10 p-4">
@@ -125,8 +128,7 @@ const ManageBooking = ({ userId }) => { // Accept userId as a prop
                     {new Date(event.start).toLocaleString()}
                   </p>
                   <p className="text-gray-600 mt-2">
-                    <strong>End:</strong>{" "}
-                    {new Date(event.end).toLocaleString()}
+                    <strong>End:</strong> {new Date(event.end).toLocaleString()}
                   </p>
                   <div className="text-gray-600 mt-4 overflow-y-auto max-h-16">
                     {event.description}
@@ -135,7 +137,7 @@ const ManageBooking = ({ userId }) => { // Accept userId as a prop
               </div>
               {event.link && (
                 <div className="mt-2 ml-14 mb-5 text-sm text-blue-500">
-                  {event.meetingType === 'zoom' ? 'Zoom Link' : 'Meet Link'}:{" "}
+                  {event.meetingType === "zoom" ? "Zoom Link" : "Meet Link"}:{" "}
                   <a
                     href={event.link}
                     className="cursor-pointer"
@@ -192,7 +194,9 @@ const ManageBooking = ({ userId }) => { // Accept userId as a prop
               <input
                 type="datetime-local"
                 name="start"
-                value={new Date(selectedEvent.start).toISOString().substring(0, 16)}
+                value={new Date(selectedEvent.start)
+                  .toISOString()
+                  .substring(0, 16)}
                 onChange={handleInputChange}
                 className="w-full border border-gray-300 p-2 rounded-lg"
               />
@@ -202,7 +206,9 @@ const ManageBooking = ({ userId }) => { // Accept userId as a prop
               <input
                 type="datetime-local"
                 name="end"
-                value={new Date(selectedEvent.end).toISOString().substring(0, 16)}
+                value={new Date(selectedEvent.end)
+                  .toISOString()
+                  .substring(0, 16)}
                 onChange={handleInputChange}
                 className="w-full border border-gray-300 p-2 rounded-lg"
               />
@@ -225,7 +231,7 @@ const ManageBooking = ({ userId }) => { // Accept userId as a prop
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default ManageBooking;
+export default ManageBooking

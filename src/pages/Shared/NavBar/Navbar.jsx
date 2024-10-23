@@ -3,12 +3,8 @@ import { Link, NavLink } from "react-router-dom"
 import { AuthContext } from "../../../providers/AuthProvider" // Adjust path based on your file structure
 import "./navbar.css"
 import useAdmin from "../../../hooks/useAdmin"
-import useEventDetails from "../../../hooks/useEventDetails"
-import useEvents from "../../../hooks/useEvents"
 
 const Navbar = () => {
-  const [eventDetails] = useEventDetails()
-  const [eventsData] = useEvents()
   const { user, logOut } = useContext(AuthContext)
   const [isAdmin] = useAdmin()
   const [theme, setTheme] = useState("light")
@@ -79,7 +75,7 @@ const Navbar = () => {
       {user && !isAdmin && (
         <li>
           <NavLink className="nav-link" to="/dashboard/userDashboard">
-            Dashboard {eventsData.length}
+            Dashboard
           </NavLink>
         </li>
       )}
