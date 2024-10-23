@@ -131,8 +131,9 @@ const MyCalendar = () => {
     const updateEvents = {
       ...eventDetails,
       link: eventDetails.meetingType === "meet" ? meetLink : link,
+      userEmail: user?.email, // Add user email
     };
-
+  
     try {
       const response = await axiosInstance.post(
         "https://link-up-shaharul.vercel.app/add-event",
