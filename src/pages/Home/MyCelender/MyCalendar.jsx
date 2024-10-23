@@ -131,7 +131,7 @@ const MyCalendar = () => {
     const updateEvents = {
       ...eventDetails,
       link: eventDetails.meetingType === "meet" ? meetLink : link,
-      userEmail: user?.email, // Add user email
+      email: user?.email, // Add user email
     };
   
     try {
