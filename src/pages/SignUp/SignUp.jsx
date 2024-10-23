@@ -28,18 +28,33 @@ const SignUp = () => {
 
   const onSubmit = async (data) => {
     try {
+      // Create the user
       const result = await createUser(data.email, data.password);
       const loggedUser = result.user;
 
+      // Show success alert after user creation
+      await Swal.fire({
+        position: "top",
+        icon: "success",
+        title: "Registration Successful!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      // Update user profile with name and photoURL
       await updateUserProfile(data.name, data.photoURL);
 
+      // Prepare user info for database insertion
       const userInfo = {
         name: data.name,
         email: data.email,
         photoURL: data.photoURL,
       };
+
+      // Post user info to the backend
       const res = await axiosPublic.post("/users", userInfo);
 
+      // Check if user info was inserted successfully
       if (res.data.insertedId) {
         reset();
         Swal.fire({
@@ -49,7 +64,8 @@ const SignUp = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        navigate("/");
+        // Navigate to the login page after success
+        navigate("/login");
       }
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {

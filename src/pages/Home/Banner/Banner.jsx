@@ -164,7 +164,7 @@ const Banner = () => {
   <div className="flex flex-wrap justify-center gap-8 text-left">
     {/* One-on-One Meeting Card */}
     <div className="shadow-2xl w-80 h-56 p-6 bg-gradient-to-r from-blue-100 to-white rounded-lg transition-transform duration-300 transform hover:scale-105 hover:shadow-3xl border-2 border-blue-400">
-      <h6 className="text-2xl font-semibold mb-3 text-blue-800">One-on-One Meetings</h6>
+      <h6 className="text-2xl font-semibold mb-3 text-blue-800">One-on-One </h6>
       <p className="text-base text-gray-700 mb-4">
         Let your clients and colleagues select open meeting times on your calendar with ease.
       </p>
