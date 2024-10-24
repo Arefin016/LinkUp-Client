@@ -17,7 +17,7 @@ const ManageBooking = ({ userId }) => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axiosPublic.get("/events")
+        const response = await axiosPublic.get("/add-event")
         // Filter events by userId
         const userEvents = response.data.filter(
           (event) => event.userId === userId
