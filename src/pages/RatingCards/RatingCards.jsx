@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
+
 // ReviewCard Component
 const ReviewCard = ({ reviewer, role, rating, photoURL, reviewText }) => {
   // Function to render stars
@@ -7,8 +8,6 @@ const ReviewCard = ({ reviewer, role, rating, photoURL, reviewText }) => {
     const fullStars = Math.floor(rating);
     const halfStar = rating % 1 !== 0;
 
-
-    
     return (
       <>
         {[...Array(fullStars)].map((_, index) => (
@@ -23,7 +22,7 @@ const ReviewCard = ({ reviewer, role, rating, photoURL, reviewText }) => {
     <div className="bg-green-200 p-3 rounded-xl dark:text-white hover:bg-green-300 transition duration-300 border-2 border-transparent hover:border-gray-300 shadow-md">
       <div className="flex flex-col items-center">
         {/* Profile Image */}
-        <div className="w-24 h-20 rounded-full  overflow-hidden mb-3">
+        <div className="w-24 h-20 rounded-full overflow-hidden mb-3">
           <img
             src={photoURL}
             alt={reviewer}
@@ -54,7 +53,8 @@ const ReviewCard = ({ reviewer, role, rating, photoURL, reviewText }) => {
 // ReviewCards Component
 const ReviewCards = () => {
   const [reviews, setReviews] = useState([]);
-const axiosPublic = useAxiosPublic();
+  const axiosPublic = useAxiosPublic();
+  
   useEffect(() => {
     const fetchReviews = async () => {
       try {
