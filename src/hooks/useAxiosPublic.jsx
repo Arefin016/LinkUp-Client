@@ -2,7 +2,7 @@ import axios from "axios"
 
 const useAxiosPublic = () => {
   const axiosInstance = axios.create({
-    baseURL: "http://localhost:5000",
+    baseURL: "https://link-up-shaharul.vercel.app",
     headers: {
       "Content-Type": "application/json",
     },
