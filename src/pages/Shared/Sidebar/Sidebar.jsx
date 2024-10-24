@@ -1,11 +1,12 @@
 import React from "react"
-import { FaUsers,  FaHome } from "react-icons/fa" 
+import { FaUsers, FaHome, FaHistory } from "react-icons/fa"
 import {
   FcBookmark,
   FcContacts,
   FcGallery,
   FcHome,
-  FcRating,FcNook,
+  FcRating,
+  FcNook,
 } from "react-icons/fc"
 
 import { Link, NavLink } from "react-router-dom"
@@ -45,7 +46,7 @@ const Sidebar = () => {
               placeholder="Search"
             />
           </div>
-         
+
           <div className="divider"></div>
 
           {isAdmin ? (
@@ -117,10 +118,8 @@ const Sidebar = () => {
                 to="/dashboard/notePad"
                 className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-300 hover:bg-gray-100  dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-orange-600"
               >
-                <FcNook /> 
-                <span className="mx-2 text-sm font-medium">
-                  Take Your Note
-                </span>
+                <FcNook />
+                <span className="mx-2 text-sm font-medium">Take Your Note</span>
               </NavLink>
             </>
           ) : (
@@ -132,6 +131,16 @@ const Sidebar = () => {
               >
                 <FaUsers />
                 <span className="mx-2 text-sm font-medium">User Home</span>
+              </NavLink>
+              {/* User Event History */}
+              <NavLink
+                to="/dashboard/eventHistoryDetails"
+                className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-300 hover:bg-gray-100  dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-orange-600"
+              >
+                <FaHistory />
+                <span className="mx-2 text-sm font-medium">
+                  User Event Details
+                </span>
               </NavLink>
 
               {/* review section */}
@@ -148,10 +157,8 @@ const Sidebar = () => {
                 to="/dashboard/notePad"
                 className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-300 hover:bg-gray-100  dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-orange-600"
               >
-                <FcNook /> 
-                <span className="mx-2 text-sm font-medium">
-                  Take Your Note
-                </span>
+                <FcNook />
+                <span className="mx-2 text-sm font-medium">Take Your Note</span>
               </NavLink>
             </>
           )}
@@ -190,8 +197,6 @@ const Sidebar = () => {
         </nav>
 
         <div className="mt-6">
-
-
           <div className="flex items-center justify-between mt-6">
             <a href="#" className="flex items-center gap-x-2">
               <img

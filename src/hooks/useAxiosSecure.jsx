@@ -3,8 +3,8 @@ import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import useAuth from "./useAuth"
 
-export const axiosSecure = axios.create({
-  baseURL: "https://link-up-shaharul.vercel.app",
+const axiosSecure = axios.create({
+  baseURL: "http://localhost:5000",
 })
 
 const useAxiosSecure = () => {
@@ -35,7 +35,6 @@ const useAxiosSecure = () => {
         const status = error.response?.status
 
         if (status === 401 || status === 403) {
-          
           navigate("/")
         }
 

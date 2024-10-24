@@ -1,10 +1,10 @@
-import "aos/dist/aos.css"; // You can also use <link> for styles
-import useAuth from "../../hooks/useAuth";
-import "animate.css";
-import ManageBooking from './../AdminPages/ManageBooking/ManageBooking';
+import "aos/dist/aos.css" // You can also use <link> for styles
+import useAuth from "../../hooks/useAuth"
+import "animate.css"
+import ManageBooking from "./../AdminPages/ManageBooking/ManageBooking"
 
 const UserDashboard = () => {
-  const { user } = useAuth();
+  const { user } = useAuth()
 
   return (
     <div
@@ -15,7 +15,7 @@ const UserDashboard = () => {
     >
       <h2 className="text-3xl animate__rubberBand text-center items-center justify-center">
         <span className="md:text-5xl text-5xl mt-5 font-bold text-[#0B3558] animate__rubberBand">
-          Welcome to Our LinkUP!!!!!! 
+          Welcome to Our LinkUP!!!!!!
         </span>{" "}
       </h2>
       <div className="card card-side bg-base-100 shadow-2xl mt-10 flex flex-col md:flex-row">
@@ -29,19 +29,16 @@ const UserDashboard = () => {
           </h2>
           <p className="text-2xl font-medium mt-5">Email: {user?.email}</p>
           <p className="text-2xl font-medium">
-            Phone Number: {user?.phoneNumber ? user.phoneNumber : "Not Provided"}
+            Phone Number:{" "}
+            {user?.phoneNumber ? user.phoneNumber : "Not Provided"}
           </p>
           <div className="card-actions">
             <button className="btn btn-accent">Update</button>
           </div>
         </div>
       </div>
-      <div>
-        {/* Ensure user?.uid or user?.id is used based on your authentication */}
-        <ManageBooking userId={user?.id || user?.id} /> {/* Pass the user ID here */}
-      </div>
     </div>
-  );
-};
+  )
+}
 
-export default UserDashboard;
+export default UserDashboard

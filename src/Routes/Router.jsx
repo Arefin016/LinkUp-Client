@@ -27,6 +27,7 @@ import AdminDashboard from "../pages/AdminPages/AdminDashboard/AdminDashboard"
 import AdminHome from "../pages/AdminPages/AdminHome/AdminHome"
 
 import NotePad from "../pages/AdminPages/AdminHome/NotePad/NotePad"
+import EventHistory from "../pages/EventHistory/EventHistory"
 
 export const router = createBrowserRouter([
   {
@@ -47,7 +48,7 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-      
+
       {
         path: "/guides",
         element: <Guides />,
@@ -72,7 +73,8 @@ export const router = createBrowserRouter([
     ),
     children: [
       { path: "/dashboard/userDashboard", element: <UserDashboard /> },
-      
+      { path: "/dashboard/eventHistoryDetails", element: <EventHistory /> },
+
       { path: "/dashboard/rating", element: <Rating /> }, // Use lowercase
       // admin routes
       {
@@ -85,11 +87,10 @@ export const router = createBrowserRouter([
       },
       {
         path: "/dashboard/allUser",
-        element: ( 
-           <AdminRoute>
-          <AllUsers />
-           </AdminRoute> 
-          
+        element: (
+          <AdminRoute>
+            <AllUsers />
+          </AdminRoute>
         ),
       },
       {
@@ -108,16 +109,11 @@ export const router = createBrowserRouter([
           </AdminRoute>
         ),
       },
-    
+
       {
         path: "/dashboard/notePad",
-        element: (
-          
-            <NotePad></NotePad>
-          
-        ),
+        element: <NotePad></NotePad>,
       },
-    
     ],
   },
 ])
