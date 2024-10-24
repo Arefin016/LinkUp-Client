@@ -3,9 +3,12 @@ import Swal from "sweetalert2"
 import zoomLogo from "../../../assets/Zoom.jpg"
 import googleMeetLogo from "../../../assets/meet.png"
 import useAxiosPublic from "../../../hooks/useAxiosPublic"
+import { useLoaderData } from "react-router-dom"
+import "./ManageBooking.css"
 
 const ManageBooking = ({ userId }) => {
   // Accept userId as a prop
+
   const [events, setEvents] = useState([])
   const [error, setError] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -13,11 +16,22 @@ const ManageBooking = ({ userId }) => {
 
   const axiosPublic = useAxiosPublic()
 
+  // This is the pagination
+  const { count } = useLoaderData()
+  const [itemsPerPage, setItemsPerPage] = useState(3)
+  const [currentPage, setCurrentPage] = useState(0)
+  console.log(count)
+  const numberOfPages = Math.ceil(count / itemsPerPage)
+
+  const pages = [...Array(numberOfPages).keys()]
+
   // Fetch event data when the component mounts
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axiosPublic.get("/add-event")
+        const response = await axiosPublic.get(
+          `/add-event?page=${currentPage}&size=${itemsPerPage}`
+        )
         // Filter events by userId
         const userEvents = response.data.filter(
           (event) => event.userId === userId
@@ -29,7 +43,7 @@ const ManageBooking = ({ userId }) => {
     }
 
     fetchEvents()
-  }, [userId]) // Add userId to the dependency array
+  }, [userId, currentPage]) // Add userId to the dependency array
 
   // Handle opening the update modal
   const openUpdateModal = (event) => {
@@ -92,6 +106,26 @@ const ManageBooking = ({ userId }) => {
         setError(err.message)
         Swal.fire("Error!", "Failed to cancel the event.", "error")
       }
+    }
+  }
+
+  // handleItemsPerPage
+  const handleItemsPerPage = (e) => {
+    const val = parseInt(e.target.value)
+    console.log(val)
+    setItemsPerPage(val)
+    setCurrentPage(0)
+  }
+
+  const handlePrevPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1)
+    }
+  }
+
+  const handleNextPage = () => {
+    if (currentPage < pages.length - 1) {
+      setCurrentPage(currentPage + 1)
     }
   }
 
@@ -230,6 +264,35 @@ const ManageBooking = ({ userId }) => {
           </div>
         </div>
       )}
+      {/* This is the pagination section */}
+      <div className="pagination mt-5">
+        <p className="mb-3">Current Page: {currentPage}</p>
+        <button onClick={handlePrevPage} className="btn">
+          Prev
+        </button>
+        {pages.map((page) => (
+          <button
+            className={currentPage === page && "selected btn"}
+            onClick={() => setCurrentPage(page)}
+            key={page}
+          >
+            {page}
+          </button>
+        ))}
+        <button onClick={handleNextPage} className="btn">
+          Next
+        </button>
+        <select
+          value={itemsPerPage}
+          onChange={handleItemsPerPage}
+          name=""
+          id=""
+        >
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="15">15</option>
+        </select>
+      </div>
     </div>
   )
 }

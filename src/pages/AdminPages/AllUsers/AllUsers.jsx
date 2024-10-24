@@ -18,7 +18,7 @@ const AllUsers = () => {
   const pages = [...Array(numberOfPage).keys()]
 
   const { data: users = [], refetch } = useQuery({
-    queryKey: ["users"],
+    queryKey: ["users", currentPage, itemsPerPage],
     queryFn: async () => {
       const res = await axiosSecure.get(
         `/users?page=${currentPage}&size=${itemsPerPage}`
