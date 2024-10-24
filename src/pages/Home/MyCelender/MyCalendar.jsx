@@ -151,13 +151,8 @@ const MyCalendar = () => {
   };
 
   // Function to handle event creation
-<<<<<<< HEAD
-  const handleSubmit = async () => {
-    const { title, startDate, endDate, description, meetingType } = newEvent;
-=======
   const handleSubmit = () => {
     const { title, startDate, endDate, description, meetingType } = newEvent
->>>>>>> 2de02d55f6b2f94914dcae63f8a2e5cf6c022ae0
 
     if (!title || !startDate || !endDate || !description || !meetingType) {
       Swal.fire({
