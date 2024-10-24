@@ -133,9 +133,9 @@ const MyCalendar = () => {
     const updateEvents = {
       ...eventDetails,
       link: eventDetails.meetingType === "meet" ? meetLink : link,
-      email: user?.email,
-    }
-
+      email: user?.email, // Add user email
+    };
+  
     try {
       const response = await axiosSecure.post("/add-event", updateEvents)
       console.log("Event added to backend:", response.data)
