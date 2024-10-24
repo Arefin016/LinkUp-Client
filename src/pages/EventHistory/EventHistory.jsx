@@ -1,23 +1,28 @@
+import useEvents from "../../hooks/useEvents"
 import React, { useEffect, useState } from "react"
 import Swal from "sweetalert2"
-import zoomLogo from "../../../assets/Zoom.jpg"
-import googleMeetLogo from "../../../assets/meet.png"
-import useAxiosPublic from "../../../hooks/useAxiosPublic"
+import zoomLogo from "../../assets/Zoom.jpg"
+import googleMeetLogo from "../../assets/meet.png"
+import useAxiosSecure from "../../hooks/useAxiosSecure"
+import useAuth from "../../hooks/useAuth"
 
-const ManageBooking = ({ userId }) => {
-  // Accept userId as a prop
+const EventHistory = ({ userId }) => {
+  const [event] = useEvents()
+  const { user } = useAuth()
+
+  //
   const [events, setEvents] = useState([])
   const [error, setError] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedEvent, setSelectedEvent] = useState(null)
 
-  const axiosPublic = useAxiosPublic()
+  const axiosSecure = useAxiosSecure()
 
   // Fetch event data when the component mounts
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axiosPublic.get("/add-event")
+        const response = await axiosSecure.get(`/events?email=${user.email}`)
         // Filter events by userId
         const userEvents = response.data.filter(
           (event) => event.userId === userId
@@ -48,7 +53,7 @@ const ManageBooking = ({ userId }) => {
     const { _id, title, description, start, end } = selectedEvent
 
     try {
-      const response = await axiosPublic.put(`/events/${_id}`, {
+      const response = await axiosSecure.put(`/events/${_id}`, {
         title,
         description,
         start: new Date(start),
@@ -85,7 +90,7 @@ const ManageBooking = ({ userId }) => {
 
     if (result.isConfirmed) {
       try {
-        await axiosPublic.delete(`/events/${id}`)
+        await axiosSecure.delete(`/events/${id}`)
         setEvents(events.filter((event) => event._id !== id))
         Swal.fire("Cancelled!", "Your event has been cancelled.", "success")
       } catch (err) {
@@ -94,10 +99,11 @@ const ManageBooking = ({ userId }) => {
       }
     }
   }
-
   return (
     <div className="event-history-container mx-auto mt-10 p-4">
-      <h2 className="text-4xl font-bold text-center mb-6">Event History</h2>
+      <h2 className="text-4xl font-bold text-center mb-6">
+        Event History : {user?.displayName}
+      </h2>
       {error ? (
         <p className="text-red-500 text-center">
           Failed to load events: {error}
@@ -148,19 +154,19 @@ const ManageBooking = ({ userId }) => {
                   </a>
                 </div>
               )}
-              <div className="mt-auto flex justify-end space-x-3">
+              <div className="mt-auto flex w-full space-x-3">
                 <button
-                  className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
+                  className="px-4 w-full py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
                   onClick={() => openUpdateModal(event)}
                 >
                   Update
                 </button>
-                <button
+                {/* <button
                   className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
                   onClick={() => handleCancel(event._id)}
                 >
                   Cancel Event
-                </button>
+                </button> */}
               </div>
             </div>
           ))}
@@ -234,4 +240,4 @@ const ManageBooking = ({ userId }) => {
   )
 }
 
-export default ManageBooking
+export default EventHistory

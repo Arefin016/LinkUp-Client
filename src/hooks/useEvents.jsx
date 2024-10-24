@@ -1,21 +1,19 @@
-import { useQuery } from "@tanstack/react-query";
-import useAxiosPublic from "./useAxiosPublic";
+import { useQuery } from "@tanstack/react-query"
+import useAxiosSecure from "./useAxiosSecure"
+import useAuth from "./useAuth"
 
 const useEvents = () => {
-	const axiosPublic = useAxiosPublic();
-	const {
-		data: eventsData = [],
-		isPending: loading,
-		refetch,
-	} = useQuery({
-		queryKey: ["events"],
-		queryFn: async () => {
-			const res = await axiosPublic.get("/events");
-			return res.data;
-		},
-	});
+  // tanstack query
+  const axiosSecure = useAxiosSecure()
+  const { user } = useAuth()
+  const { data: event = [] } = useQuery({
+    queryKey: ["event", user?.email],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/events?email=${user.email}`)
+      return res.data
+    },
+  })
+  return [event]
+}
 
-	return [eventsData, loading, refetch];
-};
-
-export default useEvents;
+export default useEvents

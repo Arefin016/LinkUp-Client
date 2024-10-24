@@ -1,6 +1,7 @@
 import "aos/dist/aos.css"
 import "animate.css"
 import useAuth from "../../../hooks/useAuth"
+import { Link } from "react-router-dom"
 
 const AdminHome = () => {
   const { user } = useAuth()
@@ -30,7 +31,9 @@ const AdminHome = () => {
             {user?.phoneNumber ? user.phoneNumber : "Not Provided"}
           </p>
           <div className="card-actions">
-            <button className="btn btn-accent">Update</button>
+            <Link to={"/"}>
+              <button className="btn btn-accent">Update</button>
+            </Link>
           </div>
         </div>
       </div>
