@@ -28,7 +28,7 @@ const Guides = () => {
           </li>
 
           <li>
-            <NavLink to={"/guides/contactUs"}>Contact Us</NavLink>
+            <NavLink to={"/guides/contact"}>Contact Us</NavLink>
           </li>
         </ul>
       </div>

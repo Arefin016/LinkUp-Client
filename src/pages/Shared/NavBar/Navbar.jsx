@@ -1,21 +1,22 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext, useEffect, useState, useRef } from "react"
 import { Link, NavLink } from "react-router-dom"
 import { AuthContext } from "../../../providers/AuthProvider" // Adjust path based on your file structure
 import "./navbar.css"
+import useAdmin from "../../../hooks/useAdmin"
 
 const Navbar = () => {
-  const { user, logOut } = useContext(AuthContext) // Access AuthContext for user data and logout
+  const { user, logOut } = useContext(AuthContext)
+  const [isAdmin] = useAdmin()
   const [theme, setTheme] = useState("light")
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false) // For toggling the dropdown
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const dropdownRef = useRef(null) // Create a ref for the dropdown
 
-  // Set theme from localStorage or default to light mode
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme") || "light"
     setTheme(savedTheme)
     document.querySelector("html").setAttribute("data-theme", savedTheme)
   }, [])
 
-  // Toggle between dark and light theme
   const handleTheme = (e) => {
     const selectedTheme = e.target.checked ? "dark" : "light"
     setTheme(selectedTheme)
@@ -23,7 +24,6 @@ const Navbar = () => {
     document.querySelector("html").setAttribute("data-theme", selectedTheme)
   }
 
-  // Handle user logout
   const handleLogout = () => {
     logOut()
       .then(() => {
@@ -32,12 +32,17 @@ const Navbar = () => {
       .catch((error) => console.error("Logout failed: ", error))
   }
 
-  // Toggle dropdown on profile picture click
   const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen)
+    setIsDropdownOpen((prev) => !prev)
   }
 
-  // Define navigation links
+  const closeDropdown = (e) => {
+    // Check if the click is outside the dropdown
+    if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+      setIsDropdownOpen(false)
+    }
+  }
+
   const links = (
     <>
       <li>
@@ -51,24 +56,46 @@ const Navbar = () => {
         </NavLink>
       </li>
       <li>
-        <NavLink className="nav-link" to="/contact">
+        <NavLink className="nav-link" to="/contactus">
           Contact
         </NavLink>
       </li>
       <li>
-        <NavLink className="nav-link" to="/guides">
+        <NavLink className="nav-link" to="/guides/introduction">
           Guides
         </NavLink>
       </li>
-      <li>
-        <NavLink className="nav-link" to="/dashboard">
-          Dashboard
-        </NavLink>
-      </li>
+      {user && isAdmin && (
+        <li>
+          <NavLink className="nav-link" to="/dashboard/adminDashboard">
+            Dashboard
+          </NavLink>
+        </li>
+      )}
+      {user && !isAdmin && (
+        <li>
+          <NavLink className="nav-link" to="/dashboard/userDashboard">
+            Dashboard
+          </NavLink>
+        </li>
+      )}
+      {!user && (
+        <>
+          <li>
+            <Link to="/login">
+              <button className="btn btn-sm btn-outline">Log In</button>
+            </Link>
+          </li>
+          <li>
+            <Link to="/signUp">
+              <button className="btn btn-sm btn-primary">Join Us</button>
+            </Link>
+          </li>
+        </>
+      )}
     </>
   )
 
-  // Display profile dropdown if the user is logged in
   const userProfile = user ? (
     <div className="relative">
       <img
@@ -76,41 +103,42 @@ const Navbar = () => {
           user?.photoURL || "https://i.ibb.co/5nqdd5h/profile-pic-linkup.jpg"
         }
         alt="Profile"
-        className="w-10 h-10 rounded-full cursor-pointer"
-        onClick={toggleDropdown} // Toggle dropdown on click
+        className="w-10 h-10 rounded-full cursor-pointer border-2 border-emerald-500 transition duration-200 hover:scale-110"
+        onClick={toggleDropdown}
       />
       {isDropdownOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50">
+        <div
+          ref={dropdownRef}
+          className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50"
+        >
           <div className="py-2 px-4 text-gray-700">
             {user?.displayName || "No user"}
           </div>
           <hr />
           <button
             onClick={handleLogout}
-            className="w-full py-2 px-4 text-left text-gray-700 hover:bg-gray-100"
+            className="w-full py-2 px-4 text-left text-gray-700 hover:bg-gray-100 transition duration-200"
           >
             Log Out
           </button>
         </div>
       )}
     </div>
-  ) : (
-    <>
-      <Link to="/login">
-        <button className="btn btn-sm btn-outline">Log In</button>
-      </Link>
-      <Link to="/signUp">
-        <button className="btn btn-sm btn-primary">Join Us</button>
-      </Link>
-    </>
-  )
+  ) : null
+
+  // Add event listener to handle clicks outside the dropdown
+  useEffect(() => {
+    document.addEventListener("mousedown", closeDropdown)
+    return () => {
+      document.removeEventListener("mousedown", closeDropdown)
+    }
+  }, [])
 
   return (
-    <div className="navbar bg-white justify-center px-4 bg-opacity-30 shadow">
+    <div className="navbar sticky top-0 z-50 bg-white  justify-between px-6 py-4 shadow-lg transition duration-300 ease-in-out hover:shadow-xl">
       <div className="navbar-start">
-        {/* Hamburger icon for small screens */}
-        <div className="dropdown">
-          <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+        <div className="dropdown lg:hidden">
+          <div tabIndex={0} role="button" className="btn btn-ghost">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -128,30 +156,28 @@ const Navbar = () => {
           </div>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow-lg transition-all"
           >
-            {/* Menu links for small screens */}
             {links}
           </ul>
         </div>
 
         <Link to="/">
-          <h1 className="font-right font-extrabold lg:text-3xl text-xl text-shadow-purple text-gray-700 dark:text-green-50">
-            <span className="text-emerald-500">L</span>inkUp
+          <h1 className="font-right font-extrabold text-2xl lg:text-3xl text-shadow-purple transition duration-300 ease-in-out transform hover:scale-105">
+            <span className="text-emerald-500">L</span>
+            <span className="bg-gradient-to-r from-emerald-500 to-purple-500 bg-clip-text text-transparent">
+              inkUp
+            </span>
           </h1>
         </Link>
       </div>
 
-      {/* Menu links for large screens */}
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu-horizontal px-1 space-x-8 ">{links}</ul>
+        <ul className="menu-horizontal px-1 space-x-8">{links}</ul>
       </div>
 
-      {/* Right side: user profile or login/register buttons */}
       <div className="navbar-end flex items-center gap-x-3">
         {userProfile}
-
-        {/* Theme toggle */}
         <input
           onChange={handleTheme}
           type="checkbox"

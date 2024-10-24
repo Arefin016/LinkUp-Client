@@ -20,8 +20,8 @@ const StarRating = ({ rating }) => {
         <AiOutlineStar key={i} className="text-gray-400 text-xl" />
       ))}
     </div>
-  );
-};
+  )
+}
 
 const Rating = () => {
   const [rating, setRating] = useState(0);
@@ -62,7 +62,7 @@ const Rating = () => {
       } catch (error) {
         setErrorMessage("Error submitting review. Please try again.");
       } finally {
-        setIsSubmitting(false);
+        setIsSubmitting(false)
       }
     }
   };
@@ -75,7 +75,7 @@ const Rating = () => {
       } catch (err) {
         console.error("Error fetching reviews: ", err);
       }
-    };
+    }
 
     fetchReviews();
   }, []);
@@ -149,7 +149,7 @@ const Rating = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Rating;
+export default Rating

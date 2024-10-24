@@ -1,39 +1,31 @@
-import { FcGoogle } from "react-icons/fc"
-import useAuth from "../../hooks/useAuth"
-import useAxiosPublic from "../../hooks/useAxiosPublic"
-import { useNavigate } from "react-router-dom"
+import { FcGoogle } from "react-icons/fc";
+import useAuth from "../../hooks/useAuth";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
+import { useNavigate } from "react-router-dom";
 
 const SocialLogin = () => {
-  const { googleSignIn } = useAuth()
-  const axiosPublic = useAxiosPublic()
-  const navigate = useNavigate()
+  const { googleSignIn } = useAuth();
+  const axiosPublic = useAxiosPublic();
+  const navigate = useNavigate();
 
-  const handleGoogleSignIn = () => {
-    googleSignIn()
-      .then((result) => {
-        const user = result.user
-        console.log("Google user:", user)
+  const handleGoogleSignIn = async () => {
+    try {
+      const result = await googleSignIn();
+      console.log(result.user); // Make sure result.user is logged
+      const userInfo = {
+        email: result.user?.email,
+        name: result.user?.displayName,
+      };
 
-        const userInfo = {
-          email: user?.email,
-          name: user?.displayName,
-        }
+      const res = await axiosPublic.post("/users", userInfo);
+      console.log(res.data); // Log the response data
 
-        // Post user data to the backend
-        axiosPublic.post("/users", userInfo)
-          .then((res) => {
-            console.log("User posted:", res.data)
-            // Navigate to home page after successful sign-in and user post
-            navigate("/") 
-          })
-          .catch((error) => {
-            console.error("Error posting user info:", error)
-          })
-      })
-      .catch((error) => {
-        console.error("Google Sign-In failed:", error)
-      })
-  }
+      // Navigate after the data is successfully posted
+      navigate("/", { replace: true }); // replace: true prevents going back to login after navigation
+    } catch (error) {
+      console.error("Google Sign-In failed", error);
+    }
+  };
 
   return (
     <div className="w-full">
@@ -41,14 +33,14 @@ const SocialLogin = () => {
       <div className="w-full">
         <button
           onClick={handleGoogleSignIn}
-          className="btn btn-md w-[83%] ml-[32px] mb-5 flex items-center gap-2"
+          className="btn btn-md w-[83%] ml-[32px] mb-5"
         >
-          <FcGoogle />
+          <FcGoogle className="" />
           Google
         </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SocialLogin
+export default SocialLogin;

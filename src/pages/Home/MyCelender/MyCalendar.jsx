@@ -7,7 +7,9 @@ import enUS from "date-fns/locale/en-US"
 import Modal from "react-modal"
 import Swal from "sweetalert2"
 import { AuthContext } from "../../../providers/AuthProvider"
-import useAxiosPublic from "../../../hooks/useAxiosPublic"
+// import useAxiosPublic from "../../../hooks/useAxiosPublic"
+import useAxiosSecure from "../../../hooks/useAxiosSecure"
+import emailjs from "emailjs-com"
 
 // Setup the date localization
 const locales = {
@@ -29,7 +31,7 @@ const initialEvents = [
     allDay: false,
     start: new Date(2024, 8, 18, 10, 0), // September 18, 2024, at 10:00 AM
     end: new Date(2024, 8, 18, 12, 0), // September 18, 2024, at 12:00 PM
-    meetingType: "", // Add meetingType property
+    meetingType: "",
   },
 ]
 
@@ -51,28 +53,37 @@ const modalStyles = {
     backgroundColor: "white",
     border: "none",
     borderRadius: "8px",
-    zIndex: "1001", // Ensure the modal has a high z-index
+    zIndex: "1001",
   },
   overlay: {
     backgroundColor: "rgba(0, 0, 0, 0.5)",
-    zIndex: "1000", // Overlay also needs a high z-index
+    zIndex: "1000",
   },
 }
 
 const MyCalendar = () => {
-  const { user } = useContext(AuthContext) // Use AuthContext to get the logged-in user's info
+  const { user } = useContext(AuthContext)
+  const [link, setLink] = useState(
+    "https://us05web.zoom.us/j/87070806836?pwd=fLYbzd8fSsnnCZdmpfsbukUzzI54al.1"
+  )
   const [myEvents, setMyEvents] = useState(initialEvents)
+  const [meetLink, setMeetLink] = useState(
+    "https://meet.google.com/pcw-vhgs-bpz"
+  )
   const [modalIsOpen, setModalIsOpen] = useState(false)
+  const [previewModalIsOpen, setPreviewModalIsOpen] = useState(false)
   const [newEvent, setNewEvent] = useState({
     title: "",
     startDate: "",
     endDate: "",
     description: "",
-    meetingType: "", // Add meetingType to the new event state
+    meetingType: "",
+    link: link,
   })
   const [selectedSlot, setSelectedSlot] = useState(null)
 
-  const axiosInstance = useAxiosPublic() // Initialize axios instance here
+  // const axiosInstance = useAxiosPublic()
+  const axiosSecure = useAxiosSecure()
 
   // Function to handle adding new events
   const handleSelectSlot = ({ start, end }) => {
@@ -80,21 +91,54 @@ const MyCalendar = () => {
     setModalIsOpen(true)
   }
 
+  // Function to send email using EmailJS
+  const sendEmail = (eventDetails) => {
+    const emailParams = {
+      event_title: eventDetails.title,
+      event_start: eventDetails.start,
+      event_end: eventDetails.end,
+      event_description: eventDetails.description,
+      recipient_email: user?.email,
+      userName: user?.displayName,
+      link: eventDetails.meetingType === "meet" ? meetLink : link,
+      type: eventDetails.meetingType,
+    }
+
+    emailjs
+      .send(
+        "service_xqyql81", // Your EmailJS Service ID
+        "template_9ugi12d", // Your EmailJS Template ID
+        emailParams,
+        "vz_mcsgnNSq-e__68" // Your EmailJS User ID
+      )
+      .then(
+        (result) => {
+          console.log("Email sent successfully:", result.text)
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Please Check Your Email",
+            showConfirmButton: false,
+            timer: 1500,
+          })
+        },
+        (error) => {
+          console.error("Error sending email:", error)
+        }
+      )
+  }
+
   // Function to send event data to the backend
   const addEventToBackend = async (eventDetails) => {
+    const updateEvents = {
+      ...eventDetails,
+      link: eventDetails.meetingType === "meet" ? meetLink : link,
+      email: user?.email, // Add user email
+    };
+  
     try {
-      const response = await axiosInstance.post(
-        "http://localhost:5000/add-event",
-        eventDetails
-      )
+      const response = await axiosSecure.post("/add-event", updateEvents)
       console.log("Event added to backend:", response.data)
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "Event added successfully!",
-        showConfirmButton: false,
-        timer: 1500,
-      })
     } catch (error) {
       console.error("Error adding event to backend:", error)
       Swal.fire({
@@ -106,11 +150,10 @@ const MyCalendar = () => {
   }
 
   // Function to handle event creation
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     const { title, startDate, endDate, description, meetingType } = newEvent
 
-    // Validate that all fields are filled and dates are correct
-    if (!title || !startDate || !endDate || !description) {
+    if (!title || !startDate || !endDate || !description || !meetingType) {
       Swal.fire({
         icon: "warning",
         title: "Incomplete Information",
@@ -128,21 +171,28 @@ const MyCalendar = () => {
       return
     }
 
+    // Open the preview modal
+    setPreviewModalIsOpen(true)
+  }
+
+  // Function to confirm adding the event after preview
+  const confirmAddEvent = async () => {
+    const { title, startDate, endDate, description, meetingType } = newEvent
+
     const newEventData = {
       title,
       start: new Date(startDate),
       end: new Date(endDate),
       description,
-      meetingType, // Add meetingType to event data
+      meetingType,
     }
 
-    // Add the new event to the local state
     setMyEvents([...myEvents, newEventData])
 
-    // Send event data to the backend
     await addEventToBackend(newEventData)
 
-    // Clear the input fields after submission
+    sendEmail(newEventData)
+
     setNewEvent({
       title: "",
       startDate: "",
@@ -151,8 +201,9 @@ const MyCalendar = () => {
       meetingType: "",
     })
 
-    // Close the modal
+    // Close the modals
     setModalIsOpen(false)
+    setPreviewModalIsOpen(false)
   }
 
   // Function to handle input changes
@@ -162,6 +213,20 @@ const MyCalendar = () => {
       ...prevEvent,
       [name]: value,
     }))
+  }
+
+  // Function to share the event link on social media
+  const shareEventLink = () => {
+    const { title, startDate, endDate } = newEvent
+    const eventLink = encodeURIComponent(
+      `Check out this event: ${title} on ${startDate} to ${endDate}. Join here: ${link}`
+    )
+    const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${eventLink}`
+    const whatsappShareUrl = `https://api.whatsapp.com/send?text=${eventLink}`
+
+    window.open(facebookShareUrl, "_blank")
+    // or use WhatsApp
+    // window.open(whatsappShareUrl, "_blank");
   }
 
   // Event color differentiation
@@ -198,7 +263,7 @@ const MyCalendar = () => {
             views={["month", "week", "day", "agenda"]}
             defaultView="month"
             className="text-xs md:text-sm text-center font-bold"
-            eventPropGetter={eventPropGetter} // Set event colors
+            eventPropGetter={eventPropGetter}
           />
         </div>
 
@@ -218,28 +283,30 @@ const MyCalendar = () => {
                 name="title"
                 value={newEvent.title}
                 onChange={handleChange}
-                className="w-full p-2 border rounded text-center"
-                placeholder="Enter event title"
+                className="w-full border border-gray-300 rounded-md p-2"
+                required
               />
             </div>
             <div>
-              <label className="block text-gray-700">Start Date and Time</label>
+              <label className="block text-gray-700">Start Date</label>
               <input
                 type="datetime-local"
                 name="startDate"
                 value={newEvent.startDate}
                 onChange={handleChange}
-                className="w-full p-2 border rounded text-center"
+                className="w-full border border-gray-300 rounded-md p-2"
+                required
               />
             </div>
             <div>
-              <label className="block text-gray-700">End Date and Time</label>
+              <label className="block text-gray-700">End Date</label>
               <input
                 type="datetime-local"
                 name="endDate"
                 value={newEvent.endDate}
                 onChange={handleChange}
-                className="w-full p-2 border rounded text-center"
+                className="w-full border border-gray-300 rounded-md p-2"
+                required
               />
             </div>
             <div>
@@ -248,36 +315,81 @@ const MyCalendar = () => {
                 name="description"
                 value={newEvent.description}
                 onChange={handleChange}
-                className="w-full p-2 border rounded text-center"
-                placeholder="Enter event description"
-              ></textarea>
+                className="w-full border border-gray-300 rounded-md p-2"
+                required
+              />
             </div>
-            {/* Dropdown for meeting type */}
             <div>
               <label className="block text-gray-700">Meeting Type</label>
               <select
                 name="meetingType"
                 value={newEvent.meetingType}
                 onChange={handleChange}
-                className="w-full p-2 border rounded text-center"
+                className="w-full border border-gray-300 rounded-md p-2"
+                required
               >
-                <option value="">Select meeting type</option>
+                <option value="">Select Type</option>
                 <option value="zoom">Zoom</option>
                 <option value="meet">Google Meet</option>
               </select>
             </div>
-            <div className="flex justify-end space-x-4">
+            <button
+              onClick={handleSubmit}
+              className="w-full bg-blue-500 text-white py-2 rounded-md"
+            >
+              Add Event
+            </button>
+          </div>
+        </Modal>
+
+        {/* Preview Modal */}
+        <Modal
+          isOpen={previewModalIsOpen}
+          onRequestClose={() => setPreviewModalIsOpen(false)}
+          style={modalStyles}
+          ariaHideApp={false}
+        >
+          <h2 className="text-xl font-bold mb-4 text-center">Event Preview</h2>
+          <div className="space-y-4">
+            <p>
+              <strong>Title:</strong> {newEvent.title}
+            </p>
+            <p>
+              <strong>Start:</strong> {newEvent.startDate}
+            </p>
+            <p>
+              <strong>End:</strong> {newEvent.endDate}
+            </p>
+            <p>
+              <strong>Description:</strong> {newEvent.description}
+            </p>
+            <p>
+              <strong>Meeting Type:</strong> {newEvent.meetingType}
+            </p>
+            <p>
+              <strong>Link:</strong>{" "}
+              <a href={newEvent.link} target="_blank" rel="noopener noreferrer">
+                {newEvent.link}
+              </a>
+            </p>
+            <div className="flex justify-between mt-4">
               <button
-                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-                onClick={() => setModalIsOpen(false)}
+                onClick={shareEventLink}
+                className="bg-blue-500 text-white py-1 px-2 rounded-md"
               >
-                Cancel
+                Share
               </button>
               <button
-                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                onClick={handleSubmit}
+                onClick={confirmAddEvent}
+                className="w-full bg-green-500 text-white py-2 rounded-md"
               >
-                Add Event
+                Confirm
+              </button>
+              <button
+                onClick={() => setPreviewModalIsOpen(false)}
+                className="w-full bg-red-500 text-white py-2 rounded-md"
+              >
+                Cancel
               </button>
             </div>
           </div>

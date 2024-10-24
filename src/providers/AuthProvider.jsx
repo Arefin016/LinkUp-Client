@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react"
+import useAxiosPublic from "../hooks/useAxiosPublic"
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -18,6 +19,7 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [loading, setloading] = useState(true)
   const googleProvider = new GoogleAuthProvider()
+  const axiosPublic = useAxiosPublic()
 
   //create user
   const createUser = (email, password) => {
@@ -48,6 +50,7 @@ const AuthProvider = ({ children }) => {
     return updateProfile(auth.currentUser, {
       displayName: name,
       photoURL: photo,
+      
     })
   }
 
@@ -55,13 +58,25 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser)
-      console.log("current user", currentUser)
-      setloading(false)
+      if (currentUser) {
+        // get token and store client
+        const userInfo = { email: currentUser.email }
+        axiosPublic.post("/jwt", userInfo).then((res) => {
+          if (res.data.token) {
+            localStorage.setItem("access-token", res.data.token)
+            setloading(false)
+          }
+        })
+      } else {
+        // do something
+        localStorage.removeItem("access-token")
+        setloading(false)
+      }
     })
     return () => {
       return unsubscribe()
     }
-  }, [])
+  }, [axiosPublic])
 
   const authInfo = {
     user,

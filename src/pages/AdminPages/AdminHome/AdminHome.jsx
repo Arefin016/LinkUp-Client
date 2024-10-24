@@ -1,11 +1,10 @@
-import "aos/dist/aos.css" // You can also use <link> for styles
-import useAuth from "../../hooks/useAuth"
+import "aos/dist/aos.css"
 import "animate.css"
+import useAuth from "../../../hooks/useAuth"
+import { Link } from "react-router-dom"
 
-
-const UserDashboard = () => {
+const AdminHome = () => {
   const { user } = useAuth()
-
   return (
     <div
       data-aos="fade-down"
@@ -14,7 +13,7 @@ const UserDashboard = () => {
       className="p-6 min-h-screen"
     >
       <h2 className="text-3xl animate__rubberBand text-center items-center justify-center">
-        <span className="md:text-5xl text-5xl mt-5 font-bold text-[#0B3558] animate__rubberBand">
+        <span className="md:text-5xl text-5xl mt-5 font-bold  text-[#0B3558] animate__rubberBand">
           Welcome to Our LinkUP!!!!!!
         </span>{" "}
       </h2>
@@ -22,7 +21,6 @@ const UserDashboard = () => {
         <figure>
           <img src={user?.photoURL} alt="No Image" />
         </figure>
-
         <div className="card-body">
           <h2 className="card-title text-3xl font-bold">
             Name: {user?.displayName}
@@ -32,11 +30,15 @@ const UserDashboard = () => {
             Phone Number:{" "}
             {user?.phoneNumber ? user.phoneNumber : "Not Provided"}
           </p>
-          
+          <div className="card-actions">
+            <Link to={"/"}>
+              <button className="btn btn-accent">Update</button>
+            </Link>
+          </div>
         </div>
       </div>
     </div>
   )
 }
 
-export default UserDashboard
+export default AdminHome

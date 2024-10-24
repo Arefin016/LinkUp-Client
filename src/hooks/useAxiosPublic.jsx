@@ -1,11 +1,14 @@
 import axios from "axios"
 
-const axiosPublic = axios.create({
-  baseURL: "http://localhost:5000",
-})
-
 const useAxiosPublic = () => {
-  return axiosPublic
+  const axiosInstance = axios.create({
+    baseURL: "https://link-up-shaharul.vercel.app",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+
+  return axiosInstance
 }
 
 export default useAxiosPublic
