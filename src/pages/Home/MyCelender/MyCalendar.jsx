@@ -269,78 +269,97 @@ const MyCalendar = () => {
 
         {/* Modal for adding new events */}
         <Modal
-          isOpen={modalIsOpen}
-          onRequestClose={() => setModalIsOpen(false)}
-          style={modalStyles}
-          ariaHideApp={false}
+  isOpen={modalIsOpen}
+  onRequestClose={() => setModalIsOpen(false)}
+  style={modalStyles}
+  ariaHideApp={false}
+>
+  <div className="bg-white dark:bg-gray-800 p-6 rounded-md">
+    <h2 className="text-xl font-bold mb-4 text-center dark:text-white">Add New Event</h2>
+    <div className="space-y-4 p-4 rounded-md dark:bg-gray-800">
+      
+      <div>
+        <label className="block text-gray-700 dark:text-gray-300">Event Title</label>
+        <input
+          type="text"
+          name="title"
+          value={newEvent.title}
+          onChange={handleChange}
+          className="w-full border border-gray-300 rounded-md p-2 bg-white dark:bg-gray-700 dark:text-white"
+          required
+        />
+      </div>
+
+      <div className="relative">
+        <label className="block text-gray-700 dark:text-gray-300">Start Date</label>
+        <div className="relative">
+          <input
+            type="datetime-local"
+            name="startDate"
+            value={newEvent.startDate}
+            onChange={handleChange}
+            className="w-full border border-gray-300 rounded-md p-2 bg-white dark:bg-gray-700 dark:text-white"
+            required
+          />
+          <span className="absolute inset-y-0 right-3 flex items-center">
+            <i className="fa fa-calendar text-black dark:text-white"></i> {/* Black in light mode, white in dark mode */}
+          </span>
+        </div>
+      </div>
+
+      <div className="relative">
+        <label className="block text-gray-700 dark:text-gray-300">End Date</label>
+        <div className="relative">
+          <input
+            type="datetime-local"
+            name="endDate"
+            value={newEvent.endDate}
+            onChange={handleChange}
+            className="w-full border border-gray-300 rounded-md p-2 bg-white dark:bg-gray-700 dark:text-white"
+            required
+          />
+          <span className="absolute inset-y-0 right-3 flex items-center">
+            <i className="fa fa-calendar text-gray-700 dark:text-gray-300"></i>
+          </span>
+        </div>
+      </div>
+
+      <div>
+        <label className="block text-gray-700 dark:text-gray-300">Description</label>
+        <textarea
+          name="description"
+          value={newEvent.description}
+          onChange={handleChange}
+          className="w-full border border-gray-300 rounded-md p-2 bg-white dark:bg-gray-700 dark:text-white"
+          required
+        />
+      </div>
+
+      <div>
+        <label className="block text-gray-700 dark:text-gray-300">Meeting Type</label>
+        <select
+          name="meetingType"
+          value={newEvent.meetingType}
+          onChange={handleChange}
+          className="w-full border border-gray-300 rounded-md p-2 bg-white dark:bg-gray-700 dark:text-white"
+          required
         >
-          <h2 className="text-xl font-bold mb-4 text-center">Add New Event</h2>
-          <div className="space-y-4">
-            <div>
-              <label className="block text-gray-700">Event Title</label>
-              <input
-                type="text"
-                name="title"
-                value={newEvent.title}
-                onChange={handleChange}
-                className="w-full border border-gray-300 rounded-md p-2"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-gray-700">Start Date</label>
-              <input
-                type="datetime-local"
-                name="startDate"
-                value={newEvent.startDate}
-                onChange={handleChange}
-                className="w-full border border-gray-300 rounded-md p-2"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-gray-700">End Date</label>
-              <input
-                type="datetime-local"
-                name="endDate"
-                value={newEvent.endDate}
-                onChange={handleChange}
-                className="w-full border border-gray-300 rounded-md p-2"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-gray-700">Description</label>
-              <textarea
-                name="description"
-                value={newEvent.description}
-                onChange={handleChange}
-                className="w-full border border-gray-300 rounded-md p-2"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-gray-700">Meeting Type</label>
-              <select
-                name="meetingType"
-                value={newEvent.meetingType}
-                onChange={handleChange}
-                className="w-full border border-gray-300 rounded-md p-2"
-                required
-              >
-                <option value="">Select Type</option>
-                <option value="zoom">Zoom</option>
-                <option value="meet">Google Meet</option>
-              </select>
-            </div>
-            <button
-              onClick={handleSubmit}
-              className="w-full bg-blue-500 text-white py-2 rounded-md"
-            >
-              Add Event
-            </button>
-          </div>
-        </Modal>
+          <option value="">Select Type</option>
+          <option value="zoom">Zoom</option>
+          <option value="meet">Google Meet</option>
+        </select>
+      </div>
+
+      <button
+        onClick={handleSubmit}
+        className="w-full bg-blue-500 text-white py-2 rounded-md"
+      >
+        Add Event
+      </button>
+    </div>
+  </div>
+</Modal>
+
 
         {/* Preview Modal */}
         <Modal
@@ -351,33 +370,43 @@ const MyCalendar = () => {
         >
           <h2 className="text-xl font-bold mb-4 text-center">Event Preview</h2>
           <div className="space-y-4">
-            <p><strong>Title:</strong> {newEvent.title}</p>
-            <p><strong>Start:</strong> {newEvent.startDate}</p>
-            <p><strong>End:</strong> {newEvent.endDate}</p>
-            <p><strong>Description:</strong> {newEvent.description}</p>
-            <p><strong>Meeting Type:</strong> {newEvent.meetingType}</p>
+            <p>
+              <strong>Title:</strong> {newEvent.title}
+            </p>
+            <p>
+              <strong>Start:</strong> {newEvent.startDate}
+            </p>
+            <p>
+              <strong>End:</strong> {newEvent.endDate}
+            </p>
+            <p>
+              <strong>Description:</strong> {newEvent.description}
+            </p>
+            <p>
+              <strong>Meeting Type:</strong> {newEvent.meetingType}
+            </p>
             <p>
               <strong>Link:</strong>{" "}
               <a href={newEvent.link} target="_blank" rel="noopener noreferrer">
                 {newEvent.link}
               </a>
             </p>
-            <div className="flex justify-between mt-4">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4 mt-4 mx-6">
               <button
                 onClick={shareEventLink}
-                className="bg-blue-500 text-white py-1 px-2 rounded-md"
+                className="w-full md:w-40 bg-blue-500 text-white py-2 px-4 rounded-md"
               >
                 Share
               </button>
               <button
                 onClick={confirmAddEvent}
-                className="w-full bg-green-500 text-white py-2 rounded-md"
+                className="w-full md:w-40 bg-green-500 text-white py-2 px-4 rounded-md"
               >
                 Confirm
               </button>
               <button
                 onClick={() => setPreviewModalIsOpen(false)}
-                className="w-full bg-red-500 text-white py-2 rounded-md"
+                className="w-full md:w-40 bg-red-500 text-white py-2 px-4 rounded-md"
               >
                 Cancel
               </button>

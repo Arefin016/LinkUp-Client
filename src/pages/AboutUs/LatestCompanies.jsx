@@ -14,17 +14,17 @@ const LatestCompanies = () => {
   return (
     <div>
       <Marquee pauseOnHover={true} className="md:mt-20">
-        <img className="md:mr-36 mr-10" src={img1} alt="" />
-        <img className="md:mr-36 mr-10" src={img1} alt="" />
-        <img className="md:mr-36 mr-10" src={img2} alt="" />
-        <img className="md:mr-36 mr-10" src={img3} alt="" />
-        <img className="md:mr-36 mr-10" src={img4} alt="" />
-        <img className="md:mr-36 mr-10" src={img5} alt="" />
-        <img className="md:mr-36 mr-10" src={img6} alt="" />
-        <img className="md:mr-36 mr-10" src={img7} alt="" />
-        <img className="md:mr-36 mr-10" src={img8} alt="" />
-        <img className="md:mr-36 mr-10" src={img9} alt="" />
-        <img className="md:mr-36 mr-10" src={img10} alt="" />
+        <img className="md:mr-36 mr-10 bg-white" src={img1} alt="" />
+        <img className="md:mr-36 mr-10 bg-white" src={img1} alt="" />
+        <img className="md:mr-36 mr-10 bg-white" src={img2} alt="" />
+        <img className="md:mr-36 mr-10 bg-white" src={img3} alt="" />
+        <img className="md:mr-36 mr-10 bg-white" src={img4} alt="" />
+        <img className="md:mr-36 mr-10 bg-white" src={img5} alt="" />
+        <img className="md:mr-36 mr-10 bg-white" src={img6} alt="" />
+        <img className="md:mr-36 mr-10 bg-white" src={img7} alt="" />
+        <img className="md:mr-36 mr-10 bg-white" src={img8} alt="" />
+        <img className="md:mr-36 mr-10 bg-white" src={img9} alt="" />
+        <img className="md:mr-36 mr-10 bg-white" src={img10} alt="" />
       </Marquee>
     </div>
   )

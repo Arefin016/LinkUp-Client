@@ -1,7 +1,7 @@
 const UseLinkUp = () => {
   return (
     <div className="md:mt-10 w-[80%] md:ml-20">
-      <h2 className="text-4xl font-bold text-[#0B3558]">How to Use LinkUp</h2>
+      <h2 className="text-4xl font-bold dark:text-white">How to Use LinkUp</h2>
       <p className="mt-10 text-2xl items-center justify-between text-justify font-medium">
         Step-by-Step Guide: <br />{" "}
       </p>

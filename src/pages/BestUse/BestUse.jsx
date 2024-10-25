@@ -1,11 +1,11 @@
 const BestUse = () => {
   return (
     <div className="md:mt-10 w-[80%] md:ml-20">
-      <h2 className="text-4xl font-bold text-[#0B3558]">Tips for Best Use</h2>
+      <h2 className="text-4xl font-bold dark:text-white">Tips for Best Use</h2>
       <p className="mt-10 items-center text-2xl justify-between text-justify font-medium">
         Sync Your Calendar
       </p>
-      <p className="mt-5 items-center justify-between text-justify">
+      <p className="mt-5 items-center justify-between text-justify ">
         To avoid scheduling conflicts and ensure a seamless experience, it’s
         highly recommended to sync all your LinkUp meetings with your personal
         or work calendar. LinkUp integrates with popular calendar systems such

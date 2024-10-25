@@ -1,7 +1,7 @@
 const Features = () => {
   return (
     <div className="md:mt-10 w-[80%] md:ml-20">
-      <h2 className="text-4xl font-bold text-[#0B3558]">
+      <h2 className="text-4xl font-bold dark:text-white">
         Key Features of LinkUp
       </h2>
       <p className="mt-10 items-center text-2xl justify-between text-justify font-medium">

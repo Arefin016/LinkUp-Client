@@ -1,7 +1,7 @@
 const Faqs = () => {
   return (
     <div className="md:mt-10 w-[80%] md:ml-20">
-      <h2 className="text-4xl font-bold text-[#0B3558]">
+      <h2 className="text-4xl font-bold dark:text-white">
         Frequently Asked Questions (FAQs)
       </h2>
       <p className="mt-10 items-center text-2xl justify-between text-justify font-medium">
