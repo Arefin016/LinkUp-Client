@@ -92,6 +92,7 @@ export const router = createBrowserRouter([
             <AllUsers />
           </AdminRoute>
         ),
+        loader: () => fetch("https://link-up-shaharul.vercel.app/usersCount"),
       },
       {
         path: "/dashboard/manageBooking",
