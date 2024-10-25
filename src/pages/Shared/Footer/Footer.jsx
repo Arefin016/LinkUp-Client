@@ -10,7 +10,7 @@ const Footer = () => {
           <div className="lg:flex">
             <div className="w-full -mx-6 lg:w-2/5">
               <div className="px-6">
-                <a href="#">
+                <a href="/">
                   <h1 className="font-right font-extrabold lg:text-4xl text-2xl text-shadow-purple transition duration-300 ease-in-out transform hover:scale-105 hover:rotate-1">
                     <span className="text-emerald-500">L</span>
                     <span className="bg-gradient-to-r from-emerald-500 to-purple-500 bg-clip-text text-transparent">inkUp</span>
@@ -21,13 +21,13 @@ const Footer = () => {
                 </p>
                 <div className="flex mt-6 -mx-2">
                   {[
-                    { icon: faFacebook, label: 'Facebook' },
-                    { icon: faTwitter, label: 'Twitter' },
-                    { icon: faInstagram, label: 'Instagram' },
-                    { icon: faLinkedin, label: 'LinkedIn' },
-                    { icon: faGithub, label: 'Github' },
-                  ].map(({ icon, label }) => (
-                    <a key={label} href="#"
+                    { icon: faFacebook, label: 'Facebook', link: 'https://www.facebook.com/linkup' },
+                    { icon: faTwitter, label: 'Twitter', link: 'https://www.twitter.com/linkup' },
+                    { icon: faInstagram, label: 'Instagram', link: 'https://www.instagram.com/linkup' },
+                    { icon: faLinkedin, label: 'LinkedIn', link: 'https://www.linkedin.com/company/linkup' },
+                    { icon: faGithub, label: 'Github', link: 'https://www.github.com/linkup' },
+                  ].map(({ icon, label, link }) => (
+                    <a key={label} href={link}
                       className="mx-2 text-gray-400 transition-colors duration-300 hover:text-emerald-500"
                       aria-label={label}>
                       <FontAwesomeIcon icon={icon} className="w-8 h-8" />
@@ -42,43 +42,45 @@ const Footer = () => {
                   {
                     title: 'Company',
                     links: [
-                      'About Us',
-                      'Careers',
-                      'Partners',
-                      'Press'
+                      { name: 'About Us', href: '/about' },
+                      { name: 'Careers', href: '/careers' },
+                      { name: 'Partners', href: '/partners' },
+                      { name: 'Press', href: '/press' }
                     ]
                   },
                   {
                     title: 'Help',
                     links: [
-                      'Support Center',
-                      'Contact Us',
-                      'API Documentation'
+                      { name: 'Support Center', href: '/support' },
+                      { name: 'Contact Us', href: '/contact', className: 'text-emerald-400 hover:text-emerald-500' },
+                      { name: 'API Documentation', href: '/api-docs' }
                     ]
                   },
                   {
                     title: 'Resources',
                     links: [
-                      'Blog',
-                      'Tutorials',
-                      'Events',
-                      'Community'
+                      { name: 'Blog', href: '/blog' },
+                      { name: 'Tutorials', href: '/tutorials' },
+                      { name: 'Events', href: '/events' },
+                      { name: 'Community', href: '/community' }
                     ]
                   },
                   {
                     title: 'Legal',
                     links: [
-                      'Terms & Conditions',
-                      'Privacy Policy',
-                      'Cookie Policy',
-                      'Security'
+                      { name: 'Terms & Conditions', href: '/terms' },
+                      { name: 'Privacy Policy', href: '/privacy' },
+                      { name: 'Cookie Policy', href: '/cookies' },
+                      { name: 'Security', href: '/security' }
                     ]
                   },
                 ].map(({ title, links }) => (
                   <div key={title} className='dark:text-white'>
                     <h3 className="text-white uppercase font-semibold">{title}</h3>
-                    {links.map(link => (
-                      <a key={link} href="#" className="block mt-2 text-sm text-gray-400 hover:underline">{link}</a>
+                    {links.map(({ name, href, className }) => (
+                      <a key={name} href={href} className={`block mt-2 text-sm text-gray-400 hover:underline ${className || ''}`}>
+                        {name}
+                      </a>
                     ))}
                   </div>
                 ))}
@@ -92,7 +94,7 @@ const Footer = () => {
         </div>
       </footer>
     </div>
-  )
-}
+  );
+};
 
 export default Footer;

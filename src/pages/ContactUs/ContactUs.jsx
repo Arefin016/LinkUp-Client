@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './ContactUs.css'; // Make sure to import the CSS file
+
 
 const ContactUs = () => {
   const [formData, setFormData] = useState({
@@ -24,13 +24,13 @@ const ContactUs = () => {
       {/* Contact Form */}
       <form
         onSubmit={handleSubmit}
-        className="bg-white dark:bg-gray-800 dark:text-white p-8 rounded-lg shadow-lg max-w-md w-full transition-transform transform hover:scale-105 hover:shadow-xl"
+        className="p-8 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg max-w-md w-full bg-white dark:bg-gray-800"
       >
-        <h2 className="text-2xl font-semibold mb-6 text-center text-blue-600 dark:text-blue-400">
+        <h2 className="text-2xl font-semibold mb-6 text-center text-gray-800 dark:text-gray-100">
           Contact Us
         </h2>
-        <p className="text-center mb-4 text-gray-600 dark:text-gray-400">
-          We will get back to you ASAP!
+        <p className="text-center mb-4 text-gray-500 dark:text-gray-400">
+          We'd love to hear from you!
         </p>
         <div className="mb-4">
           <input
@@ -39,7 +39,7 @@ const ContactUs = () => {
             value={formData.firstName}
             onChange={handleChange}
             placeholder="First Name"
-            className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded focus:outline-none focus:ring focus:ring-blue-300 transition duration-200"
+            className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring focus:ring-purple-300 transition duration-200"
           />
         </div>
         <div className="mb-4">
@@ -49,7 +49,7 @@ const ContactUs = () => {
             value={formData.lastName}
             onChange={handleChange}
             placeholder="Last Name"
-            className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded focus:outline-none focus:ring focus:ring-blue-300 transition duration-200"
+            className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring focus:ring-purple-300 transition duration-200"
           />
         </div>
         <div className="mb-4">
@@ -59,7 +59,7 @@ const ContactUs = () => {
             value={formData.email}
             onChange={handleChange}
             placeholder="Email"
-            className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded focus:outline-none focus:ring focus:ring-blue-300 transition duration-200"
+            className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring focus:ring-purple-300 transition duration-200"
           />
         </div>
         <div className="mb-4">
@@ -69,17 +69,17 @@ const ContactUs = () => {
             value={formData.phone}
             onChange={handleChange}
             placeholder="Phone"
-            className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded focus:outline-none focus:ring focus:ring-blue-300 transition duration-200"
+            className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring focus:ring-purple-300 transition duration-200"
           />
         </div>
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition duration-300 transform hover:scale-105"
+          className="w-full bg-purple-500 text-white p-3 rounded-lg hover:bg-purple-600 transition duration-300 transform hover:scale-105"
         >
           Send
         </button>
         <p className="text-center mt-4 text-gray-500 dark:text-gray-400">
-          You may also call us at 333-33-33
+          You can also reach us at 333-33-33
         </p>
       </form>
 
@@ -92,7 +92,7 @@ const ContactUs = () => {
           height="100%"
           allowFullScreen=""
           loading="lazy"
-          className="rounded-lg shadow-lg transition-transform transform hover:scale-105"
+          className="rounded-xl shadow-lg transition-transform transform hover:scale-105"
         ></iframe>
       </div>
     </div>

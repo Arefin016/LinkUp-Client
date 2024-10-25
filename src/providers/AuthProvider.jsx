@@ -42,6 +42,8 @@ const AuthProvider = ({ children }) => {
   //signout or logout
   const logOut = () => {
     setloading(true)
+    localStorage.removeItem("notes")
+    localStorage.removeItem("question")
     return signOut(auth)
   }
 
