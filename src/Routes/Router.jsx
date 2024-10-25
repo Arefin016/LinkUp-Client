@@ -95,7 +95,7 @@ export const router = createBrowserRouter([
             <AdminDashboard></AdminDashboard>
           </AdminRoute>
         ),
-        loader: () => fetch("http://localhost:5000/usersCount"),
+        loader: () => fetch("https://link-up-shaharul.vercel.app/usersCount"),
       },
       {
         path: "/dashboard/allUser",
@@ -113,7 +113,7 @@ export const router = createBrowserRouter([
             <ManageBooking></ManageBooking>
           </AdminRoute>
         ),
-        loader: () => fetch("http://localhost:5000/add-eventCount"),
+        loader: () => fetch("https://link-up-shaharul.vercel.app/add-eventCount"),
       },
       {
         path: "/dashboard/adminHome",
