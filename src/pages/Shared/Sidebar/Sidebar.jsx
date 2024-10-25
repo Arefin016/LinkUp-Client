@@ -6,7 +6,7 @@ import {
   FcGallery,
   FcHome,
   FcRating,
-  FcNook,
+  FcNook,FcConferenceCall
 } from "react-icons/fc"
 
 import { Link, NavLink } from "react-router-dom"
@@ -170,6 +170,13 @@ const Sidebar = () => {
           >
             <FcGallery /> {/* Home icon */}
             <span className="mx-2 text-sm font-medium">Guides</span>
+          </NavLink>
+          <NavLink
+            to="/calendar"
+            className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg dark:text-gray-300 hover:bg-gray-100  dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-orange-600"
+          >
+            <FcConferenceCall />
+            <span className="mx-2 text-sm font-medium">Set Meeting</span>
           </NavLink>
           {/*This is the Guides route end  */}
         </nav>
