@@ -28,11 +28,9 @@ const SignUp = () => {
 
   const onSubmit = async (data) => {
     try {
-      // Create the user
       const result = await createUser(data.email, data.password);
       const loggedUser = result.user;
 
-      // Show success alert after user creation
       await Swal.fire({
         position: "top",
         icon: "success",
@@ -41,20 +39,16 @@ const SignUp = () => {
         timer: 1500,
       });
 
-      // Update user profile with name and photoURL
       await updateUserProfile(data.name, data.photoURL);
 
-      // Prepare user info for database insertion
       const userInfo = {
         name: data.name,
         email: data.email,
         photoURL: data.photoURL,
       };
 
-      // Post user info to the backend
       const res = await axiosPublic.post("/users", userInfo);
 
-      // Check if user info was inserted successfully
       if (res.data.insertedId) {
         reset();
         Swal.fire({
@@ -64,7 +58,6 @@ const SignUp = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        // Navigate to the login page after success
         navigate("/login");
       }
     } catch (error) {
@@ -81,25 +74,27 @@ const SignUp = () => {
   };
 
   return (
-    <div className="hero min-h-screen bg-base-200">
+    <div className="hero min-h-screen bg-base-200 dark:bg-gray-800 transition-colors duration-300">
       <div className="hero-content flex-col lg:flex-row">
         <div className="w-1/2 mr-12">
           <Lottie animationData={SignIn} />
         </div>
-        <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+        <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-white dark:bg-white transition-colors duration-300">
           <form onSubmit={handleSubmit(onSubmit)} className="card-body">
-            <h1 className="text-3xl text-center font-bold">Sign Up To Link Up</h1>
+            <h1 className="text-3xl text-center font-bold text-gray-800 dark:text-gray-100">
+              Sign Up To Link Up
+            </h1>
 
             {/* Name Input */}
             <div className="form-control">
               <label className="label">
-                <span className="label-text">Name</span>
+                <span className="label-text text-gray-700 dark:text-gray-200">Name</span>
               </label>
               <input
                 type="text"
                 {...register("name", { required: true })}
                 placeholder="Your Name"
-                className="input input-bordered"
+                className="input input-bordered bg-white dark:bg-gray-700 dark:text-gray-200 dark:placeholder-gray-400 border-gray-300 dark:border-gray-600"
               />
               {errors.name && <span className="text-red-600">Name is required</span>}
             </div>
@@ -107,13 +102,13 @@ const SignUp = () => {
             {/* Email Input */}
             <div className="form-control">
               <label className="label">
-                <span className="label-text">Email</span>
+                <span className="label-text text-gray-700 dark:text-gray-200">Email</span>
               </label>
               <input
                 type="email"
                 {...register("email", { required: true })}
                 placeholder="Your Email"
-                className="input input-bordered"
+                className="input input-bordered bg-white dark:bg-gray-700 dark:text-gray-200 dark:placeholder-gray-400 border-gray-300 dark:border-gray-600"
               />
               {errors.email && <span className="text-red-600">Email is required</span>}
             </div>
@@ -121,7 +116,7 @@ const SignUp = () => {
             {/* Password Input */}
             <div className="form-control">
               <label className="label">
-                <span className="label-text">Password</span>
+                <span className="label-text text-gray-700 dark:text-gray-200">Password</span>
               </label>
               <div className="relative">
                 <input
@@ -133,11 +128,11 @@ const SignUp = () => {
                     pattern: /(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z])/,
                   })}
                   placeholder="Your Password"
-                  className="input input-bordered w-full"
+                  className="input input-bordered w-full bg-white dark:bg-gray-700 dark:text-gray-200 dark:placeholder-gray-400 border-gray-300 dark:border-gray-600"
                 />
                 <button
                   type="button"
-                  className="absolute right-2 top-2 text-gray-500"
+                  className="absolute right-2 top-2 text-gray-500 dark:text-gray-300"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? "🙈" : "👁️"}
@@ -162,7 +157,7 @@ const SignUp = () => {
             {/* Confirm Password Input */}
             <div className="form-control">
               <label className="label">
-                <span className="label-text">Confirm Password</span>
+                <span className="label-text text-gray-700 dark:text-gray-200">Confirm Password</span>
               </label>
               <div className="relative">
                 <input
@@ -172,11 +167,11 @@ const SignUp = () => {
                     validate: (value) => value === password || "Passwords do not match",
                   })}
                   placeholder="Confirm Your Password"
-                  className="input input-bordered w-full"
+                  className="input input-bordered w-full bg-white dark:bg-gray-700 dark:text-gray-200 dark:placeholder-gray-400 border-gray-300 dark:border-gray-600"
                 />
                 <button
                   type="button"
-                  className="absolute right-2 top-2 text-gray-500"
+                  className="absolute right-2 top-2 text-gray-500 dark:text-gray-300"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 >
                   {showConfirmPassword ? "🙈" : "👁️"}
@@ -189,13 +184,13 @@ const SignUp = () => {
 
             {/* Submit Button */}
             <div className="form-control mt-6">
-              <input type="submit" value="Sign Up" className="btn btn-primary" />
+              <input type="submit" value="Sign Up" className="btn btn-primary dark:bg-purple-600 dark:hover:bg-purple-700 dark:text-white" />
             </div>
           </form>
 
-          <p className="my-4 text-center">
+          <p className="my-4 text-center text-gray-600 dark:text-gray-400">
             Already registered? Go to{" "}
-            <Link className="text-blue-600 font-bold" to="/login">
+            <Link className="text-blue-600 dark:text-blue-400 font-bold" to="/login">
               LOGIN
             </Link>
           </p>
