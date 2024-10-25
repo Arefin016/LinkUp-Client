@@ -14,7 +14,7 @@ const Home = () => {
       
        
       <div className="overflow-hidden w-full">
-        <h2 className="md:text-5xl text-5xl mt-5 font-bold text-[#0B3558] text-center">
+        <h2 className="md:text-5xl text-5xl mt-5 font-bold dark:text-white text-center">
           Customer Feedback
         </h2>
         <marquee behavior="scroll" direction="right">

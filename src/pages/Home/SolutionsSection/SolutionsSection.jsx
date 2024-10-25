@@ -121,7 +121,7 @@ const SolutionsSection = ({ capture_2, capture_3, capture_4 }) => {
         variants={fadeIn}
         transition={{ duration: 0.9 }}
       >
-        <h2 className="mb-2 text-4xl font-bold dark:text-white">Achieve More with LinkUp</h2>
+        <h2 className=" text-4xl font-bold dark:text-white">Achieve More with LinkUp</h2>
         <p className="text-lg dark:text-white">LinkUp eliminates scheduling conflicts, giving you more time to focus on what matters most.</p>
       </motion.div>
 

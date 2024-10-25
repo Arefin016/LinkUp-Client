@@ -14,7 +14,7 @@ const UserDashboard = () => {
       className="p-6 min-h-screen"
     >
       <h2 className="text-3xl animate__rubberBand text-center items-center justify-center">
-        <span className="md:text-5xl text-5xl mt-5 font-bold text-[#0B3558] animate__rubberBand">
+        <span className="md:text-5xl text-5xl mt-5 font-bold dark:text-white animate__rubberBand">
           Welcome to Our LinkUP!!!!!!
         </span>{" "}
       </h2>
