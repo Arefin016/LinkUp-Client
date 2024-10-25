@@ -95,6 +95,7 @@ export const router = createBrowserRouter([
             <AdminDashboard></AdminDashboard>
           </AdminRoute>
         ),
+        loader: () => fetch("http://localhost:5000/usersCount"),
       },
       {
         path: "/dashboard/allUser",
@@ -112,6 +113,7 @@ export const router = createBrowserRouter([
             <ManageBooking></ManageBooking>
           </AdminRoute>
         ),
+        loader: () => fetch("http://localhost:5000/add-eventCount"),
       },
       {
         path: "/dashboard/adminHome",
