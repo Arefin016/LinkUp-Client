@@ -1,6 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faTwitter, faGithub, faInstagram, faLinkedin } from '@fortawesome/free-brands-svg-icons';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
@@ -10,12 +11,12 @@ const Footer = () => {
           <div className="lg:flex">
             <div className="w-full -mx-6 lg:w-2/5">
               <div className="px-6">
-                <a href="/">
+                <Link to="/">
                   <h1 className="font-right font-extrabold lg:text-4xl text-2xl text-shadow-purple transition duration-300 ease-in-out transform hover:scale-105 hover:rotate-1">
                     <span className="text-emerald-500">L</span>
                     <span className="bg-gradient-to-r from-emerald-500 to-purple-500 bg-clip-text text-transparent">inkUp</span>
                   </h1>
-                </a>
+                </Link>
                 <p className="max-w-sm mt-2 text-gray-300 dark:text-gray-400">
                   Book meetings effortlessly with LinkUp's streamlined scheduling. Perfect for professionals, teams, and individuals.
                 </p>
@@ -42,45 +43,36 @@ const Footer = () => {
                   {
                     title: 'Company',
                     links: [
-                      { name: 'About Us', href: '/about' },
-                      { name: 'Careers', href: '/careers' },
-                      { name: 'Partners', href: '/partners' },
-                      { name: 'Press', href: '/press' }
+                      { name: 'About Us', href: '/aboutus' },
+                      { name: 'Benefits', href: '/Benefits' },
+                      { name: 'Partners', href: '/Partners' },
+                     
                     ]
                   },
                   {
                     title: 'Help',
                     links: [
-                      { name: 'Support Center', href: '/support' },
-                      { name: 'Contact Us', href: '/contact', className: 'text-emerald-400 hover:text-emerald-500' },
-                      { name: 'API Documentation', href: '/api-docs' }
+                      { name: 'Support Center', href: '/guides' },
+                      { name: 'ContactUs', href: '/contactus', className: 'text-emerald-400 hover:text-emerald-500' },
+                      { name: 'API Documentation', href: '/ApiDocumentation' }
                     ]
                   },
                   {
                     title: 'Resources',
                     links: [
                       { name: 'Blog', href: '/blog' },
-                      { name: 'Tutorials', href: '/tutorials' },
-                      { name: 'Events', href: '/events' },
-                      { name: 'Community', href: '/community' }
+                     
+                      
                     ]
                   },
-                  {
-                    title: 'Legal',
-                    links: [
-                      { name: 'Terms & Conditions', href: '/terms' },
-                      { name: 'Privacy Policy', href: '/privacy' },
-                      { name: 'Cookie Policy', href: '/cookies' },
-                      { name: 'Security', href: '/security' }
-                    ]
-                  },
+                  
                 ].map(({ title, links }) => (
                   <div key={title} className='dark:text-white'>
                     <h3 className="text-white uppercase font-semibold">{title}</h3>
                     {links.map(({ name, href, className }) => (
-                      <a key={name} href={href} className={`block mt-2 text-sm text-gray-400 hover:underline ${className || ''}`}>
+                      <Link key={name} to={href} className={`block mt-2 text-sm text-gray-400 hover:underline ${className || ''}`}>
                         {name}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 ))}

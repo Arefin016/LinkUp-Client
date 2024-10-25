@@ -28,6 +28,12 @@ import AdminHome from "../pages/AdminPages/AdminHome/AdminHome"
 
 import NotePad from "../pages/AdminPages/AdminHome/NotePad/NotePad"
 import EventHistory from "../pages/EventHistory/EventHistory"
+import Blog from "../pages/Shared/Blog/Blog"
+import EffectiveScheduling from "../pages/Shared/EffectiveScheduling/EffectiveScheduling"
+import ApiDocumentation from "../pages/Shared/ApiDocumentation/ApiDocumentation"
+
+import Benefits from "../pages/Shared/Benefits/Benefits"
+import Partners from "../pages/Shared/Partners/Partners"
 
 export const router = createBrowserRouter([
   {
@@ -36,10 +42,15 @@ export const router = createBrowserRouter([
     children: [
       { path: "/", element: <Home /> },
       { path: "/aboutus", element: <AboutUs /> },
+      { path: "/blog", element: <Blog></Blog> },
+      { path: "/EffectiveScheduling", element: <EffectiveScheduling></EffectiveScheduling>  },
       { path: "/login", element: <SignIn /> },
       { path: "/contactus", element: <ContactUs /> },
-      { path: "/rating", element: <Rating /> }, // Use lowercase for consistency
+      { path: "/rating", element: <Rating /> }, 
+      { path: "/ApiDocumentation", element: <ApiDocumentation></ApiDocumentation> }, 
       { path: "/signup", element: <SignUp /> },
+      { path: "/Benefits", element: <Benefits></Benefits> },
+      { path: "/Partners", element: <Partners></Partners> },
       {
         path: "/calendar",
         element: (
