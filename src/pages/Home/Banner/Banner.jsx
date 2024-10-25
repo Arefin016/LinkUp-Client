@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ChevronRightIcon } from "@chakra-ui/icons"; // Ensure this is installed or replace with your own icon
 import capture_1 from "../../../../public/capture_1.png";
 import { Link } from "react-router-dom";
@@ -6,8 +6,32 @@ import { BorderBeam } from "@stianlarsen/border-beam";
 import { Typewriter } from "react-simple-typewriter";
 
 const Banner = () => {
+  const [selectedCard, setSelectedCard] = useState(null); // State to manage the selected card
+
+  // Card details data
+  const cardDetails = {
+    oneOnOne: {
+      title: "One-on-One Meetings",
+      description: "Let your clients and colleagues select open meeting times on your calendar with ease.",
+      additionalInfo: "You can customize availability for each client.",
+    },
+    group: {
+      title: "Group Meetings",
+      description: "Book events for multiple attendees and make sure everyone has a voice.",
+      additionalInfo: "Manage group dynamics effectively.",
+    },
+  };
+
+  const handleLearnMore = (card) => {
+    setSelectedCard(card);
+  };
+
+  const closeDetails = () => {
+    setSelectedCard(null);
+  };
+
   return (
-    <div className="relative w-full  px-4  ">
+    <div className="relative w-full px-4">
       <div className="w-full mx-auto my-8 flex flex-col md:flex-row justify-between">
         <div className="w-full md:w-1/3 text-left mb-8 md:mb-0">
           <h2 className="text-4xl lg:text-5xl md:text-5xl font-extrabold leading-tight">
@@ -101,91 +125,100 @@ const Banner = () => {
           We make it easy to get started
         </h3>
         <div className="mt-10 flex justify-center gap-8 flex-wrap">
-  {/* Card 1 */}
-  <div className="shadow-lg w-80 h-64 p-6 text-left bg-gradient-to-br from-blue-100 to-white rounded-xl transition-transform duration-300 transform hover:scale-105 hover:shadow-2xl border border-transparent hover:border-blue-300">
-    <div className="flex items-center justify-center bg-gradient-to-r from-blue-400 to-blue-600 w-14 h-14 rounded-full mb-5">
-      <img
-        src="https://images.ctfassets.net/k0lk9kiuza3o/2lyAPMRxz8pdvkah5K6NFp/14203e7358e18e312b30c9674d8e72f1/icon-checkmark.svg"
-        alt="Checkmark"
-        className="w-8 h-8"
-      />
-    </div>
-    <h6 className="mt-4 text-xl font-semibold text-blue-700">
-      Create Simple Rules
-    </h6>
-    <p className="mt-3 text-gray-600">
-      Let Calendly know your availability preferences and it'll do the work for
-      you.
-    </p>
-  </div>
+          {/* Card 1 */}
+          <div className="shadow-lg w-80 h-64 p-6 text-left bg-gradient-to-br from-blue-100 to-white rounded-xl transition-transform duration-300 transform hover:scale-105 hover:shadow-2xl border border-transparent hover:border-blue-300">
+            <div className="flex items-center justify-center bg-gradient-to-r from-blue-400 to-blue-600 w-14 h-14 rounded-full mb-5">
+              <img
+                src="https://images.ctfassets.net/k0lk9kiuza3o/2lyAPMRxz8pdvkah5K6NFp/14203e7358e18e312b30c9674d8e72f1/icon-checkmark.svg"
+                alt="Checkmark"
+                className="w-8 h-8"
+              />
+            </div>
+            <h6 className="mt-4 text-xl font-semibold text-blue-700">
+              Create Simple Rules
+            </h6>
+            <p className="mt-3 text-gray-600">
+              Let Calendly know your availability preferences and it'll do the work for you.
+            </p>
+          </div>
 
-  {/* Card 2 */}
-  <div className="shadow-lg w-80 h-64 p-6 text-left bg-gradient-to-br from-blue-100 to-white rounded-xl transition-transform duration-300 transform hover:scale-105 hover:shadow-2xl border border-transparent hover:border-blue-300">
-    <div className="flex items-center justify-center bg-gradient-to-r from-blue-400 to-blue-600 w-14 h-14 rounded-full mb-5">
-      <img
-        src="https://images.ctfassets.net/k0lk9kiuza3o/2lyAPMRxz8pdvkah5K6NFp/14203e7358e18e312b30c9674d8e72f1/icon-checkmark.svg"
-        alt="Checkmark"
-        className="w-8 h-8"
-      />
-    </div>
-    <h6 className="mt-4 text-xl font-semibold text-blue-700">
-      Share Your Link
-    </h6>
-    <p className="mt-3 text-gray-600">
-      Send guests your Calendly link or embed it on your website.
-    </p>
-  </div>
+          {/* Card 2 */}
+          <div className="shadow-lg w-80 h-64 p-6 text-left bg-gradient-to-br from-blue-100 to-white rounded-xl transition-transform duration-300 transform hover:scale-105 hover:shadow-2xl border border-transparent hover:border-blue-300">
+            <div className="flex items-center justify-center bg-gradient-to-r from-blue-400 to-blue-600 w-14 h-14 rounded-full mb-5">
+              <img
+                src="https://images.ctfassets.net/k0lk9kiuza3o/2lyAPMRxz8pdvkah5K6NFp/14203e7358e18e312b30c9674d8e72f1/icon-checkmark.svg"
+                alt="Checkmark"
+                className="w-8 h-8"
+              />
+            </div>
+            <h6 className="mt-4 text-xl font-semibold text-blue-700">
+              Share Your Link
+            </h6>
+            <p className="mt-3 text-gray-600">
+              Send guests your Calendly link or embed it on your website.
+            </p>
+          </div>
 
-  {/* Card 3 */}
-  <div className="shadow-lg w-80 h-64 p-6 text-left bg-gradient-to-br from-blue-100 to-white rounded-xl transition-transform duration-300 transform hover:scale-105 hover:shadow-2xl border border-transparent hover:border-blue-300">
-    <div className="flex items-center justify-center bg-gradient-to-r from-blue-400 to-blue-600 w-14 h-14 rounded-full mb-5">
-      <img
-        src="https://images.ctfassets.net/k0lk9kiuza3o/2lyAPMRxz8pdvkah5K6NFp/14203e7358e18e312b30c9674d8e72f1/icon-checkmark.svg"
-        alt="Checkmark"
-        className="w-8 h-8"
-      />
-    </div>
-    <h6 className="mt-4 text-xl font-semibold text-blue-700">
-      Get Booked
-    </h6>
-    <p className="mt-3 text-gray-600">
-      They pick a time and the event is added to your calendar.
-    </p>
-  </div>
-</div>
-
+          {/* Card 3 */}
+          <div className="shadow-lg w-80 h-64 p-6 text-left bg-gradient-to-br from-blue-100 to-white rounded-xl transition-transform duration-300 transform hover:scale-105 hover:shadow-2xl border border-transparent hover:border-blue-300">
+            <div className="flex items-center justify-center bg-gradient-to-r from-blue-400 to-blue-600 w-14 h-14 rounded-full mb-5">
+              <img
+                src="https://images.ctfassets.net/k0lk9kiuza3o/2lyAPMRxz8pdvkah5K6NFp/14203e7358e18e312b30c9674d8e72f1/icon-checkmark.svg"
+                alt="Checkmark"
+                className="w-8 h-8"
+              />
+            </div>
+            <h6 className="mt-4 text-xl font-semibold text-blue-700">
+              Get Booked
+            </h6>
+            <p className="mt-3 text-gray-600">
+              They pick a time and the event is added to your calendar.
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Meeting Types Section */}
       <div className="w-4/5 mx-auto text-center mb-32">
-  <h5 className="mb-6 text-4xl font-bold dark:text-white">
-    Scheduling for any meeting type
-  </h5>
-  <div className="flex flex-wrap justify-center gap-8 text-left">
-    {/* One-on-One Meeting Card */}
-    <div className="shadow-2xl w-80 h-56 p-6 bg-gradient-to-r from-blue-100 to-white rounded-lg transition-transform duration-300 transform hover:scale-105 hover:shadow-3xl border-2 border-blue-400">
-      <h6 className="text-2xl font-semibold mb-3 text-blue-800">One-on-One </h6>
-      <p className="text-base text-gray-700 mb-4">
-        Let your clients and colleagues select open meeting times on your calendar with ease.
-      </p>
-      <a href="#" className="text-blue-700 font-medium inline-flex items-center">
-        Learn more <ChevronRightIcon className="ml-1 w-5 h-5" />
-      </a>
-    </div>
+        <h3 className="text-3xl font-bold text-gray-800">Meeting Types</h3>
+        <div className="mt-10 flex justify-center gap-8 flex-wrap">
+          {Object.entries(cardDetails).map(([key, { title, description, additionalInfo }]) => (
+            <div
+              key={key}
+              className="shadow-lg w-80 h-auto p-6 text-left bg-gradient-to-br from-blue-100 to-white rounded-xl transition-transform duration-300 transform hover:scale-105 hover:shadow-2xl border border-transparent hover:border-blue-300"
+            >
+              <h6 className="mt-4 text-xl font-semibold text-blue-700">
+                {title}
+              </h6>
+              <p className="mt-3 text-gray-600">{description}</p>
+              {/* <p className="mt-3 text-gray-600">{ additionalInfo}</p> */}
+              <button
+                onClick={() => handleLearnMore(key)}
+                className="mt-4 text-blue-500 hover:underline"
+              >
+                Learn More
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
 
-    {/* Group Meeting Card */}
-    <div className="shadow-2xl w-80 h-56 p-6 bg-gradient-to-r from-blue-100 to-white rounded-lg transition-transform duration-300 transform hover:scale-105 hover:shadow-3xl border-2 border-green-400">
-      <h6 className="text-2xl font-semibold mb-3 text-green-800">Group Meetings</h6>
-      <p className="text-base text-gray-700 mb-4">
-        Book events for multiple attendees and make sure everyone has a voice.
-      </p>
-      <a href="#" className="text-green-700 font-medium inline-flex items-center">
-        Learn more <ChevronRightIcon className="ml-1 w-5 h-5" />
-      </a>
-    </div>
-  </div>
-</div>
-
+      {/* Card Details Modal */}
+      {selectedCard && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white rounded-lg shadow-lg p-8">
+            <h2 className="text-2xl font-bold">{cardDetails[selectedCard].title}</h2>
+            <p className="mt-4 text-gray-600">{cardDetails[selectedCard].description}</p>
+            <p className="mt-4 text-gray-600">{cardDetails[selectedCard].additionalInfo}</p>
+            <button
+              onClick={closeDetails}
+              className="mt-6 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
