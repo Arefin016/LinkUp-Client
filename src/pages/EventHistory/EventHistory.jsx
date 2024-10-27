@@ -1,56 +1,60 @@
-import useEvents from "../../hooks/useEvents"
-import React, { useEffect, useState } from "react"
-import Swal from "sweetalert2"
-import zoomLogo from "../../assets/Zoom.jpg"
-import googleMeetLogo from "../../assets/meet.png"
-import useAxiosSecure from "../../hooks/useAxiosSecure"
-import useAuth from "../../hooks/useAuth"
-
+import useEvents from "../../hooks/useEvents";
+import React, { useEffect, useState } from "react";
+import Swal from "sweetalert2";
+import zoomLogo from "../../assets/Zoom.jpg";
+import googleMeetLogo from "../../assets/meet.png";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useAuth from "../../hooks/useAuth";
+import { AiFillCopy } from "react-icons/ai";
+import cardBg from "../../../src/assets/cardbg.jpg";
 const EventHistory = ({ userId }) => {
-  const [event] = useEvents()
-  const { user } = useAuth()
+  const [event] = useEvents();
+  const { user } = useAuth();
 
-  //
-  const [events, setEvents] = useState([])
-  const [error, setError] = useState(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [selectedEvent, setSelectedEvent] = useState(null)
+  const [events, setEvents] = useState([]);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true); // Loading state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
-  const axiosSecure = useAxiosSecure()
+  const axiosSecure = useAxiosSecure();
 
   // Fetch event data when the component mounts
   useEffect(() => {
     const fetchEvents = async () => {
+      setLoading(true);
       try {
-        const response = await axiosSecure.get(`/events?email=${user.email}`)
+        const response = await axiosSecure.get(`/events?email=${user.email}`);
         // Filter events by userId
         const userEvents = response.data.filter(
           (event) => event.userId === userId
-        ) // Assuming each event has a userId field
-        setEvents(userEvents)
+        );
+        setEvents(userEvents);
       } catch (err) {
-        setError(err.message)
+        setError(err.message);
+      } finally {
+        setLoading(false); // End loading state
       }
-    }
+    };
 
-    fetchEvents()
-  }, [userId]) // Add userId to the dependency array
+    fetchEvents();
+  }, [userId]); // Add userId to the dependency array
 
   // Handle opening the update modal
   const openUpdateModal = (event) => {
-    setSelectedEvent(event)
-    setIsModalOpen(true)
-  }
+    setSelectedEvent(event);
+    setIsModalOpen(true);
+  };
 
   // Handle closing the modal
   const closeModal = () => {
-    setIsModalOpen(false)
-    setSelectedEvent(null)
-  }
+    setIsModalOpen(false);
+    setSelectedEvent(null);
+  };
 
   // Update an event
   const handleUpdate = async () => {
-    const { _id, title, description, start, end } = selectedEvent
+    const { _id, title, description, start, end } = selectedEvent;
 
     try {
       const response = await axiosSecure.put(`/events/${_id}`, {
@@ -58,53 +62,44 @@ const EventHistory = ({ userId }) => {
         description,
         start: new Date(start),
         end: new Date(end),
-      })
+      });
       setEvents(
         events.map((event) => (event._id === _id ? response.data : event))
-      )
-      closeModal() // Close modal after successful update
+      );
+      closeModal(); // Close modal after successful update
     } catch (err) {
-      setError(err.message)
+      setError(err.message);
     }
-  }
+  };
 
   // Handle input changes in the modal
   const handleInputChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setSelectedEvent((prevEvent) => ({
       ...prevEvent,
       [name]: value,
-    }))
-  }
+    }));
+  };
 
-  // Cancel (delete) an event with SweetAlert2 confirmation
-  const handleCancel = async (id) => {
-    const result = await Swal.fire({
-      title: "Are you sure?",
-      text: "Do you really want to cancel this event?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, cancel it!",
-      cancelButtonText: "No, keep it",
-    })
+  // Copy link to clipboard
+  const copyToClipboard = (link) => {
+    navigator.clipboard.writeText(link)
+      .then(() => {
+        Swal.fire('Copied!', 'Meeting link copied to clipboard!', 'success');
+      })
+      .catch(err => {
+        console.error('Failed to copy: ', err);
+      });
+  };
 
-    if (result.isConfirmed) {
-      try {
-        await axiosSecure.delete(`/events/${id}`)
-        setEvents(events.filter((event) => event._id !== id))
-        Swal.fire("Cancelled!", "Your event has been cancelled.", "success")
-      } catch (err) {
-        setError(err.message)
-        Swal.fire("Error!", "Failed to cancel the event.", "error")
-      }
-    }
-  }
   return (
     <div className="event-history-container mx-auto mt-10 p-4">
       <h2 className="text-4xl font-bold text-center mb-6">
         Event History : {user?.displayName}
       </h2>
-      {error ? (
+      {loading ? (
+        <p className="text-center">Loading events...</p>
+      ) : error ? (
         <p className="text-red-500 text-center">
           Failed to load events: {error}
         </p>
@@ -112,10 +107,27 @@ const EventHistory = ({ userId }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {events.map((event) => (
             <div
-              key={event._id}
-              className="bg-white rounded-lg shadow-lg p-6 flex flex-col justify-between h-96"
-            >
-              <div className="flex items-start">
+            key={event._id}
+            className="relative bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:-translate-y-2 hover:shadow-2xl border-2 border-transparent hover:border-indigo-500 p-6 flex flex-col justify-between h-[500px]"
+            style={{
+              backgroundImage:
+                `linear-gradient(to right, rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${cardBg})`, 
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          >
+             
+              {event.link && (
+                <button
+                  className="absolute top-4 left-4 text-gray-200 hover:text-blue-600 transition"
+                  onClick={() => copyToClipboard(event.link)}
+                >
+                  <AiFillCopy size={24} />
+                </button>
+              )}
+
+              {/* Card Content */}
+              <div className="flex items-start space-x-4 bg-opacity-50 p-4 rounded-lg bg-gradient-to-r from-black via-transparent to-black">
                 <img
                   src={
                     event.meetingType === "zoom"
@@ -125,48 +137,48 @@ const EventHistory = ({ userId }) => {
                       : "https://via.placeholder.com/50"
                   }
                   alt={event.title}
-                  className="w-12 h-12 rounded-full mr-4"
+                  className="w-16 h-16 rounded-full shadow-lg"
                 />
-                <div className="flex-1">
-                  <h3 className="text-2xl font-semibold">{event.title}</h3>
-                  <p className="text-gray-600 mt-2">
+                <div className="text-white">
+                  <h3 className="text-xl font-bold leading-tight">
+                    {event.title}
+                  </h3>
+                  <p className="text-gray-300 mt-2">
                     <strong>Start:</strong>{" "}
                     {new Date(event.start).toLocaleString()}
                   </p>
-                  <p className="text-gray-600 mt-2">
+                  <p className="text-gray-300 mt-2">
                     <strong>End:</strong> {new Date(event.end).toLocaleString()}
                   </p>
-                  <div className="text-gray-600 mt-4 overflow-y-auto max-h-16">
+                  <div className="text-gray-300 mt-4 overflow-y-auto max-h-16 italic">
                     {event.description}
                   </div>
                 </div>
               </div>
+
+              {/* Link Section */}
               {event.link && (
-                <div className="mt-2 ml-14 mb-5 text-sm text-blue-500">
+                <div className="mt-4 text-center text-sm text-indigo-300 font-semibold">
                   {event.meetingType === "zoom" ? "Zoom Link" : "Meet Link"}:{" "}
                   <a
                     href={event.link}
-                    className="cursor-pointer"
                     target="_blank"
                     rel="noopener noreferrer"
+                    className="underline hover:text-indigo-400 transition-colors duration-200"
                   >
-                    Click
+                    Join Meeting
                   </a>
                 </div>
               )}
-              <div className="mt-auto flex w-full space-x-3">
+
+              {/* Button Section */}
+              <div className="mt-auto flex justify-center space-x-4">
                 <button
-                  className="px-4 w-full py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
+                  className="px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-full shadow-md hover:shadow-xl transform transition hover:scale-105"
                   onClick={() => openUpdateModal(event)}
                 >
                   Update
                 </button>
-                {/* <button
-                  className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
-                  onClick={() => handleCancel(event._id)}
-                >
-                  Cancel Event
-                </button> */}
               </div>
             </div>
           ))}
@@ -237,7 +249,7 @@ const EventHistory = ({ userId }) => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default EventHistory
+export default EventHistory;
