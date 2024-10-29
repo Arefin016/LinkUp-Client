@@ -10,7 +10,7 @@ const AllUsers = () => {
   const axiosSecure = useAxiosSecure()
 
   const { count } = useLoaderData()
-  const [itemsPerPage, setItemsPerPage] = useState(5)
+  const [itemsPerPage, setItemsPerPage] = useState(10)
   const [currentPage, setCurrentPage] = useState(0)
   console.log(count)
   const numberOfPage = Math.ceil(count / itemsPerPage)

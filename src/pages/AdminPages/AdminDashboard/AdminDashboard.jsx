@@ -9,7 +9,7 @@ import { useLoaderData } from "react-router-dom"
 const AdminDashboard = () => {
   const axiosSecure = useAxiosSecure()
   const { count } = useLoaderData()
-  const [itemsPerPage, setItemsPerPage] = useState(5)
+  const [itemsPerPage, setItemsPerPage] = useState(10)
   const [currentPage, setCurrentPage] = useState(0)
   console.log(count)
   const numberOfPage = Math.ceil(count / itemsPerPage)
@@ -141,9 +141,9 @@ const AdminDashboard = () => {
           name=""
           id=""
         >
-          <option value="5">5</option>
           <option value="10">10</option>
           <option value="15">15</option>
+          <option value="20">20</option>
         </select>
       </div>
     </div>
