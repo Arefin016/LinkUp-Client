@@ -10,6 +10,8 @@ import { AuthContext } from "../../../providers/AuthProvider"
 // import useAxiosPublic from "../../../hooks/useAxiosPublic"
 import useAxiosSecure from "../../../hooks/useAxiosSecure"
 import emailjs from "emailjs-com"
+;
+
 
 // Setup the date localization
 const locales = {
@@ -61,7 +63,9 @@ const modalStyles = {
   },
 };
 
+
 const MyCalendar = () => {
+  const [isSignedIn, setIsSignedIn] = useState(false);
   const { user } = useContext(AuthContext)
   const [link, setLink] = useState(
     "https://us05web.zoom.us/j/87070806836?pwd=fLYbzd8fSsnnCZdmpfsbukUzzI54al.1"
@@ -90,7 +94,7 @@ const MyCalendar = () => {
     setSelectedSlot({ start, end });
     setModalIsOpen(true);
   };
-
+ 
 
   // Function to send email using EmailJS
   const sendEmail = (eventDetails) => {
@@ -246,6 +250,9 @@ const MyCalendar = () => {
     return { style: { backgroundColor } };
   };
 
+
+
+
   return (
     <>
       <div className="calendar-container mx-5 mt-32 p-5 bg-blue-50 rounded-lg shadow-lg">
@@ -396,6 +403,7 @@ const MyCalendar = () => {
           </div>
         </Modal>
       </div>
+      
     </>
   );
 };
